@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>714</x>
+      <y>63</y>
+      <w>315</w>
+      <h>238</h>
+    </coordinates>
+    <panel_attributes>Abstract Class: Ticket
+--
+Class representing a theatre ticket
+--
+String purchaserName;
+String showTitle;
+String showType [could be int];
+String showDescription;
+Time showTime;
+Date showDate;
+Time showDuration;
+int seatNumber;
+boolean concession;
+boolean eTicket;
+if eTicket is false then the ticket is paper and cant be purchased within
+7 days of the show
+
+Methods
+public boolean getPostageAvailable()
+Checks to see if the start date of the show is within the next 7 days</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>364</x>
+      <y>287</y>
+      <w>238</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>Abstract Class: Show
+--
+String showTitle;
+int showType;
+0 for theatre, 1 for musical, 2 for opera, 3 for concert
+String showDescription;
+Time showTime;
+Date showDate;
+Time showDuration;
+Int showPrice;
+ArrayList&lt;String&gt; mainPerformers;
+
+public void addMainPerformer(String name)
+mainPerformers.add(name);
+
+public String getShowTypeString()
+switch (showType){
+case 0: return "Theatre";
+case 1: return "Musical";
+...
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>826</x>
+      <y>574</y>
+      <w>175</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Class Employee
+--
+int employeeId;
+String username;
+String password;
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>322</y>
+      <w>147</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Class CircleTicket inherits Ticket
+--
+seatType 0 = Circle, seatType 1 = Stalls;
+int seatType = 0;
+int price;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>861</x>
+      <y>322</y>
+      <w>147</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Class StallsTicket inherits Ticket
+--
+seatType 0 = Circle, seatType 1 = Stalls;
+int seatType = 1;
+int price;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>777</x>
+      <y>294</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>938</x>
+      <y>294</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>84</x>
+      <y>294</y>
+      <w>203</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Class TheatreShow inherits Show;
+--
+boolean musicalAccompaniment = false;
+String language;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>350</y>
+      <w>287</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Class MusicalShow inherits Show;
+--
+public class MusicalShow(boolean hasMusicalAccompaniment)
+this.super();
+boolean musicalAccompaniment = hasMusicalAccompaniment;
+String language;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>427</y>
+      <w>287</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Class OperaShow inherits Show;
+--
+public class OperaShow(boolean hasMusicalAccompaniment)
+this.super();
+boolean musicalAccompaniment = hasMusicalAccompaniment;
+String language;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>84</x>
+      <y>504</y>
+      <w>203</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Class ConcertShow inherits Show;
+--
+this.super();
+boolean musicalAccompaniment = true;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>308</y>
+      <w>98</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>441</y>
+      <w>98</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>378</y>
+      <w>98</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>511</y>
+      <w>98</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>1008</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>Abstract Class SeatsType
+--
+
+getSeat(int index)
+returns seats[index]
+ </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1050</x>
+      <y>945</y>
+      <w>161</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Class CircleSeats
+--
+circleSeats = new boolean[80];
+
+ </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>882</x>
+      <y>945</y>
+      <w>161</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Class StallsSeats
+--
+StallsSeats = new boolean[120];
+
+ </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>959</x>
+      <y>917</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1099</x>
+      <y>980</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>385</x>
+      <y>945</y>
+      <w>203</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Class Scanner
+--
+Gets input from user
+Scanner scanner = new Scanner(System.in);</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>910</x>
+      <y>658</y>
+      <w>294</w>
+      <h>266</h>
+    </coordinates>
+    <panel_attributes>Class DatabaseManager
+--
+Interfaces with the SQL database
+--
+Refactor Tony's code from the DBConnector class 
+in JDBC project.
+
+Has methods like book ticket, cancel ticket, get available
+seats for a show, etc
+
+Methods:
+
+getShow(String showName);
+Returns a show object which we can use accessor methods on
+getShow(Date dateOfShow);
+Returns a show object which we can use accessor methods on
+addShow();
+printShow();
+Prints show details to console
+createTicket();
+creates a ticket for a certain seat
+browseShows()
+Returns a list of all shows with start date being equal or later than
+the current date and start time later than the current time</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>399</x>
+      <y>574</y>
+      <w>413</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>Class Controller
+--
+User facing class, gets input from user and prints to terminal
+
+Creates a normal session with hidden menu for logging in
+If user logs in creates an employee session
+
+User can type in numbers to select options
+Default menu:
+1. Browse shows
+2. Search by name
+3. Search by date
+4. Go to basket
+5. Checkout
+Hidden key. Staff portal [log in]
+
+Basket menu:
+1. Concession
+2. Postage 
+
+Employee menu:
+1. Browse shows
+2. Search by name
+3. Search by date
+4. Add show
+5. Logout
+
+Methods
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>476</x>
+      <y>917</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>637</x>
+      <y>406</y>
+      <w>210</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>Class: Shopping Basket
+--
+ArrayList&lt;Ticket&gt; shoppingBasket;
+
+public Ticket getTicket(index i)
+return shoppingBasket.get(i);
+
+public void addToBasket(Ticket ticket)
+shoppingBasket.add(ticket);</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>483</x>
+      <y>133</y>
+      <w>21</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>483</x>
+      <y>126</y>
+      <w>245</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1022</x>
+      <y>189</y>
+      <w>154</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+</panel_attributes>
+    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1155</x>
+      <y>196</y>
+      <w>112</w>
+      <h>476</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+Two way relationship</panel_attributes>
+    <additional_attributes>10.0;660.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>805</x>
+      <y>595</y>
+      <w>35</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;30.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>721</x>
+      <y>553</y>
+      <w>21</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>805</x>
+      <y>784</y>
+      <w>119</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+</panel_attributes>
+    <additional_attributes>150.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>455</x>
+      <y>7</y>
+      <w>21</w>
+      <h>294</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+</panel_attributes>
+    <additional_attributes>10.0;400.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>455</x>
+      <y>0</y>
+      <w>749</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+Two way relationship</panel_attributes>
+    <additional_attributes>1050.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1183</x>
+      <y>7</y>
+      <w>21</w>
+      <h>665</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1120</x>
+      <y>917</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1001</x>
+      <y>980</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+</diagram>

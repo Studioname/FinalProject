@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>705</x>
-      <y>125</y>
+      <x>655</x>
+      <y>135</y>
       <w>225</w>
       <h>170</h>
     </coordinates>
@@ -34,8 +34,8 @@ Checks to see if the start date of the show is within the next 7 days</panel_att
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>455</x>
-      <y>285</y>
+      <x>405</x>
+      <y>295</y>
       <w>170</w>
       <h>195</h>
     </coordinates>
@@ -67,8 +67,8 @@ case 1: return "Musical";
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>865</x>
-      <y>455</y>
+      <x>815</x>
+      <y>465</y>
       <w>125</w>
       <h>50</h>
     </coordinates>
@@ -84,8 +84,8 @@ String password;
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>695</x>
-      <y>310</y>
+      <x>645</x>
+      <y>320</y>
       <w>105</w>
       <h>45</h>
     </coordinates>
@@ -99,8 +99,8 @@ int price;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>810</x>
-      <y>310</y>
+      <x>760</x>
+      <y>320</y>
       <w>105</w>
       <h>45</h>
     </coordinates>
@@ -114,8 +114,8 @@ int price;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>750</x>
-      <y>290</y>
+      <x>700</x>
+      <y>300</y>
       <w>15</w>
       <h>30</h>
     </coordinates>
@@ -125,8 +125,8 @@ int price;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>865</x>
-      <y>290</y>
+      <x>815</x>
+      <y>300</y>
       <w>15</w>
       <h>30</h>
     </coordinates>
@@ -137,8 +137,8 @@ int price;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>255</x>
-      <y>290</y>
+      <x>205</x>
+      <y>300</y>
       <w>145</w>
       <h>35</h>
     </coordinates>
@@ -151,8 +151,8 @@ String language;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>195</x>
-      <y>330</y>
+      <x>145</x>
+      <y>340</y>
       <w>205</w>
       <h>50</h>
     </coordinates>
@@ -167,8 +167,8 @@ String language;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>195</x>
-      <y>385</y>
+      <x>145</x>
+      <y>395</y>
       <w>205</w>
       <h>50</h>
     </coordinates>
@@ -183,8 +183,8 @@ String language;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>255</x>
-      <y>440</y>
+      <x>205</x>
+      <y>450</y>
       <w>145</w>
       <h>35</h>
     </coordinates>
@@ -198,8 +198,8 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>395</x>
-      <y>300</y>
+      <x>345</x>
+      <y>310</y>
       <w>70</w>
       <h>20</h>
     </coordinates>
@@ -210,8 +210,8 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>395</x>
-      <y>395</y>
+      <x>345</x>
+      <y>405</y>
       <w>70</w>
       <h>20</h>
     </coordinates>
@@ -222,8 +222,8 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>395</x>
-      <y>350</y>
+      <x>345</x>
+      <y>360</y>
       <w>70</w>
       <h>20</h>
     </coordinates>
@@ -234,8 +234,8 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>395</x>
-      <y>445</y>
+      <x>345</x>
+      <y>455</y>
       <w>70</w>
       <h>20</h>
     </coordinates>
@@ -246,8 +246,8 @@ boolean musicalAccompaniment = true;
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>895</x>
-      <y>800</y>
+      <x>845</x>
+      <y>850</y>
       <w>105</w>
       <h>70</h>
     </coordinates>
@@ -262,8 +262,8 @@ returns seats[index]
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>945</x>
-      <y>755</y>
+      <x>895</x>
+      <y>805</y>
       <w>115</w>
       <h>30</h>
     </coordinates>
@@ -277,8 +277,8 @@ circleSeats = new boolean[80];
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>825</x>
-      <y>755</y>
+      <x>775</x>
+      <y>805</y>
       <w>115</w>
       <h>30</h>
     </coordinates>
@@ -292,19 +292,19 @@ StallsSeats = new boolean[120];
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>880</x>
-      <y>735</y>
+      <x>830</x>
+      <y>780</y>
       <w>15</w>
-      <h>30</h>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>980</x>
-      <y>780</y>
+      <x>930</x>
+      <y>830</y>
       <w>15</w>
       <h>30</h>
     </coordinates>
@@ -314,8 +314,8 @@ StallsSeats = new boolean[120];
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>755</y>
+      <x>420</x>
+      <y>765</y>
       <w>145</w>
       <h>35</h>
     </coordinates>
@@ -328,10 +328,10 @@ Scanner scanner = new Scanner(System.in);</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>845</x>
-      <y>550</y>
+      <x>795</x>
+      <y>520</y>
       <w>210</w>
-      <h>190</h>
+      <h>265</h>
     </coordinates>
     <panel_attributes>Class DatabaseManager
 --
@@ -356,14 +356,21 @@ createTicket();
 creates a ticket for a certain seat
 browseShows()
 Returns a list of all shows with start date being equal or later than
-the current date and start time later than the current time</panel_attributes>
+the current date and start time later than the current time
+createShow(constructor) invokes createShowSeats()
+which invokes createShowCircleSeats() and createShowStallsSeats()
+CircleSeats and StallsSeat are basically boolean arrays
+getCircleSeatAvailability(int seatNo)
+Checks the availability of the given circle seat
+getStallsSeatAvailability(int seatNo)
+as above for stalls</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
-      <y>490</y>
+      <x>430</x>
+      <y>500</y>
       <w>295</w>
       <h>250</h>
     </coordinates>
@@ -401,8 +408,8 @@ Methods
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>535</x>
-      <y>735</y>
+      <x>485</x>
+      <y>745</y>
       <w>15</w>
       <h>30</h>
     </coordinates>
@@ -412,8 +419,8 @@ Methods
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>650</x>
-      <y>370</y>
+      <x>600</x>
+      <y>380</y>
       <w>150</w>
       <h>110</h>
     </coordinates>
@@ -431,8 +438,8 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>175</y>
+      <x>490</x>
+      <y>185</y>
       <w>15</w>
       <h>120</h>
     </coordinates>
@@ -443,8 +450,8 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>170</y>
+      <x>490</x>
+      <y>180</y>
       <w>175</w>
       <h>20</h>
     </coordinates>
@@ -455,8 +462,8 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>925</x>
-      <y>215</y>
+      <x>875</x>
+      <y>225</y>
       <w>110</w>
       <h>20</h>
     </coordinates>
@@ -467,20 +474,20 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1020</x>
-      <y>220</y>
+      <x>970</x>
+      <y>230</y>
       <w>80</w>
-      <h>340</h>
+      <h>300</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
 Two way relationship</panel_attributes>
-    <additional_attributes>10.0;660.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;580.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>920</x>
-      <y>500</y>
+      <x>870</x>
+      <y>510</y>
       <w>15</w>
       <h>55</h>
     </coordinates>
@@ -491,8 +498,8 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>710</x>
-      <y>475</y>
+      <x>660</x>
+      <y>485</y>
       <w>15</w>
       <h>25</h>
     </coordinates>
@@ -503,8 +510,8 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>770</x>
-      <y>640</y>
+      <x>720</x>
+      <y>650</y>
       <w>85</w>
       <h>20</h>
     </coordinates>
@@ -515,8 +522,8 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>85</y>
+      <x>470</x>
+      <y>95</y>
       <w>15</w>
       <h>210</h>
     </coordinates>
@@ -527,8 +534,8 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>80</y>
+      <x>470</x>
+      <y>90</y>
       <w>535</w>
       <h>20</h>
     </coordinates>
@@ -539,31 +546,31 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1040</x>
-      <y>85</y>
+      <x>990</x>
+      <y>95</y>
       <w>15</w>
-      <h>475</h>
+      <h>435</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;930.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;850.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>995</x>
-      <y>735</y>
+      <x>945</x>
+      <y>780</y>
       <w>15</w>
-      <h>30</h>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>910</x>
-      <y>780</y>
+      <x>860</x>
+      <y>830</y>
       <w>15</w>
       <h>30</h>
     </coordinates>

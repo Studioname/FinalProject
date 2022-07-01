@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>5</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>655</x>
-      <y>135</y>
-      <w>225</w>
-      <h>170</h>
+      <x>918</x>
+      <y>81</y>
+      <w>405</w>
+      <h>306</h>
     </coordinates>
     <panel_attributes>Abstract Class: Ticket
 --
 Class representing a theatre ticket
 --
+String ticketId;
+String showId;
 String purchaserName;
-String showTitle;
-String showType [could be int];
-String showDescription;
-Time showTime;
-Date showDate;
-Time showDuration;
+String purchaserAddress;
+Show show;
+The show that this ticket is a ticket for
 int seatNumber;
 boolean concession;
 boolean eTicket;
@@ -34,13 +33,14 @@ Checks to see if the start date of the show is within the next 7 days</panel_att
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>405</x>
-      <y>295</y>
-      <w>170</w>
-      <h>195</h>
+      <x>468</x>
+      <y>369</y>
+      <w>306</w>
+      <h>351</h>
     </coordinates>
     <panel_attributes>Abstract Class: Show
 --
+int showId;
 String showTitle;
 int showType;
 0 for theatre, 1 for musical, 2 for opera, 3 for concert
@@ -67,10 +67,10 @@ case 1: return "Musical";
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>815</x>
-      <y>465</y>
-      <w>125</w>
-      <h>50</h>
+      <x>1206</x>
+      <y>648</y>
+      <w>225</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Class Employee
 --
@@ -84,10 +84,10 @@ String password;
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>645</x>
-      <y>320</y>
-      <w>105</w>
-      <h>45</h>
+      <x>900</x>
+      <y>414</y>
+      <w>189</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>Class CircleTicket inherits Ticket
 --
@@ -99,10 +99,10 @@ int price;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>320</y>
-      <w>105</w>
-      <h>45</h>
+      <x>1107</x>
+      <y>414</y>
+      <w>189</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>Class StallsTicket inherits Ticket
 --
@@ -114,10 +114,10 @@ int price;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>700</x>
-      <y>300</y>
-      <w>15</w>
-      <h>30</h>
+      <x>999</x>
+      <y>378</y>
+      <w>27</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
@@ -125,10 +125,10 @@ int price;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>815</x>
-      <y>300</y>
-      <w>15</w>
-      <h>30</h>
+      <x>1206</x>
+      <y>378</y>
+      <w>27</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -137,10 +137,10 @@ int price;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>205</x>
-      <y>300</y>
-      <w>145</w>
-      <h>35</h>
+      <x>108</x>
+      <y>378</y>
+      <w>261</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Class TheatreShow inherits Show;
 --
@@ -151,10 +151,10 @@ String language;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>145</x>
-      <y>340</y>
-      <w>205</w>
-      <h>50</h>
+      <x>0</x>
+      <y>450</y>
+      <w>369</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Class MusicalShow inherits Show;
 --
@@ -167,10 +167,10 @@ String language;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>145</x>
-      <y>395</y>
-      <w>205</w>
-      <h>50</h>
+      <x>0</x>
+      <y>549</y>
+      <w>369</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Class OperaShow inherits Show;
 --
@@ -183,10 +183,10 @@ String language;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>205</x>
-      <y>450</y>
-      <w>145</w>
-      <h>35</h>
+      <x>108</x>
+      <y>648</y>
+      <w>261</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Class ConcertShow inherits Show;
 --
@@ -198,10 +198,10 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>345</x>
-      <y>310</y>
-      <w>70</w>
-      <h>20</h>
+      <x>360</x>
+      <y>396</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -210,10 +210,10 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>345</x>
-      <y>405</y>
-      <w>70</w>
-      <h>20</h>
+      <x>360</x>
+      <y>567</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -222,10 +222,10 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>345</x>
-      <y>360</y>
-      <w>70</w>
-      <h>20</h>
+      <x>360</x>
+      <y>486</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -234,10 +234,10 @@ boolean musicalAccompaniment = true;
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>345</x>
-      <y>455</y>
-      <w>70</w>
-      <h>20</h>
+      <x>360</x>
+      <y>657</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -246,10 +246,10 @@ boolean musicalAccompaniment = true;
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>845</x>
-      <y>850</y>
-      <w>105</w>
-      <h>70</h>
+      <x>1260</x>
+      <y>1368</y>
+      <w>189</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Abstract Class SeatsType
 --
@@ -262,10 +262,10 @@ returns seats[index]
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>895</x>
-      <y>805</y>
-      <w>115</w>
-      <h>30</h>
+      <x>1350</x>
+      <y>1287</y>
+      <w>207</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>Class CircleSeats
 --
@@ -277,10 +277,10 @@ circleSeats = new boolean[80];
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>775</x>
-      <y>805</y>
-      <w>115</w>
-      <h>30</h>
+      <x>1134</x>
+      <y>1287</y>
+      <w>207</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>Class StallsSeats
 --
@@ -292,10 +292,10 @@ StallsSeats = new boolean[120];
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>830</x>
-      <y>780</y>
-      <w>15</w>
-      <h>35</h>
+      <x>1233</x>
+      <y>1242</y>
+      <w>27</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
@@ -303,10 +303,10 @@ StallsSeats = new boolean[120];
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
-      <y>830</y>
-      <w>15</w>
-      <h>30</h>
+      <x>1413</x>
+      <y>1332</y>
+      <w>27</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
@@ -314,10 +314,10 @@ StallsSeats = new boolean[120];
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>420</x>
-      <y>765</y>
-      <w>145</w>
-      <h>35</h>
+      <x>495</x>
+      <y>1215</y>
+      <w>261</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Class Scanner
 --
@@ -328,10 +328,10 @@ Scanner scanner = new Scanner(System.in);</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>795</x>
-      <y>520</y>
-      <w>210</w>
-      <h>265</h>
+      <x>1170</x>
+      <y>774</y>
+      <w>378</w>
+      <h>477</h>
     </coordinates>
     <panel_attributes>Class DatabaseManager
 --
@@ -369,10 +369,10 @@ as above for stalls</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>430</x>
-      <y>500</y>
-      <w>295</w>
-      <h>250</h>
+      <x>513</x>
+      <y>738</y>
+      <w>531</w>
+      <h>450</h>
     </coordinates>
     <panel_attributes>Class Controller
 --
@@ -408,10 +408,10 @@ Methods
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>485</x>
-      <y>745</y>
-      <w>15</w>
-      <h>30</h>
+      <x>612</x>
+      <y>1179</y>
+      <w>27</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
@@ -419,16 +419,16 @@ Methods
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
-      <y>380</y>
-      <w>150</w>
-      <h>110</h>
+      <x>819</x>
+      <y>522</y>
+      <w>270</w>
+      <h>198</h>
     </coordinates>
     <panel_attributes>Class: Shopping Basket
 --
 ArrayList&lt;Ticket&gt; shoppingBasket;
 
-public Ticket getTicket(index i)
+public Ticket getItem(index i)
 return shoppingBasket.get(i);
 
 public void addToBasket(Ticket ticket)
@@ -438,10 +438,10 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
-      <y>185</y>
-      <w>15</w>
-      <h>120</h>
+      <x>621</x>
+      <y>171</y>
+      <w>27</w>
+      <h>216</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -450,10 +450,10 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
-      <y>180</y>
-      <w>175</w>
-      <h>20</h>
+      <x>621</x>
+      <y>162</y>
+      <w>315</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -462,10 +462,10 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>875</x>
-      <y>225</y>
-      <w>110</w>
-      <h>20</h>
+      <x>1314</x>
+      <y>243</y>
+      <w>198</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
 </panel_attributes>
@@ -474,10 +474,10 @@ shoppingBasket.add(ticket);</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>970</x>
-      <y>230</y>
-      <w>80</w>
-      <h>300</h>
+      <x>1485</x>
+      <y>252</y>
+      <w>144</w>
+      <h>540</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
 Two way relationship</panel_attributes>
@@ -486,22 +486,22 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>870</x>
-      <y>510</y>
-      <w>15</w>
-      <h>55</h>
+      <x>1305</x>
+      <y>729</y>
+      <w>27</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
-      <y>485</y>
-      <w>15</w>
-      <h>25</h>
+      <x>927</x>
+      <y>711</y>
+      <w>27</w>
+      <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -510,10 +510,10 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>650</y>
-      <w>85</w>
-      <h>20</h>
+      <x>1035</x>
+      <y>1008</y>
+      <w>153</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
 </panel_attributes>
@@ -522,10 +522,10 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>470</x>
-      <y>95</y>
-      <w>15</w>
-      <h>210</h>
+      <x>585</x>
+      <y>9</y>
+      <w>27</w>
+      <h>378</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
 </panel_attributes>
@@ -534,10 +534,10 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>470</x>
-      <y>90</y>
-      <w>535</w>
-      <h>20</h>
+      <x>585</x>
+      <y>0</y>
+      <w>963</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;
 Two way relationship</panel_attributes>
@@ -546,10 +546,10 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>990</x>
-      <y>95</y>
-      <w>15</w>
-      <h>435</h>
+      <x>1521</x>
+      <y>9</y>
+      <w>27</w>
+      <h>783</h>
     </coordinates>
     <panel_attributes>lt=&lt;.&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;850.0</additional_attributes>
@@ -557,10 +557,10 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>945</x>
-      <y>780</y>
-      <w>15</w>
-      <h>35</h>
+      <x>1440</x>
+      <y>1242</y>
+      <w>27</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>
@@ -569,10 +569,10 @@ Two way relationship</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>860</x>
-      <y>830</y>
-      <w>15</w>
-      <h>30</h>
+      <x>1287</x>
+      <y>1332</y>
+      <w>27</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 </panel_attributes>

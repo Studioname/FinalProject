@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import model.Play;
+
 public class DatabaseManager {
 	private Connection conn;
 
@@ -90,10 +92,13 @@ public class DatabaseManager {
 		      for(int i = 1; i<=count; i++) {
 		         System.out.println(rsMetaData.getColumnName(i));
 		      }
-			while (rs.next()) {
-				System.out.print("Person's name is " + rs.getString(rsMetaData.getColumnName(1)) + " ");
-				System.out.println("Age is " + rs.getInt(rsMetaData.getColumnName(2)));
-			}
+		      
+// we have to make this compatible with our code
+		      
+//			while (rs.next()) {
+//				System.out.print("Person's name is " + rs.getString(rsMetaData.getColumnName(1)) + " ");
+//				System.out.println("Age is " + rs.getInt(rsMetaData.getColumnName(2)));
+//			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -136,5 +141,23 @@ public class DatabaseManager {
 //	}
 	
 	//queries
-
+	//add show
+	public void addConcert(Play play) {
+		String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getCirclePrice() + ", " + play.getStallsPrice() + ", " + play.getLanguage() + ", " + play.getMusicalAccompaniment() + ");";
+		runQuery(str);
+	}
+	
+	public ResultSet getPlays() {
+		return runQuery("SELECT * FROM Play");
+	}
+	//format as currency
+	//CONCAT('£', FORMAT(SUM(Balance), 2)) AS Price
 }
+
+//contact details
+
+//looking to collect a range of data regarding ticket buying habits and perhaps with a view to introducing more theatregoers
+//change ticket
+//group booking discount possible
+//change shows
+//users can delete data

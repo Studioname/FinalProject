@@ -16,8 +16,7 @@ public class Play {
 	private int playMusicalAccompaniment;
 
 	//for internal use only
-	public Play(int playId, String playTitle, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice) {
-		this.playId = playId;
+	public Play(String playTitle, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice) {
 		this.playTitle = playTitle;
 		this.playType = 3;
 		this.playDescription = playDescription;
@@ -30,7 +29,7 @@ public class Play {
 		this.playMusicalAccompaniment = 1;
 	}
 	//database facing constructor
-	public Play(int playId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
+	public Play(String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
 		this.playId = playId;
 		this.playTitle = playTitle;
 		this.playType = playType;
@@ -48,7 +47,7 @@ public class Play {
 		}
 	}
 	//methods
-	public String getPlayTypeString(int playType) {
+	public String getPlayTypeString() {
 		switch(playType) {
 		case 0: return "Theatre";
 		case 1: return "Musical";
@@ -56,6 +55,51 @@ public class Play {
 		case 3: return "Concert";
 		default: return null;
 		}
+	}
+	public String getMusicalAccompanimentString() {
+		switch(playMusicalAccompaniment) {
+		case 0: return "No";
+		case 1: return "Yes";
+		default: return null;
+		}
+	}
+	public String getFormattedPrice(int price) {
+		String priceString = Integer.toString(price);
+		char [] chars = priceString.toCharArray();
+		String str = "£";
+		if (chars.length <= 2) {
+			str += "0";
+		}
+		
+		for (int i = 0; i < chars.length -2; i++) {
+			str += chars[i];
+		}
+		str += "." + chars[chars.length-2] + chars[chars.length-1];
+		return str;
+	}
+	public String getFormattedPlayLanguage() {
+		if (playLanguage != null) {
+			return playLanguage;
+		}
+		else {
+			return "None";
+		}
+	}
+	public void printPlayDetails() {
+		System.out.println("Title: " + getPlayTitle());
+		System.out.println("Type: " + getPlayTypeString());
+		System.out.println("Description: " + getPlayDescription());
+		System.out.println("Time: " + getPlayTime());
+		System.out.println("Date: " + getPlayDate());
+		System.out.println("Duration: " + getPlayDuration());
+		System.out.println("Circle Seat Price: " + getFormattedPrice(playCirclePrice));
+		System.out.println("Stalls Seat Price: " + getFormattedPrice(playStallsPrice));
+		System.out.println("Language: " + getFormattedPlayLanguage());
+		System.out.println("Musical Accompaniment: " + getMusicalAccompanimentString());
+	}
+	public void printBasicPlayDetails(int index) {
+		index += 1;
+		System.out.println("" + index + ". " + getPlayTitle() + ", " + getPlayTypeString() + ", " + getPlayDate() + ", " + getFormattedPlayLanguage());
 	}
 	public int getPlayId() {
 		return playId;

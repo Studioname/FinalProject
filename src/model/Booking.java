@@ -11,8 +11,7 @@ public class Booking {
 	private int price;
 	private Play play;
 	
-	public Booking(int bookingId, int showId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price, Play play) {
-		this.setBookingId(bookingId);
+	public Booking(int showId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price) {
 		this.setShowId(showId);
 		this.setCustomerId(customerId);
 		this.setSeatType(seatType);
@@ -20,7 +19,6 @@ public class Booking {
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
 		this.setPrice(price);
-		this.setPlay(play);
 	}
 	
 

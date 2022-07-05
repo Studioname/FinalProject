@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import model.Booking;
 import model.Play;
 
 public class DatabaseManager {
@@ -114,29 +115,59 @@ public class DatabaseManager {
 		}
 	}
 
-	public ArrayList<Play> getPlays(ResultSet rs) {
+	public Play createPlayObject(ResultSet rs) {
+		try {
+		int playId = rs.getInt("PlayId");
+		String playTitle = rs.getString("PlayTitle");
+		int playType = rs.getInt("PlayType");
+		String playDescription = rs.getString("PlayDescription");
+		String playTime = rs.getString("PlayTime");
+		String playDate = rs.getString("PlayDate");
+		String playDuration = rs.getString("PlayDuration");
+		int playCirclePrice = rs.getInt("PlayCirclePrice");
+		int playStallsPrice = rs.getInt("PlayStallsPrice");
+		String playLanguage = rs.getString("PlayLanguage");
+		int playMusicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
+		Play p = new Play(playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
+		return p;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	public ArrayList<Play> constructPlayArrayList(ResultSet rs) {
 		ArrayList<Play> results = new ArrayList<>();
 		try {
 			while (rs.next()) {
-				int playId = rs.getInt("PlayId");
-				String playTitle = rs.getString("PlayTitle");
-				int playType = rs.getInt("PlayType");
-				String playDescription = rs.getString("PlayDescription");
-				String playTime = rs.getString("PlayTime");
-				String playDate = rs.getString("PlayDate");
-				String playDuration = rs.getString("PlayDuration");
-				int playCirclePrice = rs.getInt("PlayCirclePrice");
-				int playStallsPrice = rs.getInt("PlayStallsPrice");
-				String playLanguage = rs.getString("PlayLanguage");
-				int playMusicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
-				Play p = new Play(playId, playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
-				results.add(p);
+				results.add(createPlayObject(rs));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return results;
+	}
+	//prints whole object details
+	public void printPlayDetails(Play play) {
+		play.printPlayDetails();
+	}
+	public void printPlayArrayListDetails(ArrayList<Play> plays) {
+		for (int i = 0; i < plays.size(); i++) {
+			plays.get(i).printPlayDetails();
+		}
+	}
+	//prints partial object details
+	public void printBasicPlayDetails(ArrayList<Play> plays) {
+		for (int i = 0; i < plays.size(); i++) {
+			plays.get(i).printBasicPlayDetails(i);
+		}
+	}
+	//queries
+	public ResultSet searchPlays() {
+		String str = "SELECT * FROM Play";
+		return runQuery(str);
 	}
 	public ResultSet searchByDate(String date) {
 		String str = "SELECT PlayTitle, PlayDate FROM Play WHERE PlayDate LIKE '" + date + "';";
@@ -162,13 +193,14 @@ public class DatabaseManager {
 	//queries
 	//add show
 	public void addPlay(Play play) {
-		String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getPlayCirclePrice() + ", " + play.getPlayStallsPrice() + ", " + play.getPlayLanguage() + ", " + play.getPlayMusicalAccompaniment() + ");";
+		String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getPlayCirclePrice() + ", " + play.getPlayStallsPrice() + ", '" + play.getFormattedPlayLanguage() + "', " + play.getPlayMusicalAccompaniment() + ");";
 		runQuery(str);
 	}
 	
-	public ResultSet browsePlays() {
-		ArrayList<Play> = new ;
+	public void addBooking(Booking booking) {
+		String str = "INSERT INTO Booking (SeatType, SeatNumber, Concession, IsPostal, CustomerId, PlayId) VALUES (" + booking.getShowId() + ", " + booking.getCustomerId() + ", " + booking.getSeatNumber() + ", " + booking.getBookingId() + ", " + "," + booking.getIsPostal() + ", "+ booking.getConcession() + ", " + booking.getPrice() + ")";
 	}
+	
 	//format as currency
 	//CONCAT('£', FORMAT(SUM(Balance), 2)) AS Price
 }
@@ -180,3 +212,6 @@ public class DatabaseManager {
 //group booking discount possible
 //change shows
 //users can delete data
+
+//Runnable r = () -> setNum(1);
+//r.run();

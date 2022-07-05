@@ -38,7 +38,8 @@ public class Controller {
 			switch (menuSelection) {
 			//get all plays
 			case 1: 
-				ArrayList<Play> plays = dbm.printResult(dbm.getPlays());
+				ArrayList<Play> plays = dbm.constructPlayArrayList(dbm.searchPlays());
+				dbm.printBasicPlayDetails(plays);
 				System.out.println("Please select a play #");
 				Play play = plays.get(getMenuSelection());
 				//some kind of function to display play details
@@ -49,7 +50,7 @@ public class Controller {
 				menuSelection = getUserSelection(subMenu);
 				switch(menuSelection) {
 					case 1: break;
-					basket.addToBasket(null);
+					//basket.addToBasket();
 					case 2: break;
 					default: System.out.println("Selection not recognised.");
 				}

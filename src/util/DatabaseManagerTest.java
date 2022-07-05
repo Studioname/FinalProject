@@ -1,17 +1,20 @@
-package engine;
+package util;
 
-import model.Play;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-import model.Controller;
-import util.DatabaseManager;
+import org.junit.jupiter.api.Test;
 
-public class main {
-	public static void main(String[] args) {
+import model.Play;
+
+class DatabaseManagerTest {
+
+	@Test
+	void testCustomSearch() {
 		DatabaseManager dbm = new DatabaseManager();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
-		
+		ArrayList<Play> plays = dbm.constructPlayArrayList();
 		Play p = new Play("Cats", "A show about cats", "12:00:00", "2022-12-10", "02:00:00", 5000, 5000);
 		Play p2 = new Play("Tears for Fears", "Tears to Fears is suitable for everyone and will be perfoming their top hits", "18:00:00", "2022-07-04", "01:00:00", 2200, 2200);
 		Play p3 = new Play("La Traviata", 2, "La Traviesta contains all the elements of operatic addiction", "12:00:00", "2022-07-14","02:00:00", 2800, 2800, "Italian", 1);
@@ -27,14 +30,9 @@ public class main {
 		dbm.addPlay(p5);
 		dbm.addPlay(p6);
 		dbm.addPlay(p7);
-		//dbm.printResult(dbm.searchPlays());
-		ArrayList<Play> plays = dbm.constructPlayArrayList();
-		
-		dbm.searchByDate(plays, "2022-10-12");
-		dbm.searchByTitle(plays, "Cats");
-		
-		dbm.printBasicPlayDetails(plays);
-		//dbm.printPlayArrayListDetails(dbm.constructPlayArrayList(dbm.searchPlays()));
-		Controller c = new Controller();
+		dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 1, "Cats");
+		dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 2, 1);
+		dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 9, "English");
 	}
+
 }

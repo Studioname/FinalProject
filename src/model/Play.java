@@ -3,6 +3,7 @@ package model;
 import java.time.*;
 
 public class Play {
+	private int showId;
 	private int playId;
 	private String playTitle;
 	private int playType;
@@ -28,9 +29,8 @@ public class Play {
 		this.playLanguage = null;
 		this.playMusicalAccompaniment = 1;
 	}
-	//database facing constructor
+	//user facing constructor
 	public Play(String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
-		this.playId = playId;
 		this.playTitle = playTitle;
 		this.playType = playType;
 		this.playDescription = playDescription;
@@ -46,6 +46,25 @@ public class Play {
 			playLanguage = this.playLanguage;
 		}
 	}
+	//database facing constructor
+	//database facing constructor
+		public Play(int showId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
+			this.showId = showId;
+			this.playTitle = playTitle;
+			this.playType = playType;
+			this.playDescription = playDescription;
+			this.playTime = playTime;
+			this.playDate = playDate;
+			this.playDuration = playDuration;
+			this.playCirclePrice = playCirclePrice;
+			this.playStallsPrice = playStallsPrice;
+			this.playLanguage = playLanguage;
+			this.playMusicalAccompaniment = playMusicalAccompaniment;
+			if (playType == 3) {
+				playMusicalAccompaniment = this.playMusicalAccompaniment;
+				playLanguage = this.playLanguage;
+			}
+		}
 	//methods
 	public String getPlayTypeString() {
 		switch(playType) {

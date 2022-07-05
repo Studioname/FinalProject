@@ -82,28 +82,28 @@ public class DatabaseManager {
 
 	// 6. Process Results
 	
-	public void printResult(ResultSet rs) {
+	public ArrayList<String> getColumnNames(ResultSet rs) {
 		try {
+			ResultSetMetaData rsMetaData = rs.getMetaData();
+			ArrayList<String> names = new ArrayList<String>();
 			// while there is another row
-			//Retrieving the ResultSetMetadata object
-		      ResultSetMetaData rsMetaData = rs.getMetaData();
-		      System.out.println("List of column names in the current table: ");
-		      //Retrieving the list of column names
-		      int count = rsMetaData.getColumnCount();
-		      for(int i = 1; i<=count; i++) {
-		         System.out.println(rsMetaData.getColumnName(i));
-		      }
-		      
-// we have to make this compatible with our code
-		      
-//			while (rs.next()) {
-//				System.out.print("Person's name is " + rs.getString(rsMetaData.getColumnName(1)) + " ");
-//				System.out.println("Age is " + rs.getInt(rsMetaData.getColumnName(2)));
-//			}
-		} catch (SQLException e) {
+			int count = rsMetaData.getColumnCount();
+		    for(int i = 1; i <= count; i++) {
+		    	names.add(rsMetaData.getColumnName(i));
+		    } 
+		    return names;
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
+	
+	public void printColumnNames(ArrayList<String> names) {
+			for (int i = 0; i > names.size(); i++) {
+				System.out.println(names.get(i));
+		} 
+	}	      
 
 	public void close() {
 		try {
@@ -115,7 +115,7 @@ public class DatabaseManager {
 		}
 	}
 
-	public Play createPlayObject(ResultSet rs) {
+	public Play fetchPlayObject(ResultSet rs) {
 		try {
 		int playId = rs.getInt("PlayId");
 		String playTitle = rs.getString("PlayTitle");
@@ -128,23 +128,35 @@ public class DatabaseManager {
 		int playStallsPrice = rs.getInt("PlayStallsPrice");
 		String playLanguage = rs.getString("PlayLanguage");
 		int playMusicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
-		Play p = new Play(playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
+		Play p = new Play(playId, playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
 		return p;
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
+	//standard method
+	public ArrayList<Play> constructPlayArrayList() {
+		ResultSet rs = searchPlays();
+		ArrayList<Play> results = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				results.add(fetchPlayObject(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	//overloaded method
 	public ArrayList<Play> constructPlayArrayList(ResultSet rs) {
 		ArrayList<Play> results = new ArrayList<>();
 		try {
 			while (rs.next()) {
-				results.add(createPlayObject(rs));
+				results.add(fetchPlayObject(rs));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return results;
@@ -169,13 +181,49 @@ public class DatabaseManager {
 		String str = "SELECT * FROM Play";
 		return runQuery(str);
 	}
-	public ResultSet searchByDate(String date) {
-		String str = "SELECT PlayTitle, PlayDate FROM Play WHERE PlayDate LIKE '" + date + "';";
-		return runQuery(str);
+	public ArrayList<Play> searchByDate(ArrayList<Play> plays, String date) {
+		ArrayList<Play> result = new ArrayList<Play>();
+		for (int i = 0; i < plays.size(); i++) {
+			if (plays.get(i).getPlayDate().equals(date)){
+				result.add(plays.get(i));
+			}
+		}
+		return result;
 	}
-	public ResultSet searchByName(String name) {
-		String str = "SELECT PlayTitle, PlayDescription, PlayTime, PlayDate FROM Play WHERE PlayTitle LIKE '" + name + "';";
-		return runQuery(str);
+	public ArrayList<Play> searchByTitle(ArrayList<Play> plays, String name) {
+		ArrayList<Play> result = new ArrayList<Play>();
+		for (int i = 0; i < plays.size(); i++) {
+			if (plays.get(i).getPlayTitle().equals(name)){
+				result.add(plays.get(i));
+			}
+		}
+		return result;
+	}
+	
+	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection){
+		printColumnNames(columnNames);
+		//record int input from user
+		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " != NULL ORDER BY " +  columnNames.get(userSelection) + " ASC;";
+		ResultSet rs2 = runQuery(str);
+		return constructPlayArrayList(rs2);
+	}
+	
+	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection, String value){
+		printColumnNames(columnNames);
+		//record int input from user
+		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " LIKE '" + value + "';";
+		ResultSet rs2 = runQuery(str);
+		return constructPlayArrayList(rs2);
+	}
+	
+	//needs work and copy pasting on above method
+	
+	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection, int value){
+		printColumnNames(columnNames);
+		//record int input from user
+		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " = " + value + ";";
+		ResultSet rs2 = runQuery(str);
+		return constructPlayArrayList(rs2);
 	}
 	
 	//Select PlayTitle, PlayStallsPrice from  FinalProject.Play where  PlayStallPrice <=20 order by PlayTitle asc;
@@ -200,6 +248,13 @@ public class DatabaseManager {
 	public void addBooking(Booking booking) {
 		String str = "INSERT INTO Booking (SeatType, SeatNumber, Concession, IsPostal, CustomerId, PlayId) VALUES (" + booking.getShowId() + ", " + booking.getCustomerId() + ", " + booking.getSeatNumber() + ", " + booking.getBookingId() + ", " + "," + booking.getIsPostal() + ", "+ booking.getConcession() + ", " + booking.getPrice() + ")";
 	}
+	
+	public boolean seatIsFree(int showId, int seatType, int seatNumber) {
+		String str = "SELECT * FROM Booking WHERE ShowId = " + showId + " AND SeatType = " + seatType + " AND SeatNumber = " + seatNumber + ")";
+		return runQuery(str).equals(null) ? true : false;
+	}
+	
+	//custom search
 	
 	//format as currency
 	//CONCAT('£', FORMAT(SUM(Balance), 2)) AS Price

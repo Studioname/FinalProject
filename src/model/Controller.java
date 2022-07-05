@@ -38,7 +38,7 @@ public class Controller {
 			switch (menuSelection) {
 			//get all plays
 			case 1: 
-				ArrayList<Play> plays = dbm.constructPlayArrayList(dbm.searchPlays());
+				ArrayList<Play> plays = dbm.constructPlayArrayList();
 				dbm.printBasicPlayDetails(plays);
 				System.out.println("Please select a play #");
 				Play play = plays.get(getMenuSelection());
@@ -67,14 +67,14 @@ public class Controller {
 			}
 			//submenus
 			
-			
 		}
 	}
-	public void searchByName(String name) {
-		System.out.println("What is the name of the play you want to look for?");
-		String input = inputReader.nextLine();
-		dbm.printResult(dbm.searchByName(name));
-	}
+//	public void searchByName(String name) {
+//		System.out.println("What is the name of the play you want to look for?");
+//		String input = inputReader.nextLine();
+//		ArrayList<Play> plays = dbm.constructPlayArrayList();
+//		dbm.printPlayArrayListDetails(plays);
+//	}
 	
 	public int getMenuSelection() {
 		int userInput = inputReader.getNextInt();

@@ -12,6 +12,8 @@ public class main {
 		Play p = new Play(1, "Cats", "A show about cats", "12:00:00", "2022-12-10", "02:00:00", 50, 50);
 		dbm.addPlay(p);
 		dbm.printResult(dbm.getPlays());
+		dbm.printResult(dbm.searchByDate("2022-10-12"));
+		dbm.printResult(dbm.searchByName("Cats"));
 		
 		Controller c = new Controller();
 		

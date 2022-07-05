@@ -9,4 +9,10 @@ public class InputReader {
 	public String getInput() {
 		return scanner.nextLine();
 	}
+	public int getNextInt() {
+		return scanner.nextInt();
+	}
+	public void nextLine() {
+		scanner.nextLine();
+	}
 }

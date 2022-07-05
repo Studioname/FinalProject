@@ -88,4 +88,11 @@ public class Controller {
 			System.out.println(subMenu[i]);
 		}
 	}
+	
+	public int getUserSelection(String[] menu) {
+		while (menuSelection < 0 || menuSelection > menu.length) {
+			menuSelection = getMenuSelection();
+		}
+		return menuSelection;
+	}
 }

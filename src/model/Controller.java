@@ -34,7 +34,7 @@ public class Controller {
 			
 			//menu screen
 			printMenu(defaultMenu);
-			menuSelection = getMenuSelection();
+			menuSelection = getUserSelection(defaultMenu);
 			switch (menuSelection) {
 			//get all plays
 			case 1: 

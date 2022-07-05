@@ -9,9 +9,9 @@ public class Booking {
 	private int concession;
 	private int isPostal;
 	private int price;
-	private Show show;
+	private Play play;
 	
-	public Booking(int bookingId, int showId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price, Show show) {
+	public Booking(int bookingId, int showId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price, Play play) {
 		this.setBookingId(bookingId);
 		this.setShowId(showId);
 		this.setCustomerId(customerId);
@@ -20,7 +20,7 @@ public class Booking {
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
 		this.setPrice(price);
-		this.setShow(show);
+		this.setPlay(play);
 	}
 	
 
@@ -93,12 +93,13 @@ public class Booking {
 		this.price = price;
 	}
 
-	public Show getShow() {
-		return show;
+	public Play getPlay() {
+		return play;
 	}
 
-	public void setShow(Show show) {
-		this.show = show;
+
+	public void setPlay(Play play) {
+		this.play = play;
 	}
 	
 }

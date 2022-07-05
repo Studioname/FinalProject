@@ -46,9 +46,7 @@ public class Controller {
 				printMenu(subMenu);
 				menuSelection = 0;
 				//while user selection is out of range
-				while (menuSelection < 0 || menuSelection > subMenu.length) {
-					menuSelection = getMenuSelection();
-				}
+				menuSelection = getUserSelection(subMenu);
 				switch(menuSelection) {
 					case 1: break;
 					basket.addToBasket(null);

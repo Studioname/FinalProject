@@ -12,7 +12,7 @@ public class InputReader {
 	public int getNextInt() {
 		return scanner.nextInt();
 	}
-	public void nextLine() {
-		scanner.nextLine();
+	public String nextLine() {
+		return scanner.nextLine();
 	}
 }

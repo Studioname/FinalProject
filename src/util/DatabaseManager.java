@@ -125,11 +125,11 @@ public class DatabaseManager {
 				String playTime = rs.getString("PlayTime");
 				String playDate = rs.getString("PlayDate");
 				String playDuration = rs.getString("PlayDuration");
-				int circlePrice = rs.getInt("PlayCirclePrice");
-				int stallsPrice = rs.getInt("PlayStallsPrice");
-				String language = rs.getString("PlayLanguage");
-				int musicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
-				Person p = new Person(name, age);
+				int playCirclePrice = rs.getInt("PlayCirclePrice");
+				int playStallsPrice = rs.getInt("PlayStallsPrice");
+				String playLanguage = rs.getString("PlayLanguage");
+				int playMusicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
+				Play p = new Play(playId, playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
 				results.add(p);
 			}
 		} catch (SQLException e) {
@@ -138,6 +138,16 @@ public class DatabaseManager {
 		}
 		return results;
 	}
+	public ResultSet searchByDate(String date) {
+		String str = "SELECT PlayTitle, PlayDate FROM Play WHERE PlayDate LIKE '" + date + "';";
+		return runQuery(str);
+	}
+	public ResultSet searchByName(String name) {
+		String str = "SELECT PlayTitle, PlayDescription, PlayTime, PlayDate FROM Play WHERE PlayTitle LIKE '" + name + "';";
+		return runQuery(str);
+	}
+	
+	//Select PlayTitle, PlayStallsPrice from  FinalProject.Play where  PlayStallPrice <=20 order by PlayTitle asc;
 
 //	public void insertPeople(ArrayList<Person> everyone) {
 //		// TODO Auto-generated method stub

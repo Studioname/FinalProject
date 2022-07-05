@@ -13,16 +13,20 @@ public class Controller {
 	DatabaseManager dbm;
 	InputReader inputReader;
 	boolean running = true;
+	String[] defaultMenu;
+	String[] browseSubMenu;
+	String[] searchBySubMenu;
+	
 	public Controller(){
 		dbm = new DatabaseManager();
 		inputReader = new InputReader();
+		String[] defaultMenu = {"1. Search all shows", "2. Search by Name", "3. Search by Date",};
 	}
 	public void run() {
 		while (running) {
 			//welcome user, press a key to continue
 			
 			//menu screen
-			String[] defaultMenu = {"1. Search all shows", "2. Search by Name", "3. Search by Date",};
 			for (int i = 0; i < defaultMenu.length; i++) {
 				System.out.println("Menu choices");
 			}
@@ -46,5 +50,10 @@ public class Controller {
 			
 			
 		}
+	}
+	public void searchByName(String name) {
+		System.out.println("What is the name of the play you want to look for?");
+		String input = inputReader.nextLine();
+		dbm.printResult(dbm.searchByName(String name));
 	}
 }

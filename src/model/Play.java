@@ -15,7 +15,8 @@ public class Play {
 	private String playLanguage;
 	private int playMusicalAccompaniment;
 
-	public Play(int playId, String playTitle, String playDescription, String playTime, String playDate, String playDuration, int circlePrice, int stallsPrice) {
+	//for internal use only
+	public Play(int playId, String playTitle, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice) {
 		this.playId = playId;
 		this.playTitle = playTitle;
 		this.playType = 3;
@@ -23,12 +24,13 @@ public class Play {
 		this.playTime = playTime;
 		this.playDate = playDate;
 		this.playDuration = playDuration;
-		this.playCirclePrice = circlePrice;
-		this.playStallsPrice = stallsPrice;
+		this.playCirclePrice = playCirclePrice;
+		this.playStallsPrice = playStallsPrice;
 		this.playLanguage = null;
 		this.playMusicalAccompaniment = 1;
 	}
-	public Play(int playId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int circlePrice, int stallsPrice, String language, int musicalAccompaniment) {
+	//database facing constructor
+	public Play(int playId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
 		this.playId = playId;
 		this.playTitle = playTitle;
 		this.playType = playType;
@@ -36,13 +38,13 @@ public class Play {
 		this.playTime = playTime;
 		this.playDate = playDate;
 		this.playDuration = playDuration;
-		this.playCirclePrice = circlePrice;
-		this.playStallsPrice = stallsPrice;
-		this.playLanguage = language;
-		this.playMusicalAccompaniment = musicalAccompaniment;
+		this.playCirclePrice = playCirclePrice;
+		this.playStallsPrice = playStallsPrice;
+		this.playLanguage = playLanguage;
+		this.playMusicalAccompaniment = playMusicalAccompaniment;
 		if (playType == 3) {
-			musicalAccompaniment = 1;
-			language = null;
+			playMusicalAccompaniment = this.playMusicalAccompaniment;
+			playLanguage = this.playLanguage;
 		}
 	}
 	//methods

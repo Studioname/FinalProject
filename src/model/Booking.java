@@ -21,7 +21,6 @@ public class Booking {
 		this.setPrice(price);
 	}
 	
-
 	public boolean getPostageAvailable() {
 		return false;
 	}
@@ -94,7 +93,6 @@ public class Booking {
 	public Play getPlay() {
 		return play;
 	}
-
 
 	public void setPlay(Play play) {
 		this.play = play;

@@ -91,6 +91,7 @@ public class Controller {
 	
 	public int getUserSelection(String[] menu) {
 		while (menuSelection < 0 || menuSelection > menu.length) {
+			System.out.println("Please enter a value between 0 and " + menu.length);
 			menuSelection = getMenuSelection();
 		}
 		return menuSelection;

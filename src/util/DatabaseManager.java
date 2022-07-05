@@ -166,8 +166,8 @@ public class DatabaseManager {
 		runQuery(str);
 	}
 	
-	public ResultSet getPlays() {
-		return runQuery("SELECT * FROM Play");
+	public ResultSet browsePlays() {
+		ArrayList<Play> = new ;
 	}
 	//format as currency
 	//CONCAT('£', FORMAT(SUM(Balance), 2)) AS Price

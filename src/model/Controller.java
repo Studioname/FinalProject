@@ -7,6 +7,7 @@ import util.InputReader;
 import util.DatabaseManager;
 import model.Booking;
 import model.Play;
+import java.util.ArrayList;
 import model.Basket;
 
 public class Controller {
@@ -14,27 +15,46 @@ public class Controller {
 	InputReader inputReader;
 	boolean running = true;
 	String[] defaultMenu;
-	String[] browseSubMenu;
+	String[] subMenu;
 	String[] searchBySubMenu;
+	String[] previousScreen;
+	int menuSelection;
+	Basket basket;
 	
 	public Controller(){
 		dbm = new DatabaseManager();
 		inputReader = new InputReader();
-		String[] defaultMenu = {"1. Search all shows", "2. Search by Name", "3. Search by Date",};
+		String[] defaultMenu = {"1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Checkout", "0. Exit"};
+		String[] subMenu = {"1. Add ticket to basket", "2. Return to previous screen"};
+		basket = new Basket();
 	}
 	public void run() {
 		while (running) {
 			//welcome user, press a key to continue
 			
 			//menu screen
-			for (int i = 0; i < defaultMenu.length; i++) {
-				System.out.println("Menu choices");
-			}
-			int userInput = inputReader.getNextInt();
-			inputReader.nextLine();
-			switch (userInput) {
+			printMenu(defaultMenu);
+			menuSelection = getMenuSelection();
+			switch (menuSelection) {
 			//get all plays
-			case 1: dbm.printResult(dbm.getPlays());
+			case 1: 
+				ArrayList<Play> plays = dbm.printResult(dbm.getPlays());
+				System.out.println("Please select a play #");
+				Play play = plays.get(getMenuSelection());
+				//some kind of function to display play details
+				//call_function();
+				printMenu(subMenu);
+				menuSelection = 0;
+				//while user selection is out of range
+				while (menuSelection < 0 || menuSelection > subMenu.length) {
+					menuSelection = getMenuSelection();
+				}
+				switch(menuSelection) {
+					case 1: break;
+					basket.addToBasket(null);
+					case 2: break;
+					default: System.out.println("Selection not recognised.");
+				}
 			//not yet implemented
 			case 2: 
 				//submenu - press 1 to add to basket, 2 to return to main menu
@@ -54,6 +74,18 @@ public class Controller {
 	public void searchByName(String name) {
 		System.out.println("What is the name of the play you want to look for?");
 		String input = inputReader.nextLine();
-		dbm.printResult(dbm.searchByName(String name));
+		dbm.printResult(dbm.searchByName(name));
+	}
+	
+	public int getMenuSelection() {
+		int userInput = inputReader.getNextInt();
+		inputReader.nextLine();
+		return userInput;
+	}
+	
+	public void printMenu(String[] subMenu) {
+		for (int i = 0; i < subMenu.length; i++) {
+			System.out.println(subMenu[i]);
+		}
 	}
 }

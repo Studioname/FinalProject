@@ -10,7 +10,7 @@ public class main {
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
 		
 		Play p = new Play(1, "Cats", "A show about cats", "12:00:00", "2022-12-10", "02:00:00", 50, 50);
-		dbm.addConcert(p);
+		dbm.addPlay(p);
 		dbm.printResult(dbm.getPlays());
 		
 		Controller c = new Controller();

@@ -114,8 +114,8 @@ public class DatabaseManager {
 		}
 	}
 
-//	public ArrayList<Person> getPeople(ResultSet rs) {
-//		ArrayList<Person> results = new ArrayList<>();
+//	public ArrayList<Play> getPlays(ResultSet rs) {
+//		ArrayList<Play> results = new ArrayList<>();
 //		try {
 //			while (rs.next()) {
 //				String name = rs.getString("Name");
@@ -142,7 +142,7 @@ public class DatabaseManager {
 	
 	//queries
 	//add show
-	public void addConcert(Play play) {
+	public void addPlay(Play play) {
 		String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getCirclePrice() + ", " + play.getStallsPrice() + ", " + play.getLanguage() + ", " + play.getMusicalAccompaniment() + ");";
 		runQuery(str);
 	}

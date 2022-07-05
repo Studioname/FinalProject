@@ -10,10 +10,10 @@ public class Play {
 	private String playTime;
 	private String playDate;
 	private String playDuration;
-	private int circlePrice;
-	private int stallsPrice;
-	private String language;
-	private int musicalAccompaniment;
+	private int playCirclePrice;
+	private int playStallsPrice;
+	private String playLanguage;
+	private int playMusicalAccompaniment;
 
 	public Play(int playId, String playTitle, String playDescription, String playTime, String playDate, String playDuration, int circlePrice, int stallsPrice) {
 		this.playId = playId;
@@ -23,10 +23,10 @@ public class Play {
 		this.playTime = playTime;
 		this.playDate = playDate;
 		this.playDuration = playDuration;
-		this.circlePrice = circlePrice;
-		this.stallsPrice = stallsPrice;
-		this.language = null;
-		this.musicalAccompaniment = 1;
+		this.playCirclePrice = circlePrice;
+		this.playStallsPrice = stallsPrice;
+		this.playLanguage = null;
+		this.playMusicalAccompaniment = 1;
 	}
 	public Play(int playId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int circlePrice, int stallsPrice, String language, int musicalAccompaniment) {
 		this.playId = playId;
@@ -36,10 +36,10 @@ public class Play {
 		this.playTime = playTime;
 		this.playDate = playDate;
 		this.playDuration = playDuration;
-		this.circlePrice = circlePrice;
-		this.stallsPrice = stallsPrice;
-		this.language = language;
-		this.musicalAccompaniment = musicalAccompaniment;
+		this.playCirclePrice = circlePrice;
+		this.playStallsPrice = stallsPrice;
+		this.playLanguage = language;
+		this.playMusicalAccompaniment = musicalAccompaniment;
 		if (playType == 3) {
 			musicalAccompaniment = 1;
 			language = null;
@@ -97,28 +97,28 @@ public class Play {
 	public void setPlayDuration(String playDuration) {
 		this.playDuration = playDuration;
 	}
-	public int getCirclePrice() {
-		return circlePrice;
+	public int getPlayCirclePrice() {
+		return playCirclePrice;
 	}
-	public void setCirclePrice(int circlePrice) {
-		this.circlePrice = circlePrice;
+	public void setPlayCirclePrice(int circlePrice) {
+		this.playCirclePrice = circlePrice;
 	}
-	public int getStallsPrice() {
-		return stallsPrice;
+	public int getPlayStallsPrice() {
+		return playStallsPrice;
 	}
-	public void setStallsPrice(int stallsPrice) {
-		this.stallsPrice = stallsPrice;
+	public void setPlayStallsPrice(int stallsPrice) {
+		this.playStallsPrice = stallsPrice;
 	}
-	public String getLanguage() {
-		return language;
+	public String getPlayLanguage() {
+		return playLanguage;
 	}
-	public void setLanguage(String language) {
-		this.language = language;
+	public void setPlayLanguage(String language) {
+		this.playLanguage = language;
 	}
-	public int getMusicalAccompaniment() {
-		return musicalAccompaniment;
+	public int getPlayMusicalAccompaniment() {
+		return playMusicalAccompaniment;
 	}
-	public void setMusicalAccompaniment(int musicalAccompaniment) {
-		this.musicalAccompaniment = musicalAccompaniment;
+	public void setPlayMusicalAccompaniment(int musicalAccompaniment) {
+		this.playMusicalAccompaniment = musicalAccompaniment;
 	}
 }

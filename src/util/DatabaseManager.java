@@ -114,21 +114,30 @@ public class DatabaseManager {
 		}
 	}
 
-//	public ArrayList<Play> getPlays(ResultSet rs) {
-//		ArrayList<Play> results = new ArrayList<>();
-//		try {
-//			while (rs.next()) {
-//				String name = rs.getString("Name");
-//				int age = rs.getInt("Age");
-//				Person p = new Person(name, age);
-//				results.add(p);
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return results;
-//	}
+	public ArrayList<Play> getPlays(ResultSet rs) {
+		ArrayList<Play> results = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				int playId = rs.getInt("PlayId");
+				String playTitle = rs.getString("PlayTitle");
+				int playType = rs.getInt("PlayType");
+				String playDescription = rs.getString("PlayDescription");
+				String playTime = rs.getString("PlayTime");
+				String playDate = rs.getString("PlayDate");
+				String playDuration = rs.getString("PlayDuration");
+				int circlePrice = rs.getInt("PlayCirclePrice");
+				int stallsPrice = rs.getInt("PlayStallsPrice");
+				String language = rs.getString("PlayLanguage");
+				int musicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
+				Person p = new Person(name, age);
+				results.add(p);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
+	}
 
 //	public void insertPeople(ArrayList<Person> everyone) {
 //		// TODO Auto-generated method stub

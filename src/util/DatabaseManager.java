@@ -165,13 +165,13 @@ public class DatabaseManager {
 	public void printPlayDetails(Play play) {
 		play.printPlayDetails();
 	}
-	public void printPlayArrayListDetails(ArrayList<Play> plays) {
+	public void printPlayArrayList(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
 			plays.get(i).printPlayDetails();
 		}
 	}
 	//prints partial object details
-	public void printBasicPlayDetails(ArrayList<Play> plays) {
+	public void printPlayArrayListBasic(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
 			plays.get(i).printBasicPlayDetails(i);
 		}

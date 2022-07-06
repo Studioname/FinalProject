@@ -32,7 +32,8 @@ class DatabaseManagerTest {
 		dbm.addPlay(p7);
 		dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 1, "Cats");
 		dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 2, 1);
-		dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 9, "English");
+		ArrayList<Play> plays2 = dbm.customSearch(dbm.getColumnNames(dbm.searchPlays()), 9, "English");
+		dbm.printPlayArrayListBasic(plays2);
 	}
 
 }

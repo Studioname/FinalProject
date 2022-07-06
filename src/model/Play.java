@@ -3,7 +3,6 @@ package model;
 import java.time.*;
 
 public class Play {
-	private int showId;
 	private int playId;
 	private String playTitle;
 	private int playType;
@@ -47,9 +46,8 @@ public class Play {
 		}
 	}
 	//database facing constructor
-	//database facing constructor
-		public Play(int showId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
-			this.showId = showId;
+		public Play(int playId, String playTitle, int playType, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice, String playLanguage, int playMusicalAccompaniment) {
+			this.playId = playId;
 			this.playTitle = playTitle;
 			this.playType = playType;
 			this.playDescription = playDescription;

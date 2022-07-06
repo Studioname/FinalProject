@@ -2,7 +2,7 @@ package model;
 
 public class Booking {
 	private int bookingId;
-	private int showId;
+	private int playId;
 	private int customerId;
 	private int seatType;
 	private int seatNumber;
@@ -11,14 +11,89 @@ public class Booking {
 	private int price;
 	private Play play;
 	
-	public Booking(int showId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price) {
-		this.setShowId(showId);
+	//employee facing constructor
+	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price) {
+		this.setPlayId(playId);
 		this.setCustomerId(customerId);
 		this.setSeatType(seatType);
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
 		this.setPrice(price);
+	}
+	//database facing class
+	public Booking(int bookingId, int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price) {
+		this.setBookingId(bookingId);
+		this.setPlayId(playId);
+		this.setCustomerId(customerId);
+		this.setSeatType(seatType);
+		this.setSeatNumber(seatNumber);
+		this.setConcession(concession);
+		this.setIsPostal(isPostal);
+		this.setPrice(price);
+	}
+	
+	public void printBookingDetails() {
+		System.out.println("Play Id: " + getPlayId());
+		System.out.println("Seat Type: " + getFormattedSeatType());
+		System.out.println("Seat Number: " + getSeatNumber());
+		System.out.println("Concession: " + getFormattedConcession());
+		System.out.println("Postal ticket: " + getFormattedIsPostal());
+		System.out.println("Price: " + getFormattedPrice());
+	}
+	public void printBasicBookingDetails(int index) {
+		index += 1;
+		System.out.println("" + index + ". " + getPlayId() + ", " + getFormattedSeatType() + ", " + getSeatNumber() + ", " + getFormattedConcession() + ", " + getFormattedPrice());
+	}
+	
+	//formatting
+	
+	public String getFormattedSeatType() {
+		switch(seatType) {
+		case 0:
+			return "Stalls";
+		case 1:
+			return "Circle";
+		default:
+			return null;
+		}
+	}
+	
+	public String getFormattedConcession() {
+		switch (concession) {
+			case 0:
+				return "No";
+			case 1:
+				return "Yes";
+			default:
+				return null;
+		}
+	}
+	
+	public String getFormattedIsPostal() {
+		switch (concession) {
+			case 0:
+				return "No";
+			case 1:
+				return "Yes";
+			default:
+				return null;
+		}
+	}
+	
+	public String getFormattedPrice() {
+		String priceString = Integer.toString(this.price);
+		char [] chars = priceString.toCharArray();
+		String str = "£";
+		if (chars.length <= 2) {
+			str += "0";
+		}
+		
+		for (int i = 0; i < chars.length -2; i++) {
+			str += chars[i];
+		}
+		str += "." + chars[chars.length-2] + chars[chars.length-1];
+		return str;
 	}
 	
 	public boolean getPostageAvailable() {
@@ -33,12 +108,12 @@ public class Booking {
 		this.bookingId = bookingId;
 	}
 
-	public int getShowId() {
-		return showId;
+	public int getPlayId() {
+		return playId;
 	}
 
-	public void setShowId(int showId) {
-		this.showId = showId;
+	public void setPlayId(int playId) {
+		this.playId = playId;
 	}
 	
 	public int getCustomerId() {

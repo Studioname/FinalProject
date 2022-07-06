@@ -12,11 +12,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.Booking;
+import model.Customer;
 import model.Play;
 
 public class DatabaseManager {
 	private Connection conn;
-
+	
+//----------------------------------------------------------------------
+	//general methods
+//----------------------------------------------------------------------
 	public DatabaseManager() {
 		conn = null;
 	}
@@ -60,17 +64,17 @@ public class DatabaseManager {
 					ResultSet.CONCUR_UPDATABLE);
 			pst.execute();
 			ResultSet results = pst.getResultSet();
-			if (results != null) {
-				int rowcount = 0;
-				if (results.last()) {
-					rowcount = results.getRow();
-					results.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
-											// element
-				}
-				System.out.println(sql + "\n Success.  Result set has " + rowcount + " rows");
-			} else {
-				System.out.println(sql + "\n Success.  No results returned");
-			}
+//			if (results != null) {
+//				int rowcount = 0;
+//				if (results.last()) {
+//					rowcount = results.getRow();
+//					results.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
+//											// element
+//				}
+//				System.out.println(sql + "\n Success.  Result set has " + rowcount + " rows");
+//			} else {
+//				System.out.println(sql + "\n Success.  No results returned");
+//			}
 			return results;
 		} catch (SQLException e) {
 			System.out.println(sql + "\n failed to run.");
@@ -79,8 +83,27 @@ public class DatabaseManager {
 		}
 
 	}
+	
+	public void printQueryResult(ResultSet rs) {
+		try {
+			if (rs != null) {
+				int rowcount = 0;
+				if (rs.last()) {
+					rowcount = rs.getRow();
+					rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
+											// element
+				}
+				System.out.println("\n Success.  Result set has " + rowcount + " rows");
+			} else {
+				System.out.println("\n Success.  No results returned");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-	// 6. Process Results
+	// 5. Process Results
 	
 	public ArrayList<String> getColumnNames(ResultSet rs) {
 		try {
@@ -101,6 +124,7 @@ public class DatabaseManager {
 	
 	public void printColumnNames(ArrayList<String> names) {
 			for (int i = 0; i > names.size(); i++) {
+				//we can edit the column names to make them look nicer
 				System.out.println(names.get(i));
 		} 
 	}	      
@@ -114,7 +138,14 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 	}
+	
+	//input validation - prevent duplicates from being entered, or entries with null value
 
+
+//----------------------------------------------------------------------
+	//play methods
+//----------------------------------------------------------------------
+	
 	public Play fetchPlayObject(ResultSet rs) {
 		try {
 		int playId = rs.getInt("PlayId");
@@ -136,9 +167,9 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-	//standard method
+
 	public ArrayList<Play> constructPlayArrayList() {
-		ResultSet rs = searchPlays();
+		ResultSet rs = searchPlay();
 		ArrayList<Play> results = new ArrayList<>();
 		try {
 			while (rs.next()) {
@@ -149,7 +180,7 @@ public class DatabaseManager {
 		}
 		return results;
 	}
-	//overloaded method
+	
 	public ArrayList<Play> constructPlayArrayList(ResultSet rs) {
 		ArrayList<Play> results = new ArrayList<>();
 		try {
@@ -161,27 +192,27 @@ public class DatabaseManager {
 		}
 		return results;
 	}
-	//prints whole object details
+	
 	public void printPlayDetails(Play play) {
 		play.printPlayDetails();
 	}
+	
 	public void printPlayArrayList(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
 			plays.get(i).printPlayDetails();
 		}
 	}
-	//prints partial object details
+	
 	public void printPlayArrayListBasic(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
 			plays.get(i).printBasicPlayDetails(i);
 		}
 	}
-	//queries
-	public ResultSet searchPlays() {
-		String str = "SELECT * FROM Play";
-		return runQuery(str);
-	}
-	public ArrayList<Play> searchByDate(ArrayList<Play> plays, String date) {
+
+//----------------------------------------------------------------------
+	//play java queries
+	
+	public ArrayList<Play> searchPlayByDate(ArrayList<Play> plays, String date) {
 		ArrayList<Play> result = new ArrayList<Play>();
 		for (int i = 0; i < plays.size(); i++) {
 			if (plays.get(i).getPlayDate().equals(date)){
@@ -190,7 +221,8 @@ public class DatabaseManager {
 		}
 		return result;
 	}
-	public ArrayList<Play> searchByTitle(ArrayList<Play> plays, String name) {
+	
+	public ArrayList<Play> searchPlayByTitle(ArrayList<Play> plays, String name) {
 		ArrayList<Play> result = new ArrayList<Play>();
 		for (int i = 0; i < plays.size(); i++) {
 			if (plays.get(i).getPlayTitle().equals(name)){
@@ -200,14 +232,266 @@ public class DatabaseManager {
 		return result;
 	}
 	
-	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection){
-		printColumnNames(columnNames);
-		//record int input from user
-		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " != NULL ORDER BY " +  columnNames.get(userSelection) + " ASC;";
-		ResultSet rs2 = runQuery(str);
-		return constructPlayArrayList(rs2);
+	public Play searchPlayById(ArrayList<Play> plays, int id) {
+		ArrayList<Play> result = new ArrayList<Play>();
+		for (int i = 0; i < plays.size(); i++) {
+			if (plays.get(i).getPlayId() == id){
+				return plays.get(i);
+			}
+		}
+		return null;
+	}
+
+//----------------------------------------------------------------------
+	//booking methods
+//----------------------------------------------------------------------
+	/**
+	 * Takes a ResultSet object and creates a Booking Object from it
+	 * @param ResultSet rs - Gotten from searchBooking();
+	 * @return returns a booking object
+	 */
+	public Booking fetchBookingObject(ResultSet rs) {
+		try {
+		int bookingId = rs.getInt("BookingId");
+		int playId = rs.getInt("playId");
+		int customerId = rs.getInt("CustomerId");
+		int seatType = rs.getInt("SeatType");
+		int seatNumber = rs.getInt("SeatNumber");
+		int concession = rs.getInt("Concession");
+		int isPostal = rs.getInt("isPostal");
+		
+		Booking b = new Booking(bookingId, playId, customerId, seatType, seatNumber, concession, isPostal);
+		return b;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
+	/**
+	 * Creates an ArrayList of Booking objects and returns it. We can perform Java operations on this full list.
+	 * @return
+	 */
+	public ArrayList<Booking> constructBookingArrayList() {
+		ResultSet rs = searchBooking();
+		ArrayList<Booking> results = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				results.add(fetchBookingObject(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public ArrayList<Booking> constructBookingArrayList(ResultSet rs) {
+		ArrayList<Booking> results = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				results.add(fetchBookingObject(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public void printBookingDetails(Booking booking) {
+		booking.printBookingDetails();
+	}
+	
+	public void printBookingArrayList(ArrayList<Booking> bookings) {
+		for (int i = 0; i < bookings.size(); i++) {
+			bookings.get(i).printBookingDetails();
+		}
+	}
+	
+	public void printBookingArrayListBasic(ArrayList<Booking> bookings) {
+		for (int i = 0; i < bookings.size(); i++) {
+			bookings.get(i).printBasicBookingDetails(i);
+		}
+	}
+
+//----------------------------------------------------------------------
+	//booking java queries
+
+	public Booking searchBookingById(ArrayList<Booking> bookings, int id) {
+		ArrayList<Booking> result = new ArrayList<Booking>();
+		for (int i = 0; i < bookings.size(); i++) {
+			if (bookings.get(i).getBookingId() == id){
+				return bookings.get(i);
+			}
+		}
+		return null;
+	}
+
+//----------------------------------------------------------------------
+	//Customer methods
+//----------------------------------------------------------------------
+	
+	/**
+	 * Takes a ResultSet object and creates a Customer Object from it
+	 * @param ResultSet rs - Gotten from searchCustomer();
+	 * @return returns a customer object
+	 */
+	public Customer fetchCustomerObject(ResultSet rs) {
+		try {
+		int customerId = rs.getInt("CustomerId");
+		String customerName = rs.getString("CustomerName");
+		String customerAddress = rs.getString("CustomerAddress");
+		String customerTelephone = rs.getString("CustomerTelephone");
+		String customerEmail = rs.getString("CustomerEmail");
+		String customerPaymentDetails = rs.getString("CustomerPaymentDetails");
+		
+		Customer c = new Customer(customerId, customerName, customerAddress, customerTelephone, customerEmail, customerPaymentDetails);
+		return c;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Creates an ArrayList of Customer objects and returns it. We can perform Java operations on this full list.
+	 * @return
+	 */
+	public ArrayList<Customer> constructCustomerArrayList() {
+		ResultSet rs = searchCustomer();
+		ArrayList<Customer> results = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				results.add(fetchCustomerObject(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public ArrayList<Customer> constructCustomerArrayList(ResultSet rs) {
+		ArrayList<Customer> results = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				results.add(fetchCustomerObject(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public void printCustomerDetails(Customer customer) {
+		customer.printCustomerDetails();
+	}
+	
+	public void printCustomerArrayList(ArrayList<Customer> customers) {
+		for (int i = 0; i < customers.size(); i++) {
+			customers.get(i).printCustomerDetails();
+		}
+	}
+	
+	public void printCustomerArrayListBasic(ArrayList<Customer> customers) {
+		for (int i = 0; i < customers.size(); i++) {
+			customers.get(i).printBasicCustomerDetails(i);
+		}
+	}
+
+//----------------------------------------------------------------------
+	//customer java queries
+
+	public Customer searchCustomerById(ArrayList<Customer> customers, int id) {
+		ArrayList<Customer> result = new ArrayList<Customer>();
+		for (int i = 0; i < customers.size(); i++) {
+			if (customers.get(i).getCustomerId() == id){
+				return customers.get(i);
+			}
+		}
+		return null;
+	}
+	
+//----------------------------------------------------------------------
+	//SQL queries
+//----------------------------------------------------------------------
+	//Play
+//----------------------------------------------------------------------
+	public boolean addPlay(Play play) {
+
+		//validation
+		String test = "SELECT * FROM Play WHERE PlayType = " + play.getPlayType() + " AND PlayTitle LIKE '" + play.getPlayTitle() + "' AND PlayTime = '" + play.getPlayTime() + "' AND PlayDate = '" + play.getPlayDate() + "' AND PlayDuration = '" + play.getPlayDuration() + "' AND PlayLanguage LIKE '" + play.getPlayLanguage() + "' AND PlayMusicalAccompaniment = " + play.getPlayMusicalAccompaniment() + ";";
+		ResultSet rs = runQuery(test);
+		if (rs == null) {
+			String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getPlayCirclePrice() + ", " + play.getPlayStallsPrice() + ", '" + play.getPlayLanguage() + "', " + play.getPlayMusicalAccompaniment() + ");";
+			runQuery(str);
+			return true;
+		}
+		else {
+			System.out.println("Duplicate found. Item has not been added to the database");
+			return false;
+		}
+	}
+	
+	public ResultSet searchPlay() {
+		String str = "SELECT * FROM Play";
+		return runQuery(str);
+	}
+
+//----------------------------------------------------------------------
+	//Booking
+//----------------------------------------------------------------------
+	public ResultSet searchBooking() {
+		String str = "SELECT * FROM Booking";
+		return runQuery(str);
+	}
+	
+	/*
+	 * Invokes seatIsFree() to check whether the seat is free [also precludes identical booking.] 
+	 * If seatIsFree returns true, adds booking to the database and returns true. Else returns false.
+	 */
+	public boolean addBooking(Booking booking) {
+		if (seatIsFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
+			String str = "INSERT INTO Booking (PlayId, CustomerId, SeatType, SeatNumber, Concession, IsPostal) VALUES (" + booking.getPlayId() + ", " + booking.getCustomerId() + ", " + booking.getSeatType() + ", " + booking.getSeatNumber() + ", " + booking.getBookingId() + ", " + booking.getConcession() + ", " + booking.getIsPostal() + ")";
+			return true;
+		}
+		return false;
+	}
+	
+//----------------------------------------------------------------------
+	//Customer
+//----------------------------------------------------------------------
+	
+	public ResultSet searchCustomer() {
+		String str = "SELECT * FROM Customer";
+		return runQuery(str);
+	}
+	
+	public void addCustomer(Customer customer) {
+		String str = "INSERT INTO Customer (CustomerName, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES (" + customer.getCustomerName() + ", " + customer.getCustomerAddress() + ", " + customer.getCustomerTelephone() + ", " +  customer.getCustomerEmail() + ", " + customer.getCustomerPaymentDetails() + ")";
+		runQuery(str);
+	}
+	
+//----------------------------------------------------------------------
+	//General
+//----------------------------------------------------------------------
+	
+	/**
+	 * Returns a boolean whether the seatType and seatNumber for given showId is free or booked - true for free, false for booked
+	 * @param showId
+	 * @param seatType
+	 * @param seatNumber
+	 * @return
+	 */
+	public boolean seatIsFree(int playId, int seatType, int seatNumber) {
+		String str = "SELECT * FROM Booking WHERE PlayId = " + playId + " AND SeatType = " + seatType + " AND SeatNumber = " + seatNumber + ")";
+		return runQuery(str).equals(null) ? true : false;
+	}
+	
+	/*
+	 * Represents a custom search of the database. Takes an ArrayList of column names derived from meta data, 
+	 * the user input for which column name to search by, and the String value to search for.
+	 */
 	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection, String value){
 		printColumnNames(columnNames);
 		//record int input from user
@@ -216,8 +500,10 @@ public class DatabaseManager {
 		return constructPlayArrayList(rs2);
 	}
 	
-	//needs work and copy pasting on above method
-	
+	/*
+	 * Represents a custom search of the database. Takes an ArrayList of column names derived from meta data, 
+	 * the user input for which column name to search by, and the int value to search for.
+	 */
 	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection, int value){
 		printColumnNames(columnNames);
 		//record int input from user
@@ -226,39 +512,14 @@ public class DatabaseManager {
 		return constructPlayArrayList(rs2);
 	}
 	
-	//Select PlayTitle, PlayStallsPrice from  FinalProject.Play where  PlayStallPrice <=20 order by PlayTitle asc;
-
-//	public void insertPeople(ArrayList<Person> everyone) {
-//		// TODO Auto-generated method stub
-//		for (Person p : everyone) {
-//			String sql = "INSERT INTO Person VALUES(" + "\"" + p.getName() + "\", " + p.getAge() + ")";
-//			System.out.println(sql);
-//			this.runQuery(sql);
-//		}
-//
-//	}
-	
-	//queries
-	//add show
-	public void addPlay(Play play) {
-		String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getPlayCirclePrice() + ", " + play.getPlayStallsPrice() + ", '" + play.getFormattedPlayLanguage() + "', " + play.getPlayMusicalAccompaniment() + ");";
-		runQuery(str);
-	}
-	
-	public void addBooking(Booking booking) {
-		String str = "INSERT INTO Booking (SeatType, SeatNumber, Concession, IsPostal, CustomerId, PlayId) VALUES (" + booking.getShowId() + ", " + booking.getCustomerId() + ", " + booking.getSeatNumber() + ", " + booking.getBookingId() + ", " + "," + booking.getIsPostal() + ", "+ booking.getConcession() + ", " + booking.getPrice() + ")";
-	}
-	
-	public boolean seatIsFree(int showId, int seatType, int seatNumber) {
-		String str = "SELECT * FROM Booking WHERE ShowId = " + showId + " AND SeatType = " + seatType + " AND SeatNumber = " + seatNumber + ")";
-		return runQuery(str).equals(null) ? true : false;
-	}
-	
-	//custom search
-	
-	//format as currency
-	//CONCAT('£', FORMAT(SUM(Balance), 2)) AS Price
 }
+
+//date time filtering
+
+//SELECT * 
+//FROM MyTable 
+//WHERE CheckDate >= '2009-10-01' AND CheckDate < '2010-01-01';
+
 
 //contact details
 

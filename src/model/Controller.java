@@ -39,7 +39,7 @@ public class Controller {
 			//get all plays
 			case 1: 
 				ArrayList<Play> plays = dbm.constructPlayArrayList();
-				dbm.printPlayArrayListBasic(plays);
+				dbm.printPlaysBasic(plays);
 				System.out.println("Please select a play #");
 				Play play = plays.get(getMenuSelection());
 				//some kind of function to display play details

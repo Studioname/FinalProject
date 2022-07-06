@@ -1,5 +1,7 @@
 package model;
 
+import model.Customer;
+
 public class Booking {
 	private int bookingId;
 	private int playId;
@@ -10,11 +12,15 @@ public class Booking {
 	private int isPostal;
 	private int price;
 	private Play play;
+	private Customer customer;
 	
+	//blank booking
+	public Booking() {
+		
+	}
 	//employee facing constructor
-	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price) {
+	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal, int price) {
 		this.setPlayId(playId);
-		this.setCustomerId(customerId);
 		this.setSeatType(seatType);
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
@@ -22,7 +28,7 @@ public class Booking {
 		this.setPrice(price);
 	}
 	//database facing class
-	public Booking(int bookingId, int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal, int price) {
+	public Booking(int bookingId, int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.setBookingId(bookingId);
 		this.setPlayId(playId);
 		this.setCustomerId(customerId);
@@ -173,4 +179,11 @@ public class Booking {
 		this.play = play;
 	}
 	
+	public Customer getCustomer() {
+		return customer;
+	}
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 }

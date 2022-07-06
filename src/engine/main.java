@@ -31,7 +31,7 @@ public class main {
 		dbm.searchPlayByDate(plays, "2022-10-12");
 		dbm.searchPlayByTitle(plays, "Cats");
 		
-		dbm.printPlayArrayListBasic(plays);
+		dbm.printPlaysBasic(plays);
 		Controller c = new Controller();
 	}
 }

@@ -148,23 +148,24 @@ public class DatabaseManager {
 	
 	public Play fetchPlayObject(ResultSet rs) {
 		try {
-		int playId = rs.getInt("PlayId");
-		String playTitle = rs.getString("PlayTitle");
-		int playType = rs.getInt("PlayType");
-		String playDescription = rs.getString("PlayDescription");
-		String playTime = rs.getString("PlayTime");
-		String playDate = rs.getString("PlayDate");
-		String playDuration = rs.getString("PlayDuration");
-		int playCirclePrice = rs.getInt("PlayCirclePrice");
-		int playStallsPrice = rs.getInt("PlayStallsPrice");
-		String playLanguage = rs.getString("PlayLanguage");
-		int playMusicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
-		Play p = new Play(playId, playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
-		return p;
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			//rs.next();
+			int playId = rs.getInt("PlayId");
+			String playTitle = rs.getString("PlayTitle");
+			int playType = rs.getInt("PlayType");
+			String playDescription = rs.getString("PlayDescription");
+			String playTime = rs.getString("PlayTime");
+			String playDate = rs.getString("PlayDate");
+			String playDuration = rs.getString("PlayDuration");
+			int playCirclePrice = rs.getInt("PlayCirclePrice");
+			int playStallsPrice = rs.getInt("PlayStallsPrice");
+			String playLanguage = rs.getString("PlayLanguage");
+			int playMusicalAccompaniment = rs.getInt("PlayMusicalAccompaniment");
+			Play p = new Play(playId, playTitle, playType, playDescription, playTime, playDate, playDuration, playCirclePrice, playStallsPrice, playLanguage, playMusicalAccompaniment);
+			return p;
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+				return null;
 		}
 	}
 
@@ -197,13 +198,13 @@ public class DatabaseManager {
 		play.printPlayDetails();
 	}
 	
-	public void printPlayArrayList(ArrayList<Play> plays) {
+	public void printPlays(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
 			plays.get(i).printPlayDetails();
 		}
 	}
 	
-	public void printPlayArrayListBasic(ArrayList<Play> plays) {
+	public void printPlaysBasic(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
 			plays.get(i).printBasicPlayDetails(i);
 		}
@@ -252,16 +253,18 @@ public class DatabaseManager {
 	 */
 	public Booking fetchBookingObject(ResultSet rs) {
 		try {
-		int bookingId = rs.getInt("BookingId");
-		int playId = rs.getInt("playId");
-		int customerId = rs.getInt("CustomerId");
-		int seatType = rs.getInt("SeatType");
-		int seatNumber = rs.getInt("SeatNumber");
-		int concession = rs.getInt("Concession");
-		int isPostal = rs.getInt("isPostal");
-		
-		Booking b = new Booking(bookingId, playId, customerId, seatType, seatNumber, concession, isPostal);
-		return b;
+			rs.next();
+			int bookingId = rs.getInt("BookingId");
+			int playId = rs.getInt("playId");
+			int customerId = rs.getInt("CustomerId");
+			int seatType = rs.getInt("SeatType");
+			int seatNumber = rs.getInt("SeatNumber");
+			int concession = rs.getInt("Concession");
+			int isPostal = rs.getInt("isPostal");
+			
+			Booking b = new Booking(bookingId, playId, customerId, seatType, seatNumber, concession, isPostal);
+			b.setCustomer(fetchCustomerObject(getCustomerById(customerId)));
+			return b;
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -292,6 +295,7 @@ public class DatabaseManager {
 			while (rs.next()) {
 				results.add(fetchBookingObject(rs));
 			}
+			return results;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -302,13 +306,13 @@ public class DatabaseManager {
 		booking.printBookingDetails();
 	}
 	
-	public void printBookingArrayList(ArrayList<Booking> bookings) {
+	public void printBookings(ArrayList<Booking> bookings) {
 		for (int i = 0; i < bookings.size(); i++) {
 			bookings.get(i).printBookingDetails();
 		}
 	}
 	
-	public void printBookingArrayListBasic(ArrayList<Booking> bookings) {
+	public void printBookingsBasic(ArrayList<Booking> bookings) {
 		for (int i = 0; i < bookings.size(); i++) {
 			bookings.get(i).printBasicBookingDetails(i);
 		}
@@ -338,19 +342,21 @@ public class DatabaseManager {
 	 */
 	public Customer fetchCustomerObject(ResultSet rs) {
 		try {
-		int customerId = rs.getInt("CustomerId");
-		String customerName = rs.getString("CustomerName");
-		String customerAddress = rs.getString("CustomerAddress");
-		String customerTelephone = rs.getString("CustomerTelephone");
-		String customerEmail = rs.getString("CustomerEmail");
-		String customerPaymentDetails = rs.getString("CustomerPaymentDetails");
-		
-		Customer c = new Customer(customerId, customerName, customerAddress, customerTelephone, customerEmail, customerPaymentDetails);
-		return c;
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			rs.next();
+			int customerId = rs.getInt("CustomerId");
+			String customerForename = rs.getString("CustomerForename");
+			String customerSurname = rs.getString("CustomerSurname");
+			String customerAddress = rs.getString("CustomerAddress");
+			String customerTelephone = rs.getString("CustomerTelephone");
+			String customerEmail = rs.getString("CustomerEmail");
+			String customerPaymentDetails = rs.getString("CustomerPaymentDetails");
+			
+			Customer c = new Customer(customerId, customerForename, customerSurname, customerAddress, customerTelephone, customerEmail, customerPaymentDetails);
+			return c;
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+				return null;
 		}
 	}
 	
@@ -422,19 +428,24 @@ public class DatabaseManager {
 		//validation
 		String test = "SELECT * FROM Play WHERE PlayType = " + play.getPlayType() + " AND PlayTitle LIKE '" + play.getPlayTitle() + "' AND PlayTime = '" + play.getPlayTime() + "' AND PlayDate = '" + play.getPlayDate() + "' AND PlayDuration = '" + play.getPlayDuration() + "' AND PlayLanguage LIKE '" + play.getPlayLanguage() + "' AND PlayMusicalAccompaniment = " + play.getPlayMusicalAccompaniment() + ";";
 		ResultSet rs = runQuery(test);
-		if (rs == null) {
+		try {
+		if (!rs.next()) {
 			String str = "INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment) VALUES (" + play.getPlayType() + ", '" + play.getPlayTitle() + "', '" + play.getPlayDescription() + "', '" + play.getPlayTime() + "', '" + play.getPlayDate() + "', '" + play.getPlayDuration() + "', " + play.getPlayCirclePrice() + ", " + play.getPlayStallsPrice() + ", '" + play.getPlayLanguage() + "', " + play.getPlayMusicalAccompaniment() + ");";
 			runQuery(str);
 			return true;
+			
 		}
-		else {
-			System.out.println("Duplicate found. Item has not been added to the database");
+		System.out.println("Duplicate found. Item has not been added to the database");
+		return false;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 	
 	public ResultSet searchPlay() {
-		String str = "SELECT * FROM Play";
+		String str = "SELECT * FROM Play;";
 		return runQuery(str);
 	}
 
@@ -442,7 +453,12 @@ public class DatabaseManager {
 	//Booking
 //----------------------------------------------------------------------
 	public ResultSet searchBooking() {
-		String str = "SELECT * FROM Booking";
+		String str = "SELECT * FROM Booking;";
+		return runQuery(str);
+	}
+	
+	public ResultSet getBookingById(int id) {
+		String str = "SELECT * FROM Booking WHERE BookingId = " + id + ";";
 		return runQuery(str);
 	}
 	
@@ -451,11 +467,14 @@ public class DatabaseManager {
 	 * If seatIsFree returns true, adds booking to the database and returns true. Else returns false.
 	 */
 	public boolean addBooking(Booking booking) {
-		if (seatIsFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
-			String str = "INSERT INTO Booking (PlayId, CustomerId, SeatType, SeatNumber, Concession, IsPostal) VALUES (" + booking.getPlayId() + ", " + booking.getCustomerId() + ", " + booking.getSeatType() + ", " + booking.getSeatNumber() + ", " + booking.getBookingId() + ", " + booking.getConcession() + ", " + booking.getIsPostal() + ")";
+		
+		//if (seatIsFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
+			String str = "INSERT INTO Booking (PlayId, CustomerId, SeatType, SeatNumber, Concession, IsPostal) VALUES (" + booking.getPlayId() + ", " + booking.getCustomerId() + ", " + booking.getSeatType() + ", " + booking.getSeatNumber() + ", " + booking.getConcession() + ", " + booking.getIsPostal() + ");";
+			runQuery(str);
 			return true;
-		}
-		return false;
+		//}
+		//System.out.println("Duplicate booking found");
+		//return false;
 	}
 	
 //----------------------------------------------------------------------
@@ -467,9 +486,25 @@ public class DatabaseManager {
 		return runQuery(str);
 	}
 	
-	public void addCustomer(Customer customer) {
-		String str = "INSERT INTO Customer (CustomerName, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES (" + customer.getCustomerName() + ", " + customer.getCustomerAddress() + ", " + customer.getCustomerTelephone() + ", " +  customer.getCustomerEmail() + ", " + customer.getCustomerPaymentDetails() + ")";
-		runQuery(str);
+	public boolean addCustomer(Customer customer) {
+		String test = "SELECT * FROM Customer WHERE CustomerForename LIKE '" + customer.getCustomerForename()+ "' AND CustomerSurname LIKE '" + customer.getCustomerSurname() + "' AND CustomerAddress LIKE '" + customer.getCustomerAddress() + "' AND CustomerTelephone LIKE '" + customer.getCustomerTelephone() + "';";
+		ResultSet rs = runQuery(test);
+		try {
+			if (!rs.next()) {
+				String str = "INSERT INTO Customer (CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES ('" + customer.getCustomerForename() + "', '" + customer.getCustomerSurname() + "', '"  + customer.getCustomerAddress() + "', '" + customer.getCustomerTelephone() + "', '" +  customer.getCustomerEmail() + "', '" + customer.getCustomerPaymentDetails() + "');";
+				runQuery(str);
+				return true;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public ResultSet getCustomerById(int id) {
+		String str = "SELECT * FROM Customer WHERE CustomerId = " + id + ";";
+		return runQuery(str);
 	}
 	
 //----------------------------------------------------------------------
@@ -484,8 +519,15 @@ public class DatabaseManager {
 	 * @return
 	 */
 	public boolean seatIsFree(int playId, int seatType, int seatNumber) {
-		String str = "SELECT * FROM Booking WHERE PlayId = " + playId + " AND SeatType = " + seatType + " AND SeatNumber = " + seatNumber + ")";
-		return runQuery(str).equals(null) ? true : false;
+		String str = "SELECT * FROM Booking WHERE PlayId = " + playId + " AND SeatType = " + seatType + " AND SeatNumber = " + seatNumber + ";";
+		ResultSet rs = runQuery(str);
+		try {
+			return !rs.next();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	/*

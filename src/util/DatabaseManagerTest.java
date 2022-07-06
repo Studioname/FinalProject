@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import model.Booking;
+import model.Customer;
 import model.Play;
 
 class DatabaseManagerTest {
@@ -33,7 +35,24 @@ class DatabaseManagerTest {
 		dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 1, "Cats");
 		dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 2, 1);
 		ArrayList<Play> plays2 = dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 9, "English");
-		dbm.printPlayArrayListBasic(plays2);
+		dbm.printPlaysBasic(plays2);
+		
+		Customer customer = new Customer("Conan", "Hollands", "Somewhere", "01939393", "conanhollands@aston.ac.uk", "0304984854");
+		dbm.addCustomer(customer);
+		dbm.printCustomerDetails(dbm.fetchCustomerObject(dbm.getCustomerById(1)));
+		//test booking
+		Booking booking = new Booking(1, 1, 1, 1, 1, 1000);
+		Booking booking2 = new Booking(1, 1, 1, 2, 2, 1000);
+		dbm.addBooking(booking);
+		dbm.addBooking(booking2);
+		
+		ArrayList<Booking> bookings = dbm.constructBookingArrayList(dbm.searchBooking());
+		//dbm.printBookingDetails(booking);
+		
+		Booking booking3 = dbm.fetchBookingObject(dbm.getBookingById(1));
+		//dbm.printBookingDetails(booking3);
+		dbm.printBookings(bookings);
+		//booking.printBasicBookingDetails(1);
 	}
 
 }

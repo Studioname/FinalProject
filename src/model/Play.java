@@ -14,7 +14,11 @@ public class Play {
 	private int playStallsPrice;
 	private String playLanguage;
 	private int playMusicalAccompaniment;
-
+	
+	//blank play
+	public Play() {
+		
+	}
 	//for internal use only
 	public Play(String playTitle, String playDescription, String playTime, String playDate, String playDuration, int playCirclePrice, int playStallsPrice) {
 		this.playTitle = playTitle;
@@ -64,7 +68,7 @@ public class Play {
 			}
 		}
 	//methods
-	public String getPlayTypeString() {
+	public String getFormattedPlayType() {
 		switch(playType) {
 		case 0: return "Theatre";
 		case 1: return "Musical";
@@ -104,7 +108,7 @@ public class Play {
 	}
 	public void printPlayDetails() {
 		System.out.println("Title: " + getPlayTitle());
-		System.out.println("Type: " + getPlayTypeString());
+		System.out.println("Type: " + getFormattedPlayType());
 		System.out.println("Description: " + getPlayDescription());
 		System.out.println("Time: " + getPlayTime());
 		System.out.println("Date: " + getPlayDate());
@@ -116,7 +120,7 @@ public class Play {
 	}
 	public void printBasicPlayDetails(int index) {
 		index += 1;
-		System.out.println("" + index + ". " + getPlayTitle() + ", " + getPlayTypeString() + ", " + getPlayDate() + ", " + getFormattedPlayLanguage());
+		System.out.println("" + index + ". " + getPlayTitle() + ", " + getFormattedPlayType() + ", " + getPlayDate() + ", " + getFormattedPlayLanguage());
 	}
 	public int getPlayId() {
 		return playId;

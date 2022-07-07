@@ -38,6 +38,7 @@ public class Controller {
 		
 		while (running) {
 			//welcome user, press a key to continue
+			printWelcome();
 			
 			//menu screen
 			printMenu(defaultMenu);
@@ -133,5 +134,11 @@ public class Controller {
 			menuSelection = getMenuSelection();
 		}
 		return menuSelection;
+	}
+	
+	private void printWelcome() {
+		System.out.println();
+		System.out.println("Welcome to the Theatre Royal!");
+		System.out.println();
 	}
 }

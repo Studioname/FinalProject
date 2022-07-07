@@ -126,7 +126,7 @@ public class Controller {
 //		ArrayList<Play> plays = dbm.constructPlayArrayList();
 //		dbm.printPlayArrayListDetails(plays);
 //	}
-
+	
 	public int getMenuSelection() {
 		int userInput = inputReader.getNextInt();
 		inputReader.nextLine();

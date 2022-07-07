@@ -32,9 +32,8 @@ public class Controller {
 	}
 
 	public void run() {
-		int quantity;
 		Scanner scan = new Scanner(System.in);
-		ArrayList<Booking> basket = new ArrayList<Booking>();
+
 		
 		while (running) {
 			//welcome user, press a key to continue
@@ -58,9 +57,21 @@ public class Controller {
 				menuSelection = getUserSelection(subMenu);
 				switch(menuSelection) {
 					case 1://sub menu 1 - add to basket
-					System.out.print ("Enter the quantity: ");
-		            quantity = scan.nextInt();
-		            basket.addToBasket(quantity);
+						
+		            System.out.println("Enter a seat you want to reserve");
+                    int res = scan.nextInt();
+                    System.out.print("Enter the quantity: ");
+                    int quantity = scan.nextInt();
+                    
+                    if(res > 0) {
+                        System.out.println(res + " have been added to basket.");
+                    }
+                    else {
+                        System.out.println("Sorry! The seat is unavailable");
+                    }
+                    basket.addToBasket(res, quantity);
+		            
+		            
 		            break;
 					//basket.addToBasket();
 					case 2: break;

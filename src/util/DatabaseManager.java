@@ -59,22 +59,23 @@ public class DatabaseManager {
 		}
 		PreparedStatement pst = null;
 		try {
+			conn.setAutoCommit(true);
 			pst = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, // allows us to move forward and back in
 																				// the ResultSet
 					ResultSet.CONCUR_UPDATABLE);
 			pst.execute();
 			ResultSet results = pst.getResultSet();
-//			if (results != null) {
-//				int rowcount = 0;
-//				if (results.last()) {
-//					rowcount = results.getRow();
-//					results.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
-//											// element
-//				}
-//				System.out.println(sql + "\n Success.  Result set has " + rowcount + " rows");
-//			} else {
-//				System.out.println(sql + "\n Success.  No results returned");
-//			}
+			if (results != null) {
+				int rowcount = 0;
+				if (results.last()) {
+					rowcount = results.getRow();
+					results.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
+											// element
+				}
+				System.out.println(sql + "\n Success.  Result set has " + rowcount + " rows");
+			} else {
+				System.out.println(sql + "\n Success.  No results returned");
+			}
 			return results;
 		} catch (SQLException e) {
 			System.out.println(sql + "\n failed to run.");
@@ -108,7 +109,6 @@ public class DatabaseManager {
 	public ArrayList<String> getColumnNames(ResultSet rs) {
 		try {
 			ResultSetMetaData rsMetaData = rs.getMetaData();
-			rs.next();
 			ArrayList<String> names = new ArrayList<String>();
 			// while there is another row
 			int count = rsMetaData.getColumnCount();
@@ -149,10 +149,6 @@ public class DatabaseManager {
 	
 	public Play fetchPlayObject(ResultSet rs) {
 		try {
-			if (!rs.next()){
-				return null;
-			}
-			rs.next();
 			int playId = rs.getInt("PlayId");
 			String playTitle = rs.getString("PlayTitle");
 			int playType = rs.getInt("PlayType");
@@ -177,9 +173,6 @@ public class DatabaseManager {
 		ResultSet rs = searchPlay();
 		ArrayList<Play> results = new ArrayList<>();
 		try {
-			if (!rs.next()) {
-				return null;
-			}
 			while (rs.next()) {
 				results.add(fetchPlayObject(rs));
 			}
@@ -192,9 +185,6 @@ public class DatabaseManager {
 	public ArrayList<Play> constructPlayArrayList(ResultSet rs) {
 		ArrayList<Play> results = new ArrayList<>();
 		try {
-			if (!rs.next()) {
-				return null;
-			}
 			while (rs.next()) {
 				results.add(fetchPlayObject(rs));
 			}
@@ -216,7 +206,7 @@ public class DatabaseManager {
 	
 	public void printPlaysBasic(ArrayList<Play> plays) {
 		for (int i = 0; i < plays.size(); i++) {
-			plays.get(i).printBasicPlayDetails(i);
+			plays.get(i).printBasicPlayDetails();
 		}
 	}
 
@@ -263,10 +253,6 @@ public class DatabaseManager {
 	 */
 	public Booking fetchBookingObject(ResultSet rs) {
 		try {
-			if (!rs.next()){
-				return null;
-			}
-			rs.next();
 			int bookingId = rs.getInt("BookingId");
 			int playId = rs.getInt("playId");
 			int customerId = rs.getInt("CustomerId");
@@ -276,7 +262,7 @@ public class DatabaseManager {
 			int isPostal = rs.getInt("isPostal");
 			
 			Booking b = new Booking(bookingId, playId, customerId, seatType, seatNumber, concession, isPostal);
-			b.setCustomer(fetchCustomerObject(getCustomerById(customerId)));
+			//b.setCustomer(fetchCustomerObject(getCustomerById(customerId)));
 			return b;
 		}
 		catch (SQLException e) {
@@ -355,10 +341,6 @@ public class DatabaseManager {
 	 */
 	public Customer fetchCustomerObject(ResultSet rs) {
 		try {
-			if (!rs.next()){
-				return null;
-			}
-			rs.next();
 			int customerId = rs.getInt("CustomerId");
 			String customerForename = rs.getString("CustomerForename");
 			String customerSurname = rs.getString("CustomerSurname");
@@ -451,7 +433,7 @@ public class DatabaseManager {
 			return true;
 			
 		}
-		System.out.println("Duplicate found. Item has not been added to the database");
+		System.out.println("Duplicate Play found. Item has not been added to the database");
 		return false;
 		}
 		catch (SQLException e) {
@@ -484,13 +466,13 @@ public class DatabaseManager {
 	 */
 	public boolean addBooking(Booking booking) {
 		
-		//if (seatIsFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
+		if (seatIsFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
 			String str = "INSERT INTO Booking (PlayId, CustomerId, SeatType, SeatNumber, Concession, IsPostal) VALUES (" + booking.getPlayId() + ", " + booking.getCustomerId() + ", " + booking.getSeatType() + ", " + booking.getSeatNumber() + ", " + booking.getConcession() + ", " + booking.getIsPostal() + ");";
 			runQuery(str);
 			return true;
-		//}
-		//System.out.println("Duplicate booking found");
-		//return false;
+		}
+		System.out.println("Duplicate booking found. Item has not been added to the database");
+		return false;
 	}
 	
 //----------------------------------------------------------------------
@@ -503,19 +485,20 @@ public class DatabaseManager {
 	}
 	
 	public boolean addCustomer(Customer customer) {
-//		String test = "SELECT * FROM Customer WHERE CustomerForename LIKE '" + customer.getCustomerForename()+ "' AND CustomerSurname LIKE '" + customer.getCustomerSurname() + "' AND CustomerAddress LIKE '" + customer.getCustomerAddress() + "' AND CustomerTelephone LIKE '" + customer.getCustomerTelephone() + "';";
-//		ResultSet rs = runQuery(test);
-//		try {
-//			if (!rs.next()) {
+		String test = "SELECT * FROM Customer WHERE CustomerForename LIKE '" + customer.getCustomerForename()+ "' AND CustomerSurname LIKE '" + customer.getCustomerSurname() + "' AND CustomerAddress LIKE '" + customer.getCustomerAddress() + "' AND CustomerTelephone LIKE '" + customer.getCustomerTelephone() + "';";
+		ResultSet rs = runQuery(test);
+		try {
+			if (!rs.next()) {
 				String str = "INSERT INTO Customer (CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES ('" + customer.getCustomerForename() + "', '" + customer.getCustomerSurname() + "', '"  + customer.getCustomerAddress() + "', '" + customer.getCustomerTelephone() + "', '" +  customer.getCustomerEmail() + "', '" + customer.getCustomerPaymentDetails() + "');";
 				runQuery(str);
 				return true;
-//			}
-//		}
-//		catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return false;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Duplicate Customer found. Item has not been added to the database");
+		return false;
 	}
 	
 	public ResultSet getCustomerById(int id) {

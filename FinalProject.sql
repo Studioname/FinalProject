@@ -121,3 +121,15 @@ ENGINE = InnoDB;
 SET SQL_MODE="";
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment)
+-- VALUES (1, 'Cats', 'A production about cats', '12:00:00', '2022-10-12', '02:00:00', 5000, 5000, 'English', 1);
+-- INSERT INTO Play (PlayType, PlayTitle, PlayDescription, PlayTime, PlayDate, PlayDuration, PlayCirclePrice, PlayStallsPrice, PlayLanguage, PlayMusicalAccompaniment)
+-- VALUES (1, 'Cats2', 'A production about cats', '12:00:00', '2022-10-12', '02:00:00', 5000, 5000, 'English', 1);
+-- SELECT * From Play;
+
+-- INSERT INTO Customer (CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails)
+-- VALUES ('Conan', 'Hollands', '12 wowowo', '304945893', 'dasas@sd.com', '21131322 121231');
+-- INSERT INTO Customer (CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails)
+-- VALUES ('Conan', 'Hollands', '12 wowowo', '304945893', 'dasas@sd.com', '21131322 121231');
+-- SELECT * From Customer;

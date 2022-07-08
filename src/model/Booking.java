@@ -18,9 +18,10 @@ public class Booking {
 	public Booking() {
 		
 	}
-	//employee facing constructor
-	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal, int price) {
+	//user facing constructor
+	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.setPlayId(playId);
+		this.customerId = customerId;
 		this.setSeatType(seatType);
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
@@ -40,16 +41,18 @@ public class Booking {
 	}
 	
 	public void printBookingDetails() {
+		System.out.println("Booking Id: " + getBookingId());
 		System.out.println("Play Id: " + getPlayId());
+		System.out.println("Customer Id: " + getCustomerId());
 		System.out.println("Seat Type: " + getFormattedSeatType());
 		System.out.println("Seat Number: " + getSeatNumber());
 		System.out.println("Concession: " + getFormattedConcession());
 		System.out.println("Postal ticket: " + getFormattedIsPostal());
-		System.out.println("Price: " + getFormattedPrice());
+		//System.out.println("Price: " + getFormattedPrice());
 	}
 	public void printBasicBookingDetails(int index) {
 		index += 1;
-		System.out.println("" + index + ". " + getPlayId() + ", " + getFormattedSeatType() + ", " + getSeatNumber() + ", " + getFormattedConcession() + ", " + getFormattedPrice());
+		System.out.println("" + index + ". " + getPlayId() + ", " + getFormattedSeatType() + ", " + getSeatNumber() + ", " + getFormattedConcession());
 	}
 	
 	//formatting
@@ -61,7 +64,7 @@ public class Booking {
 		case 1:
 			return "Circle";
 		default:
-			return null;
+			return "Unknown seat type";
 		}
 	}
 	
@@ -72,7 +75,7 @@ public class Booking {
 			case 1:
 				return "Yes";
 			default:
-				return null;
+				return "Unknown";
 		}
 	}
 	
@@ -83,7 +86,7 @@ public class Booking {
 			case 1:
 				return "Yes";
 			default:
-				return null;
+				return "Unknown";
 		}
 	}
 	
@@ -92,7 +95,7 @@ public class Booking {
 		char [] chars = priceString.toCharArray();
 		String str = "£";
 		if (chars.length <= 2) {
-			str += "0";
+			return str += "0." + priceString;
 		}
 		
 		for (int i = 0; i < chars.length -2; i++) {

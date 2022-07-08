@@ -19,6 +19,15 @@ public class Booking {
 		
 	}
 	//user facing constructor
+	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal) {
+		this.setPlayId(playId);
+		this.setSeatType(seatType);
+		this.setSeatNumber(seatNumber);
+		this.setConcession(concession);
+		this.setIsPostal(isPostal);
+		this.setPrice(price);
+	}
+	//user facing constructor
 	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.setPlayId(playId);
 		this.customerId = customerId;

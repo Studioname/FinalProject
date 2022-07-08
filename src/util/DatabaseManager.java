@@ -422,7 +422,7 @@ public class DatabaseManager {
 	 */
 	public boolean addBooking(Booking booking) {
 		
-		if (seatIsFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
+		if (isSeatFree(booking.getPlayId(), booking.getSeatType(), booking.getSeatNumber())) {
 			String str = "INSERT INTO Booking (PlayId, CustomerId, SeatType, SeatNumber, Concession, IsPostal) VALUES (" + booking.getPlayId() + ", " + booking.getCustomerId() + ", " + booking.getSeatType() + ", " + booking.getSeatNumber() + ", " + booking.getConcession() + ", " + booking.getIsPostal() + ");";
 			runQuery(str);
 			return true;
@@ -473,7 +473,7 @@ public class DatabaseManager {
 	 * @param seatNumber
 	 * @return
 	 */
-	public boolean seatIsFree(int playId, int seatType, int seatNumber) {
+	public boolean isSeatFree(int playId, int seatType, int seatNumber) {
 		String str = "SELECT * FROM Booking WHERE PlayId = " + playId + " AND SeatType = " + seatType + " AND SeatNumber = " + seatNumber + ";";
 		ResultSet rs = runQuery(str);
 		try {
@@ -483,6 +483,17 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public ArrayList<Integer> getOccupiedSeats(int playId, int seatType, int seatNumber, int noOfSeats) {
+		ArrayList<Integer> occupiedSeats = new ArrayList<>();
+		
+		for (int i = seatNumber; i < seatNumber + noOfSeats; i++) {
+			if (!isSeatFree(playId, seatType, seatNumber)) {
+				occupiedSeats.add(i);
+			}
+		}
+		return occupiedSeats;
 	}
 	
 	/*
@@ -515,7 +526,7 @@ public class DatabaseManager {
 
 //SELECT * 
 //FROM MyTable 
-//WHERE CheckDate >= '2009-10-01' AND CheckDate < '2010-01-01';
+//WHERE playDate >= 'CURRENT_DATE';
 
 
 //contact details

@@ -2,6 +2,8 @@ package model;
 
 public class Customer {
 	private int customerId;
+	private String customerUsername;
+	private String customerPassword;
 	private String customerForename;
 	private String customerSurname;
 	private String customerAddress;
@@ -14,7 +16,9 @@ public class Customer {
 		
 	}
 	//user facing constructor
-	public Customer(String customerForename,String customerSurname, String customerAddress,String customerTelephone,String customerEmail,String customerPaymentDetails) {
+	public Customer(String customerUsername, String customerPassword, String customerForename,String customerSurname, String customerAddress,String customerTelephone,String customerEmail,String customerPaymentDetails) {
+		this.customerUsername = customerUsername;
+		this.customerPassword = customerPassword;
 		this.customerForename = customerForename;
 		this.customerSurname = customerSurname;
 		this.customerAddress = customerAddress;
@@ -23,7 +27,9 @@ public class Customer {
 		this.customerPaymentDetails = customerPaymentDetails;
 	}
 	//database facing constructor
-	public Customer(int customerId, String customerForename, String customerSurname, String customerAddress,String customerTelephone,String customerEmail,String customerPaymentDetails) {
+	public Customer(int customerId, String customerUsername, String customerPassword, String customerForename, String customerSurname, String customerAddress,String customerTelephone,String customerEmail,String customerPaymentDetails) {
+		this.customerUsername = customerUsername;
+		this.customerPassword = customerPassword;
 		this.customerId = customerId;
 		this.customerForename = customerForename;
 		this.customerSurname = customerSurname;
@@ -34,6 +40,7 @@ public class Customer {
 	}
 	
 	public void printCustomerDetails() {
+		System.out.println("Customer Username: " + getCustomerUsername());
 		System.out.println("Customer Id: " + getCustomerId());
 		System.out.println("Customer Forename: " + getCustomerForename());
 		System.out.println("Customer Surname: " + getCustomerSurname());
@@ -44,7 +51,7 @@ public class Customer {
 	}
 	public void printBasicCustomerDetails(int index) {
 		index += 1;
-		System.out.println("" + index + ". " + getCustomerId() + ", " + getCustomerForename() + ", " + getCustomerSurname() + ", " + getCustomerAddress() + ", " + getCustomerTelephone());
+		System.out.println("" + index + ". " + getCustomerUsername() + ", " + getCustomerId() + ", " + getCustomerForename() + ", " + getCustomerSurname() + ", " + getCustomerAddress() + ", " + getCustomerTelephone());
 	}
 	
 	public int getCustomerId() {
@@ -101,6 +108,18 @@ public class Customer {
 
 	public void setCustomerPaymentDetails(String customerPaymentDetails) {
 		this.customerPaymentDetails = customerPaymentDetails;
+	}
+	public String getCustomerUsername() {
+		return customerUsername;
+	}
+	public void setCustomerUsername(String customerUsername) {
+		this.customerUsername = customerUsername;
+	}
+	public String getCustomerPassword() {
+		return customerPassword;
+	}
+	public void setCustomerPassword(String customerPassword) {
+		this.customerPassword = customerPassword;
 	}
 	
 }

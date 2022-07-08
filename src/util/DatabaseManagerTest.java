@@ -41,8 +41,8 @@ class DatabaseManagerTest {
 		//dbm.getColumnNames(dbm.searchPlay());
 		//dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 2, 1);
 		
-		Customer customer = new Customer("Conan", "Hollands", "16 Million Road", "01322495843", "conanhollands@aston.ac.uk", "0304984854");
-		Customer customer2 = new Customer("Deborah", "Hollands", "075944856321", "01939393", "conanhollands@aston.ac.uk", "3019393");
+		Customer customer = new Customer("cool_guy", "pw", "Conan", "Hollands", "16 Million Road", "01322495843", "conanhollands@aston.ac.uk", "0304984854");
+		Customer customer2 = new Customer("cool_girl", "pw", "Deborah", "Hollands", "075944856321", "01939393", "conanhollands@aston.ac.uk", "3019393");
 		dbm.addCustomer(customer);
 		dbm.addCustomer(customer2);
 		dbm.printBasic(dbm.constructArrayList(dbm.searchCustomer(), c.callCustomer()), c.callCustomer());

@@ -19,7 +19,7 @@ public class DatabaseManager {
 	private Connection conn;
 	
 //----------------------------------------------------------------------
-	//general methods
+	//jdbc methods
 //----------------------------------------------------------------------
 	public DatabaseManager() {
 		conn = null;
@@ -140,14 +140,23 @@ public class DatabaseManager {
 		}
 	}
 	
-	//generics
-	//these are generic methods included for ease of use, they will allow people to call 
-	//one function instead of the many other functions
+//----------------------------------------------------------------------
+	//generic methods
+//----------------------------------------------------------------------
+	
+	//generic methods allow different object types to be passed and returned to them. They can
+	//therefore be given different behaviour depending on which objects are passed.
+	
+	//they are included for ease of use, and will allow people to call a single function 
+	//instead of many different ones
 	
 	//to use these functions, simply pass the resultset from your query and callClass() ie callPlay(),
 	//where Class is the table the resultset is from
 	
-	public < E > ArrayList< E > constructArrayList(ResultSet rs, Object object) {
+	//i have included the callBooking, callPlay, callCustomer methods in the controller class
+	//because that is the class that will be invoking them
+	
+	public <E> ArrayList<E> constructArrayList(ResultSet rs, Object object) {
 		if (object instanceof Play) {
 			ArrayList<Play> r = new ArrayList<Play>();
 			try {
@@ -159,8 +168,8 @@ public class DatabaseManager {
 			}
 			return (ArrayList<E>) r;
 		}
-		
-			else if (object instanceof Booking) {
+
+		else if (object instanceof Booking) {
 			ArrayList<Booking> r2 = new ArrayList<Booking>();
 			try {
 				while (rs.next()) {
@@ -170,8 +179,7 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 			return (ArrayList<E>) r2;
-			}
-			else if (object instanceof Customer) {
+		} else if (object instanceof Customer) {
 			ArrayList<Customer> r3 = new ArrayList<Customer>();
 			try {
 				while (rs.next()) {
@@ -181,10 +189,9 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 			return (ArrayList<E>) r3;
+		} else {
+			return null;
 		}
-			else {
-				return null;
-			}
 	}
 	
 	public < E > void printBasic(ArrayList< E > arrayList, Object object) {
@@ -320,6 +327,8 @@ public class DatabaseManager {
 	public Customer fetchCustomerObject(ResultSet rs) {
 		try {
 			int customerId = rs.getInt("CustomerId");
+			String customerUsername = rs.getString("CustomerUsername");
+			String customerPassword = rs.getString("CustomerPassword");
 			String customerForename = rs.getString("CustomerForename");
 			String customerSurname = rs.getString("CustomerSurname");
 			String customerAddress = rs.getString("CustomerAddress");
@@ -327,7 +336,7 @@ public class DatabaseManager {
 			String customerEmail = rs.getString("CustomerEmail");
 			String customerPaymentDetails = rs.getString("CustomerPaymentDetails");
 			
-			Customer c = new Customer(customerId, customerForename, customerSurname, customerAddress, customerTelephone, customerEmail, customerPaymentDetails);
+			Customer c = new Customer(customerId, customerUsername, customerPassword, customerForename, customerSurname, customerAddress, customerTelephone, customerEmail, customerPaymentDetails);
 			return c;
 			}
 			catch (SQLException e) {
@@ -347,6 +356,20 @@ public class DatabaseManager {
 			}
 		}
 		return null;
+	}
+	
+	//validate login
+	
+	public boolean validateCredentials(String username, String password) {
+		String str = "SELECT * FROM Customer WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "';";
+		ResultSet rs = runQuery(str);
+		try {
+		return rs.next();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 //----------------------------------------------------------------------
@@ -422,7 +445,7 @@ public class DatabaseManager {
 		ResultSet rs = runQuery(test);
 		try {
 			if (!rs.next()) {
-				String str = "INSERT INTO Customer (CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES ('" + customer.getCustomerForename() + "', '" + customer.getCustomerSurname() + "', '"  + customer.getCustomerAddress() + "', '" + customer.getCustomerTelephone() + "', '" +  customer.getCustomerEmail() + "', '" + customer.getCustomerPaymentDetails() + "');";
+				String str = "INSERT INTO Customer (CustomerUsername, CustomerPassword, CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES ('" + customer.getCustomerUsername() + "', '" + customer.getCustomerPassword() + "', '" + customer.getCustomerForename() + "', '" + customer.getCustomerSurname() + "', '"  + customer.getCustomerAddress() + "', '" + customer.getCustomerTelephone() + "', '" +  customer.getCustomerEmail() + "', '" + customer.getCustomerPaymentDetails() + "');";
 				runQuery(str);
 				return true;
 			}

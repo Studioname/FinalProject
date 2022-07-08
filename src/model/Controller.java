@@ -21,8 +21,13 @@ public class Controller {
 	String[] previousScreen;
 	int menuSelection;
 	Basket basket;
-
+	String validChars;
+	String validPasswordChars;
+	
 	public Controller() {
+		validChars = "abcdefghijklmnopqrstuvwxyz1234567890-.";
+		validPasswordChars = "abcdefghijklmnopqrstuvwxyz1234567890-.!£$%^&*()+-=[]{}'#@~,/<>?|\"";
+		
 		dbm = new DatabaseManager();
 		inputReader = new InputReader();
 		String[] defaultMenu = { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Checkout", "5. Employee Login",

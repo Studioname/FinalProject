@@ -140,6 +140,71 @@ public class DatabaseManager {
 		}
 	}
 	
+	//generics
+	//these are generic methods included for ease of use, they will allow people to call 
+	//one function instead of the many other functions
+	
+	//to use these functions, simply pass the resultset from your query and callClass() ie callPlay(),
+	//where Class is the table the resultset is from
+	
+	public < E > ArrayList< E > constructArrayList(ResultSet rs, Object object) {
+		if (object instanceof Play) {
+			ArrayList<Play> r = new ArrayList<Play>();
+			try {
+				while (rs.next()) {
+					r.add(fetchPlayObject(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return (ArrayList<E>) r;
+		}
+		
+			else if (object instanceof Booking) {
+			ArrayList<Booking> r2 = new ArrayList<Booking>();
+			try {
+				while (rs.next()) {
+					r2.add(fetchBookingObject(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return (ArrayList<E>) r2;
+			}
+			else if (object instanceof Customer) {
+			ArrayList<Customer> r3 = new ArrayList<Customer>();
+			try {
+				while (rs.next()) {
+					r3.add(fetchCustomerObject(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return (ArrayList<E>) r3;
+		}
+			else {
+				return null;
+			}
+	}
+	
+	public < E > void printBasic(ArrayList< E > arrayList, Object object) {
+		if (object instanceof Play) {
+			for (int i = 0; i < arrayList.size(); i++) {
+				((Play) arrayList.get(i)).printBasicPlayDetails(i);
+			}
+		}
+		else if (object instanceof Booking) {
+			for (int i = 0; i < arrayList.size(); i++) {
+				((Booking) arrayList.get(i)).printBasicBookingDetails(i);
+			}
+		}
+		else if (object instanceof Customer) {
+			for (int i = 0; i < arrayList.size(); i++) {
+				((Customer) arrayList.get(i)).printBasicCustomerDetails(i);
+			}
+		}
+	}
+	
 	//input validation - prevent duplicates from being entered, or entries with null value
 
 
@@ -166,47 +231,6 @@ public class DatabaseManager {
 			catch (SQLException e) {
 				e.printStackTrace();
 				return null;
-		}
-	}
-
-	public ArrayList<Play> constructPlayArrayList() {
-		ResultSet rs = searchPlay();
-		ArrayList<Play> results = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				results.add(fetchPlayObject(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public ArrayList<Play> constructPlayArrayList(ResultSet rs) {
-		ArrayList<Play> results = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				results.add(fetchPlayObject(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public void printPlayDetails(Play play) {
-		play.printPlayDetails();
-	}
-	
-	public void printPlays(ArrayList<Play> plays) {
-		for (int i = 0; i < plays.size(); i++) {
-			plays.get(i).printPlayDetails();
-		}
-	}
-	
-	public void printPlaysBasic(ArrayList<Play> plays) {
-		for (int i = 0; i < plays.size(); i++) {
-			plays.get(i).printBasicPlayDetails();
 		}
 	}
 
@@ -270,52 +294,6 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-	
-	/**
-	 * Creates an ArrayList of Booking objects and returns it. We can perform Java operations on this full list.
-	 * @return
-	 */
-	public ArrayList<Booking> constructBookingArrayList() {
-		ResultSet rs = searchBooking();
-		ArrayList<Booking> results = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				results.add(fetchBookingObject(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public ArrayList<Booking> constructBookingArrayList(ResultSet rs) {
-		ArrayList<Booking> results = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				results.add(fetchBookingObject(rs));
-			}
-			return results;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public void printBookingDetails(Booking booking) {
-		booking.printBookingDetails();
-	}
-	
-	public void printBookings(ArrayList<Booking> bookings) {
-		for (int i = 0; i < bookings.size(); i++) {
-			bookings.get(i).printBookingDetails();
-		}
-	}
-	
-	public void printBookingsBasic(ArrayList<Booking> bookings) {
-		for (int i = 0; i < bookings.size(); i++) {
-			bookings.get(i).printBasicBookingDetails(i);
-		}
-	}
 
 //----------------------------------------------------------------------
 	//booking java queries
@@ -358,51 +336,6 @@ public class DatabaseManager {
 		}
 	}
 	
-	/**
-	 * Creates an ArrayList of Customer objects and returns it. We can perform Java operations on this full list.
-	 * @return
-	 */
-	public ArrayList<Customer> constructCustomerArrayList() {
-		ResultSet rs = searchCustomer();
-		ArrayList<Customer> results = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				results.add(fetchCustomerObject(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public ArrayList<Customer> constructCustomerArrayList(ResultSet rs) {
-		ArrayList<Customer> results = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				results.add(fetchCustomerObject(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return results;
-	}
-	
-	public void printCustomerDetails(Customer customer) {
-		customer.printCustomerDetails();
-	}
-	
-	public void printCustomerArrayList(ArrayList<Customer> customers) {
-		for (int i = 0; i < customers.size(); i++) {
-			customers.get(i).printCustomerDetails();
-		}
-	}
-	
-	public void printCustomerArrayListBasic(ArrayList<Customer> customers) {
-		for (int i = 0; i < customers.size(); i++) {
-			customers.get(i).printBasicCustomerDetails(i);
-		}
-	}
-
 //----------------------------------------------------------------------
 	//customer java queries
 
@@ -538,8 +471,8 @@ public class DatabaseManager {
 		//record int input from user
 		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " LIKE '" + value + "';";
 		ResultSet rs2 = runQuery(str);
-		
-		return constructPlayArrayList(rs2);
+		Play play = new Play();
+		return constructArrayList(rs2, play);
 	}
 	
 	/*
@@ -551,7 +484,8 @@ public class DatabaseManager {
 		//record int input from user
 		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " = '" + value + "';";
 		ResultSet rs2 = runQuery(str);
-		return constructPlayArrayList(rs2);
+		Play play = new Play();
+		return constructArrayList(rs2, play);
 		}
 	}
 //date time filtering

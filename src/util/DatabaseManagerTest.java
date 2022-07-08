@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import model.Booking;
+import model.Controller;
 import model.Customer;
 import model.Play;
 
@@ -15,6 +16,7 @@ class DatabaseManagerTest {
 	@Test
 	void test() {
 		DatabaseManager dbm = new DatabaseManager();
+		Controller c = new Controller();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
 		Play p = new Play("Cats", "A show about cats", "12:00:00", "2022-12-10", "02:00:00", 5000, 5000);
 		Play p2 = new Play("Tears for Fears", "Tears to Fears is suitable for everyone and will be perfoming their top hits", "18:00:00", "2022-07-04", "01:00:00", 2200, 2200);
@@ -35,25 +37,28 @@ class DatabaseManagerTest {
 		dbm.addPlay(p6);
 		dbm.addPlay(p7);
 		
-		ArrayList<Play> plays = dbm.constructPlayArrayList();
+		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), c.callPlay());
 		//dbm.getColumnNames(dbm.searchPlay());
 		//dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 2, 1);
-		dbm.printPlaysBasic(plays);
+		
 		Customer customer = new Customer("Conan", "Hollands", "16 Million Road", "01322495843", "conanhollands@aston.ac.uk", "0304984854");
 		Customer customer2 = new Customer("Deborah", "Hollands", "075944856321", "01939393", "conanhollands@aston.ac.uk", "3019393");
 		dbm.addCustomer(customer);
 		dbm.addCustomer(customer2);
-		dbm.printCustomerArrayList(dbm.constructCustomerArrayList());
+		dbm.printBasic(dbm.constructArrayList(dbm.searchCustomer(), c.callCustomer()), c.callCustomer());
 //		//dbm.printPlaysBasic(dbm.constructPlayArrayList());
 //		//test booking
 		Booking booking = new Booking(1, 1, 1, 1, 1, 1000000);
 		Booking booking2 = new Booking(1, 2, 1, 2, 2, 1000000);
 		dbm.addBooking(booking);
-		dbm.addBooking(booking2);
-//this line is problematic		
-		ArrayList<Booking> bookings = dbm.constructBookingArrayList(dbm.searchBooking());
-		dbm.printBookingsBasic(bookings);
-//		
+		dbm.addBooking(booking2);	
+		ArrayList<Booking> bookings = dbm.constructArrayList(dbm.searchBooking(), c.callBooking());
+		//dbm.printBookingsBasic(bookings);
+		//dbm.printPlaysBasic(dbm.constructArrayList(dbm.runQuery("SELECT * FROM Play;"), c.callPlay()));
+		dbm.printBasic(plays, c.callPlay());
+		dbm.printBasic(bookings, c.callBooking());
+		//dbm.printBookingsBasic(dbm.constructArrayList(dbm.runQuery("SELECT * FROM Booking;"), "booking"));
+		//dbm.printCustomerArrayListBasic(dbm.constructArrayList(dbm.runQuery("SELECT * FROM Customer;"), "customer"));
 //		//Booking booking3 = dbm.fetchBookingObject(dbm.getBookingById(5));
 //		//dbm.printBookingDetails(booking3);
 //		dbm.printBookings(bookings);

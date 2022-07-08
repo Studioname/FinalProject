@@ -46,7 +46,7 @@ public class Controller {
 			//get all plays
 			case 1: 
 				ArrayList<Play> plays = dbm.constructPlayArrayList();
-				dbm.printPlaysBasic(plays);
+				dbm.printBasic(plays, callPlay());
 				System.out.println("Please select a play #");
 				Play play = plays.get(getMenuSelection());
 				//some kind of function to display play details
@@ -69,7 +69,7 @@ public class Controller {
                     else {
                         System.out.println("Sorry! The seat is unavailable");
                     }
-                    basket.addToBasket(res, quantity);
+                    //basket.addToBasket(res, quantity);
 		            
 		            
 		            break;
@@ -147,9 +147,26 @@ public class Controller {
 		return menuSelection;
 	}
 	
-	private void printWelcome() {
+	public void printWelcome() {
 		System.out.println();
 		System.out.println("Welcome to the Theatre Royal!");
 		System.out.println();
+	}
+	
+	
+	//these are helper methods used to call methods in the dbm class
+	//some of those methods behave according to the type of object passed to them, so these methods
+	//pass an empty object
+	public Play callPlay() {
+		Play play = new Play();
+		return play;
+	}
+	public Booking callBooking() {
+		Booking booking = new Booking();
+		return booking;
+	}
+	public Customer callCustomer() {
+		Customer customer = new Customer();
+		return customer;
 	}
 }

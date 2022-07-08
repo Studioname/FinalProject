@@ -118,8 +118,9 @@ public class Play {
 		System.out.println("Language: " + getFormattedPlayLanguage());
 		System.out.println("Musical Accompaniment: " + getMusicalAccompanimentString());
 	}
-	public void printBasicPlayDetails() {
-		System.out.println("" + getPlayId() + ". " + getPlayTitle() + ", " + getFormattedPlayType() + ", " + getPlayDate() + ", " + getFormattedPlayLanguage());
+	public void printBasicPlayDetails(int index) {
+		index += 1;
+		System.out.println("" + index + ". " + getPlayId() + ". " + getPlayTitle() + ", " + getFormattedPlayType() + ", " + getPlayDate() + ", " + getFormattedPlayLanguage());
 	}
 	public int getPlayId() {
 		return playId;

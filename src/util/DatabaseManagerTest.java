@@ -13,7 +13,7 @@ import model.Play;
 class DatabaseManagerTest {
 
 	@Test
-	void testCustomSearch() {
+	void test() {
 		DatabaseManager dbm = new DatabaseManager();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
 		ArrayList<Play> plays = dbm.constructPlayArrayList();
@@ -34,15 +34,16 @@ class DatabaseManagerTest {
 		dbm.addPlay(p7);
 		dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 1, "Cats");
 		dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 2, 1);
-		ArrayList<Play> plays2 = dbm.customSearch(dbm.getColumnNames(dbm.searchPlay()), 9, "English");
-		dbm.printPlaysBasic(plays2);
 		
-		Customer customer = new Customer("Conan", "Hollands", "Somewhere", "01939393", "conanhollands@aston.ac.uk", "0304984854");
+		Customer customer = new Customer("Conan", "Hollands", "16 Million Road", "01322495843", "conanhollands@aston.ac.uk", "0304984854");
+		Customer customer2 = new Customer("Deborah", "Hollands", "075944856321", "01939393", "conanhollands@aston.ac.uk", "3019393");
 		dbm.addCustomer(customer);
-		dbm.printCustomerDetails(dbm.fetchCustomerObject(dbm.getCustomerById(1)));
+		dbm.addCustomer(customer2);
+		dbm.printCustomerArrayList(dbm.constructCustomerArrayList());
+		//dbm.printPlaysBasic(dbm.constructPlayArrayList());
 		//test booking
-		Booking booking = new Booking(1, 1, 1, 1, 1, 1000);
-		Booking booking2 = new Booking(1, 1, 1, 2, 2, 1000);
+		Booking booking = new Booking(1, 3, 1, 1, 1, 1000);
+		Booking booking2 = new Booking(1, 6, 1, 2, 2, 1000);
 		dbm.addBooking(booking);
 		dbm.addBooking(booking2);
 		

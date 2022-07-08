@@ -108,6 +108,7 @@ public class DatabaseManager {
 	public ArrayList<String> getColumnNames(ResultSet rs) {
 		try {
 			ResultSetMetaData rsMetaData = rs.getMetaData();
+			rs.next();
 			ArrayList<String> names = new ArrayList<String>();
 			// while there is another row
 			int count = rsMetaData.getColumnCount();
@@ -148,7 +149,10 @@ public class DatabaseManager {
 	
 	public Play fetchPlayObject(ResultSet rs) {
 		try {
-			//rs.next();
+			if (!rs.next()){
+				return null;
+			}
+			rs.next();
 			int playId = rs.getInt("PlayId");
 			String playTitle = rs.getString("PlayTitle");
 			int playType = rs.getInt("PlayType");
@@ -173,6 +177,9 @@ public class DatabaseManager {
 		ResultSet rs = searchPlay();
 		ArrayList<Play> results = new ArrayList<>();
 		try {
+			if (!rs.next()) {
+				return null;
+			}
 			while (rs.next()) {
 				results.add(fetchPlayObject(rs));
 			}
@@ -185,6 +192,9 @@ public class DatabaseManager {
 	public ArrayList<Play> constructPlayArrayList(ResultSet rs) {
 		ArrayList<Play> results = new ArrayList<>();
 		try {
+			if (!rs.next()) {
+				return null;
+			}
 			while (rs.next()) {
 				results.add(fetchPlayObject(rs));
 			}
@@ -253,6 +263,9 @@ public class DatabaseManager {
 	 */
 	public Booking fetchBookingObject(ResultSet rs) {
 		try {
+			if (!rs.next()){
+				return null;
+			}
 			rs.next();
 			int bookingId = rs.getInt("BookingId");
 			int playId = rs.getInt("playId");
@@ -342,6 +355,9 @@ public class DatabaseManager {
 	 */
 	public Customer fetchCustomerObject(ResultSet rs) {
 		try {
+			if (!rs.next()){
+				return null;
+			}
 			rs.next();
 			int customerId = rs.getInt("CustomerId");
 			String customerForename = rs.getString("CustomerForename");
@@ -482,24 +498,24 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	
 	public ResultSet searchCustomer() {
-		String str = "SELECT * FROM Customer";
+		String str = "SELECT * FROM Customer;";
 		return runQuery(str);
 	}
 	
 	public boolean addCustomer(Customer customer) {
-		String test = "SELECT * FROM Customer WHERE CustomerForename LIKE '" + customer.getCustomerForename()+ "' AND CustomerSurname LIKE '" + customer.getCustomerSurname() + "' AND CustomerAddress LIKE '" + customer.getCustomerAddress() + "' AND CustomerTelephone LIKE '" + customer.getCustomerTelephone() + "';";
-		ResultSet rs = runQuery(test);
-		try {
-			if (!rs.next()) {
+//		String test = "SELECT * FROM Customer WHERE CustomerForename LIKE '" + customer.getCustomerForename()+ "' AND CustomerSurname LIKE '" + customer.getCustomerSurname() + "' AND CustomerAddress LIKE '" + customer.getCustomerAddress() + "' AND CustomerTelephone LIKE '" + customer.getCustomerTelephone() + "';";
+//		ResultSet rs = runQuery(test);
+//		try {
+//			if (!rs.next()) {
 				String str = "INSERT INTO Customer (CustomerForename, CustomerSurname, CustomerAddress, CustomerTelephone, CustomerEmail, CustomerPaymentDetails) VALUES ('" + customer.getCustomerForename() + "', '" + customer.getCustomerSurname() + "', '"  + customer.getCustomerAddress() + "', '" + customer.getCustomerTelephone() + "', '" +  customer.getCustomerEmail() + "', '" + customer.getCustomerPaymentDetails() + "');";
 				runQuery(str);
 				return true;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
+//			}
+//		}
+//		catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
 	}
 	
 	public ResultSet getCustomerById(int id) {
@@ -539,6 +555,7 @@ public class DatabaseManager {
 		//record int input from user
 		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " LIKE '" + value + "';";
 		ResultSet rs2 = runQuery(str);
+		
 		return constructPlayArrayList(rs2);
 	}
 	
@@ -549,13 +566,11 @@ public class DatabaseManager {
 	public ArrayList<Play> customSearch(ArrayList<String> columnNames, int userSelection, int value){
 		printColumnNames(columnNames);
 		//record int input from user
-		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " = " + value + ";";
+		String str = "SELECT * FROM Play WHERE " + columnNames.get(userSelection) + " = '" + value + "';";
 		ResultSet rs2 = runQuery(str);
 		return constructPlayArrayList(rs2);
+		}
 	}
-	
-}
-
 //date time filtering
 
 //SELECT * 

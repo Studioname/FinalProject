@@ -198,7 +198,6 @@ public class Controller {
 	
 	public int getMenuSelection() {
 		int userInput = inputReader.getNextInt();
-		inputReader.nextLine();
 		return userInput;
 	}
 

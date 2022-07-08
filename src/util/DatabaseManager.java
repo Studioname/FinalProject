@@ -399,6 +399,11 @@ public class DatabaseManager {
 	}
 	
 	public ResultSet searchPlay() {
+		String str = "SELECT * FROM Play WHERE PlayDate >= CURRENT_DATE;";
+		return runQuery(str);
+	}
+	
+	public ResultSet searchAllPlay() {
 		String str = "SELECT * FROM Play;";
 		return runQuery(str);
 	}

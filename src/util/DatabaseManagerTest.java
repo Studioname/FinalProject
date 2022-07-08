@@ -57,6 +57,7 @@ class DatabaseManagerTest {
 		//dbm.printPlaysBasic(dbm.constructArrayList(dbm.runQuery("SELECT * FROM Play;"), c.callPlay()));
 		dbm.printBasic(plays, c.callPlay());
 		dbm.printBasic(bookings, c.callBooking());
+		dbm.printBasic(dbm.constructArrayList(dbm.searchPlay(), c.callPlay()), c.callPlay());
 		//dbm.printBookingsBasic(dbm.constructArrayList(dbm.runQuery("SELECT * FROM Booking;"), "booking"));
 		//dbm.printCustomerArrayListBasic(dbm.constructArrayList(dbm.runQuery("SELECT * FROM Customer;"), "customer"));
 //		//Booking booking3 = dbm.fetchBookingObject(dbm.getBookingById(5));

@@ -8,6 +8,7 @@ import model.Booking;
 import model.Play;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 import model.Basket;
 
@@ -117,6 +118,14 @@ public class Controller {
 							int isPostal = getUserSelection(noOfSeats);
 							if (isPostal == 1) {
 								//check to see if the play falls within 7 days of the current date
+								if (postageAvailable(play)) {
+									isPostal = 1;
+									System.out.println("Postage available. Tickets will arrive within seven days of booking.");
+								}
+								else {
+									isPostal = 0;
+									System.out.println("Sorry, postage is only available for plays being performed seven days or more after the booking date");
+								}
 							}
 							//we want to create a user facing booking object
 							//we do this with the user facing constructor
@@ -263,6 +272,18 @@ public class Controller {
 			}
 		} 
 		return str;
+	}
+	
+	/*
+	 * Gets the playDate from play, records current date then adds seven days to it. We then compare
+	 * the playDate to a week from now, and return true if a week from now is before or equal to the 
+	 * play date.
+	 */
+	public boolean postageAvailable(Play play) {
+		LocalDate playDate = LocalDate.parse(play.getPlayDate());
+		LocalDate currentDate = LocalDate.now();
+		LocalDate oneWeekFromNow = currentDate.plusDays(7);
+		return oneWeekFromNow.isBefore(playDate) || oneWeekFromNow.isEqual(playDate);	
 	}
 	
 	

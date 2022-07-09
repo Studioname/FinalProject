@@ -62,7 +62,7 @@ public class Controller {
 				dbm.printBasic(plays, callPlay());
 				System.out.println("Please select a play number.");
 				int playSelection = inputReader.getNextInt();
-				Play play = plays.get(playSelection);
+				Play play = plays.get(playSelection-1);
 				printMenu(subMenu);
 				//while user selection is out of range
 				
@@ -318,7 +318,7 @@ public class Controller {
 	
 	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
 		//we create concessionary tickets before non-concessionary ones
-		for (int i = 0; i < seatNumbers.length -1; i++) {
+		for (int i = 0; i < seatNumbers.length-1; i++) {
 			while (noOfConcessions > 0) {
 				Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
 				noOfConcessions--;

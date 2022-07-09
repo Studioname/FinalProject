@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 
-
-
 public class Controller {
 	DatabaseManager dbm;
 	InputReader inputReader;
@@ -32,18 +30,23 @@ public class Controller {
 	public Controller() {
 		validChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
 		validPasswordChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.!£$%^&*()+-=[]{}'#@~,/<>?|\"";
+		
 		maxStallsSeats = 120;
 		maxCircleSeats = 80;
 		running = true;
 		
 		dbm = new DatabaseManager();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
+		
 		inputReader = new InputReader();
+		basket = new Basket();
+		
+		
 		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Shopping Basket", "5. Employee Login",
 				"0. Exit" };
 		subMenu = new String []{ "1. Add ticket to basket", "2. Return to previous screen" };
-		basketMenu = new String[] {"1. Show Basket Contents", "2. Proceed to Checkout"};
-		basket = new Basket();
+		basketMenu = new String[] {"1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu"};
+		
 	}
 
 	public void run() {
@@ -69,7 +72,6 @@ public class Controller {
 				//we need to ask them if they want to book a seat
 				bookingPrompt(play);
 				break;
-			//not yet implemented
 			case 2: 
 				plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 				System.out.println("What is the name of the show you would you like to search for?");
@@ -113,8 +115,10 @@ public class Controller {
 				switch (basketMenuSelection) {
 					//print basket
 					case 1: basket.printBasketContents();
+					break;
 					//checkout
 					case 2: break;
+					case 0: break;
 				}
 				
 				break;
@@ -126,14 +130,14 @@ public class Controller {
 				 String userName = sc.nextLine();
 				 if((userName.contains(sp)) || userName.length()<6){
 				     System.out.println("Invalid Username");
-				     return;
+				     break;
 				 }
 
 				 System.out.println("Enter the Password");
 				 String userPass = sc.nextLine();
 				 if((userPass.contains(sp)) || userPass.length()<8){
 				     System.out.println("Invalid Password");
-				     return;
+				     break;
 				 }
 
 				 System.out.println(userName + " you are Registered Successfully");
@@ -207,7 +211,7 @@ public class Controller {
 	//booking prompt
 	
 	public void bookingPrompt(Play play){
-		System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.");
+System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.");
 		int subMenuSelection = inputReader.getNextInt();
 		switch(subMenuSelection) {
 			case 1:
@@ -218,15 +222,15 @@ public class Controller {
                 int [] seatNumbers = checkSeatAvailability(play, stallsOrCircle, seatNumber, noOfSeats);
 				int noOfConcessions = getNoOfConcessions(noOfSeats);
 				int isPostal = getIsPostal(play);
-				if (addToBasketPrompt()) {
+				//if (addToBasketPrompt()) {
 					createConcessionaryBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
 					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
-				} 
-				else {
-					break;}
+				//}
+				//else {
+					break;//}
 			case 2:
 				//takes us to main menu
-				return;
+				break;
 			default: 
 				System.out.println("Selection not recognised.");
 		}
@@ -315,15 +319,12 @@ public class Controller {
 			System.out.println("Tickets added to basket.");
 			return true;
 		case 2: return false;
-		default: return false;
+		default: return true;
 		}
 	}
 	
 	//both of these need fixing
 	public void createConcessionaryBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
-		for (int i = 0; i < seatNumbers.length; i++) {
-			System.out.println("" + seatNumbers[i]);
-		}
 		for (int i = 0; i < noOfConcessions; i++) {
 			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
 			b.printBasicBookingDetails(i);

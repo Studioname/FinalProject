@@ -2,13 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
-
 public class Basket {
 
-    public ArrayList <Booking>basket;
+    private ArrayList<Booking> basket;
 
     public Basket() {
-    	basket= new ArrayList <Booking>();
+    	basket = new ArrayList<Booking>();
     }
 
     public Booking getItem(int i) {
@@ -24,5 +23,4 @@ public class Basket {
     		basket.get(i).printBasicBookingDetails(i);
     	}
     }
-
 }

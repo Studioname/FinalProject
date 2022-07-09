@@ -19,7 +19,7 @@ public class Booking {
 		
 	}
 	
-	//user facing constructor
+	//user facing constructor for adding to basket
 	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.setPlayId(playId);
 		this.setSeatType(seatType);
@@ -27,7 +27,7 @@ public class Booking {
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
 	}
-	//user facing constructor
+	//user facing constructor for checking out
 	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.setPlayId(playId);
 		this.customerId = customerId;

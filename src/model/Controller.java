@@ -109,7 +109,7 @@ public class Controller {
 			//shopping basket
 			case 4:
 				printMenu(basketMenu);
-				int basketMenuSelection = inputReader.getNextInt(basketMenu.length);
+				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length);
 				switch (basketMenuSelection) {
 					//print basket
 					case 1: basket.printBasketContents();
@@ -151,6 +151,7 @@ public class Controller {
 				        }
 			case 0:
 				running = false;
+				break;
 			default:
 				System.out.println("Selection not recognised");
 					}
@@ -218,6 +219,7 @@ public class Controller {
 				int noOfConcessions = getNoOfConcessions(noOfSeats);
 				int isPostal = getIsPostal(play);
 				if (addToBasketPrompt()) {
+					createConcessionaryBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
 					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
 				} 
 				else {
@@ -233,7 +235,7 @@ public class Controller {
 	public int getSeatType() {
 		System.out.println("What type of seat would you like to reserve? Please enter your selection.");
 		System.out.println("1. Stalls" + '\n' + "2. Circle");
-		return inputReader.getNextInt() -1;
+		return inputReader.getNextInt(1,2)-1;
 	}
 	
 	public int getNoOfSeats() {
@@ -248,8 +250,8 @@ public class Controller {
 		//we subtract the number of seats they want so they can't go over the maximum
 		//ie if they want 4 seats, they have to book from seat 116
 		switch (stallsOrCircle) {
-			case 1: return inputReader.getNextInt(maxStallsSeats - noOfSeats);
-			case 2: return inputReader.getNextInt(maxCircleSeats = noOfSeats);
+			case 0: return inputReader.getNextInt(1, maxStallsSeats - noOfSeats);
+			case 1: return inputReader.getNextInt(1, maxCircleSeats - noOfSeats);
 			default: return -1;
 		}
 	}
@@ -272,19 +274,20 @@ public class Controller {
 			seatNumber = getSeatNumber(stallsOrCircle, noOfSeats);
 			occupiedSeats = dbm.getOccupiedSeats(play.getPlayId(), stallsOrCircle, seatNumber, noOfSeats);
 		}
+		
+		//needs work
+		
 		//when they have chosen seats which aren't occupied, we make an array of seat numbers
 		int [] seatNumbers = new int[noOfSeats];
 		for (int i = 0; i < noOfSeats; i++) {
-			for (int j = seatNumber; j < seatNumber + noOfSeats; j++) {
-				seatNumbers[i] = j;
-			}
+			seatNumbers[i] = seatNumber + i;
 		}
 		return seatNumbers;
 	}
 	
 	public int getNoOfConcessions(int noOfSeats) {
 		System.out.println("Enter the number of concessions. OAP, Student, etc");
-		return inputReader.getNextInt(noOfSeats);
+		return inputReader.getNextInt(0, noOfSeats);
 	}
 	
 	public int getIsPostal(Play play) {
@@ -306,7 +309,7 @@ public class Controller {
 	
 	public boolean addToBasketPrompt() {
 		System.out.println("Add tickets to basket?" + '\n' + "1. Yes" + '\n' + "2. No");
-		int choice = inputReader.getNextInt(2);
+		int choice = inputReader.getNextInt(1, 2);
 		switch (choice) {
 		case 1: 
 			System.out.println("Tickets added to basket.");
@@ -316,16 +319,21 @@ public class Controller {
 		}
 	}
 	
+	//both of these need fixing
+	public void createConcessionaryBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
+		for (int i = 0; i < seatNumbers.length; i++) {
+			System.out.println("" + seatNumbers[i]);
+		}
+		for (int i = 0; i < noOfConcessions; i++) {
+			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
+			b.printBasicBookingDetails(i);
+			basket.addToBasket(b);
+		}
+	}
 	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
-		//we create concessionary tickets before non-concessionary ones
-		for (int i = 0; i < seatNumbers.length-1; i++) {
-			while (noOfConcessions > 0) {
-				Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
-				noOfConcessions--;
-				i++;
-				basket.addToBasket(b);
-			}
+		for (int i = noOfConcessions; i < noOfSeats - noOfConcessions; i++) {
 			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
+			b.printBasicBookingDetails(i);
 			basket.addToBasket(b);
 		}
 	}

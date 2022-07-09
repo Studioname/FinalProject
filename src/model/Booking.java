@@ -18,6 +18,7 @@ public class Booking {
 	public Booking() {
 		
 	}
+	
 	//user facing constructor
 	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.setPlayId(playId);
@@ -25,7 +26,6 @@ public class Booking {
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
-		this.setPrice(price);
 	}
 	//user facing constructor
 	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
@@ -35,7 +35,6 @@ public class Booking {
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
-		this.setPrice(price);
 	}
 	//database facing class
 	public Booking(int bookingId, int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
@@ -46,7 +45,6 @@ public class Booking {
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
-		this.setPrice(price);
 	}
 	
 	public void printBookingDetails() {

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+
 public class Basket {
 
     public ArrayList <Booking>basket;
@@ -16,6 +17,12 @@ public class Basket {
 
     public void addToBasket(Booking booking) {
     	basket.add(booking);
+    }
+    
+    public void printBasketContents() {
+    	for (int i = 0; i < basket.size(); i++) {
+    		basket.get(i).printBasicBookingDetails(i);
+    	}
     }
 
 }

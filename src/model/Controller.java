@@ -2,15 +2,16 @@ package model;
 
 import model.Employee;
 import model.MainPerformer;
-import util.DatabaseManager;
-import util.InputReader;
 import model.Booking;
 import model.Play;
+import model.Basket;
+import util.DatabaseManager;
+import util.InputReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 
-import model.Basket;
+
 
 public class Controller {
 	DatabaseManager dbm;
@@ -19,7 +20,9 @@ public class Controller {
 	String[] defaultMenu;
 	String[] subMenu;
 	String[] searchBySubMenu;
-	String[] previousScreen;
+	String[] basketMenu;
+	String[] previousMenu;
+	String[] currentMenu;
 	Basket basket;
 	String validChars;
 	String validPasswordChars;
@@ -36,9 +39,10 @@ public class Controller {
 		dbm = new DatabaseManager();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
 		inputReader = new InputReader();
-		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Checkout", "5. Employee Login",
-				"9. Employee Portal", "0. Exit" };
+		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Shopping Basket", "5. Employee Login",
+				"0. Exit" };
 		subMenu = new String []{ "1. Add ticket to basket", "2. Return to previous screen" };
+		basketMenu = new String[] {"1. Show Basket Contents", "2. Proceed to Checkout"};
 		basket = new Basket();
 	}
 
@@ -56,7 +60,7 @@ public class Controller {
 			case 1: 
 				ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 				dbm.printBasic(plays, callPlay());
-				System.out.println("Please select a play #");
+				System.out.println("Please select a play number.");
 				int playSelection = inputReader.getNextInt();
 				Play play = plays.get(playSelection);
 				printMenu(subMenu);
@@ -86,7 +90,8 @@ public class Controller {
 			//not yet implemented
 			case 3:
 				plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
-				System.out.println("What is the date of the show you would you like to search for?");
+				System.out.println("What is the date of the show you would you like to search for?" + '\n' + 
+						"Please use YYYY-MM-DD format.");
 				String showDate = inputReader.getInput();
 				plays = dbm.searchPlayByDate(plays, showDate);
 				dbm.printBasic(plays, callPlay());
@@ -101,7 +106,19 @@ public class Controller {
 				}
 				//ask user if they want to add to basket - need a function for it
 				break;
-			case 9:
+			//shopping basket
+			case 4:
+				printMenu(basketMenu);
+				int basketMenuSelection = inputReader.getNextInt(basketMenu.length);
+				switch (basketMenuSelection) {
+					//print basket
+					case 1: basket.printBasketContents();
+					//checkout
+					case 2: break;
+				}
+				
+				break;
+			case 5:
 				//Employee register/login
 				 Scanner sc = new Scanner(System.in);
 				 String sp=" ";
@@ -134,10 +151,13 @@ public class Controller {
 				        }
 			case 0:
 				running = false;
+			default:
+				System.out.println("Selection not recognised");
 					}
 				}
+		
 			}
-
+//ladder of functions allowing users to go back and forth between menus
 //	public void searchByName(String name) {
 //		System.out.println("What is the name of the play you want to look for?");
 //		String input = inputReader.nextLine();
@@ -190,102 +210,125 @@ public class Controller {
 		int subMenuSelection = inputReader.getNextInt();
 		switch(subMenuSelection) {
 			case 1:
-				System.out.println("What type of seat would you like to reserve? Please enter your selection.");
-				System.out.println("1. Stalls" + '\n' + "2. Circle");
-				//we need a second variable to hold the seat type, since we will be reassigning
-				//menuSelection when we ask how many seats they want
-				int stallsOrCircle = inputReader.getNextInt();
-				System.out.println("Enter the quantity: ");
-                int noOfSeats = inputReader.getNextInt();
-				System.out.println("What number seat would you like?");
-				//depending on whether they want a stalls or circle seat, we set the max
-				//seat number they can input by passing the maxSeats variable
-				//we subtract the number of seats they want so they can't go over the maximum
-				//ie if they want 4 seats, they have to book from seat 116
-				int seatNumber;
-				switch (stallsOrCircle) {
-					case 1: seatNumber = inputReader.getNextInt(maxStallsSeats - noOfSeats);
-					break;
-					case 2: seatNumber = inputReader.getNextInt(maxCircleSeats = noOfSeats);
-					break;
-					default: seatNumber = -1;
-				}
-				//get number of seats they want to reserve
-				
-                //now we know how many seats they want, and what type, we can query the database
-				//to see if the seats are free
-                //if the size of the array list returned by getOccupiedSeats is greater than 0, then one of
-                //those seats is taken
-                ArrayList<Integer> occupiedSeats = dbm.getOccupiedSeats(play.getPlayId(), stallsOrCircle, seatNumber, noOfSeats);
-				if (occupiedSeats.size() > 0) {
-					if (occupiedSeats.size() == 1) {
-						System.out.println("Sorry! Seat " + occupiedSeats.get(0) + " is taken.");
-					}
-					else if (occupiedSeats.size() > 1) {
-						System.out.println("Sorry! Seats " + getOccupiedSeatNumbers(occupiedSeats) + " are taken.");
-					}
-				}
-				//else the seats are free and the booking can go ahead
+				//we get details so we can create a booking object
+				int stallsOrCircle = getSeatType();
+				int noOfSeats = getNoOfSeats();
+				int seatNumber = getSeatNumber(stallsOrCircle, noOfSeats);
+                int [] seatNumbers = checkSeatAvailability(play, stallsOrCircle, seatNumber, noOfSeats);
+				int noOfConcessions = getNoOfConcessions(noOfSeats);
+				int isPostal = getIsPostal(play);
+				if (addToBasketPrompt()) {
+					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
+				} 
 				else {
-					//we make an array of seat numbers
-					int [] seatNumbers = new int[noOfSeats];
-					for (int i = 0; i < noOfSeats; i++) {
-						for (int j = seatNumber; j < seatNumber + noOfSeats; j++) {
-							seatNumbers[i] = j;
-						}
-					}
-					//we want to get more details from them to create a basic booking object we can add
-					//to the shopping basket
-					System.out.println("Enter the number of concessions. OAP, Student, etc");
-					int noOfConcessions = inputReader.getNextInt(noOfSeats);
-					System.out.println("Do you want the tickets posted?");
-					int isPostal = inputReader.getNextInt(noOfSeats);
-					if (isPostal == 1) {
-						//check to see if the play falls within 7 days of the current date
-						if (postageAvailable(play)) {
-							isPostal = 1;
-							System.out.println("Postage available. Tickets will arrive within seven days of booking.");
-						}
-						else {
-							isPostal = 0;
-							System.out.println("Sorry, postage is only available for plays being performed seven days or more after the booking date");
-						}
-					}
-					//we want to create a user facing booking object
-					//we do this with the user facing constructor
-					//we do this for each seat they want to book [it counts as a booking]
-					for (int i = 0; i < seatNumbers.length; i++) {
-						while (noOfConcessions > 0) {
-							Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
-							noOfConcessions--;
-							i++;
-							basket.addToBasket(b);
-						}
-						Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
-						basket.addToBasket(b);
-					}
-				}
-		
-            
-//            if(res > 0) {
-//                System.out.println(res + " have been added to basket.");
-//            }
-//            else {
-//                System.out.println("Sorry! The seat is unavailable");
-//            }
-            //basket.addToBasket(res, quantity);
-            
-            
-            break;
-			//basket.addToBasket();
-			case 2: 
+					break;}
+			case 2:
+				//takes us to main menu
 				return;
-			case 3:
-				break;
-			default: System.out.println("Selection not recognised.");
+			default: 
+				System.out.println("Selection not recognised.");
 		}
 	}
 	
+	public int getSeatType() {
+		System.out.println("What type of seat would you like to reserve? Please enter your selection.");
+		System.out.println("1. Stalls" + '\n' + "2. Circle");
+		return inputReader.getNextInt();
+	}
+	
+	public int getNoOfSeats() {
+		System.out.println("How many seats would you like to reserve?");
+		return inputReader.getNextInt();
+	}
+	
+	public int getSeatNumber(int stallsOrCircle, int noOfSeats) {
+		System.out.println("What number seat would you like to reserve from?");
+		//depending on whether they want a stalls or circle seat, we set the max
+		//seat number they can input by passing the maxSeats variable
+		//we subtract the number of seats they want so they can't go over the maximum
+		//ie if they want 4 seats, they have to book from seat 116
+		switch (stallsOrCircle) {
+			case 1: return inputReader.getNextInt(maxStallsSeats - noOfSeats);
+			case 2: return inputReader.getNextInt(maxCircleSeats = noOfSeats);
+			default: return -1;
+		}
+	}
+	
+	public void areSeatsOccupied(ArrayList<Integer> occupiedSeats) {
+		if (occupiedSeats.size() > 0) {
+			if (occupiedSeats.size() == 1) {
+				System.out.println("Sorry! Seat " + occupiedSeats.get(0) + " is taken.");
+			}
+			else if (occupiedSeats.size() > 1) {
+				System.out.println("Sorry! Seats " + getOccupiedSeatNumbers(occupiedSeats) + " are taken.");
+			}
+		}
+	}
+	
+	public int[] checkSeatAvailability(Play play, int stallsOrCircle, int seatNumber, int noOfSeats) {
+		ArrayList<Integer> occupiedSeats = dbm.getOccupiedSeats(play.getPlayId(), stallsOrCircle, seatNumber, noOfSeats);
+		while (occupiedSeats.size() > 0) {
+			areSeatsOccupied(occupiedSeats);
+			seatNumber = getSeatNumber(stallsOrCircle, noOfSeats);
+			occupiedSeats = dbm.getOccupiedSeats(play.getPlayId(), stallsOrCircle, seatNumber, noOfSeats);
+		}
+		//when they have chosen seats which aren't occupied, we make an array of seat numbers
+		int [] seatNumbers = new int[noOfSeats];
+		for (int i = 0; i < noOfSeats; i++) {
+			for (int j = seatNumber; j < seatNumber + noOfSeats; j++) {
+				seatNumbers[i] = j;
+			}
+		}
+		return seatNumbers;
+	}
+	
+	public int getNoOfConcessions(int noOfSeats) {
+		System.out.println("Enter the number of concessions. OAP, Student, etc");
+		return inputReader.getNextInt(noOfSeats);
+	}
+	
+	public int getIsPostal(Play play) {
+		System.out.println("Do you want the tickets posted?");
+		int isPostal = inputReader.getNextInt();
+		if (isPostal == 1) {
+			//check to see if the play falls within 7 days of the current date
+			if (postageAvailable(play)) {
+				isPostal = 1;
+				System.out.println("Postage available. Tickets will arrive within seven days of booking.");
+			}
+			else {
+				isPostal = 0;
+				System.out.println("Sorry, postage is only available for plays being performed seven days or more after the booking date");
+			}
+		}
+		return isPostal;
+	}
+	
+	public boolean addToBasketPrompt() {
+		System.out.println("Add tickets to basket?" + '\n' + "1. Yes" + '\n' + "2. No");
+		int choice = inputReader.getNextInt(2);
+		switch (choice) {
+		case 1: 
+			System.out.println("Tickets added to basket.");
+			return true;
+		case 2: return false;
+		default: return false;
+		}
+	}
+	
+	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
+		//we create concessionary tickets before non-concessionary ones
+		for (int i = 0; i < seatNumbers.length -1; i++) {
+			while (noOfConcessions > 0) {
+				Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
+				noOfConcessions--;
+				i++;
+				basket.addToBasket(b);
+			}
+			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
+			basket.addToBasket(b);
+		}
+	}
 	
 	//these are helper methods used to call methods in the dbm class
 	//some of those methods behave according to the type of object passed to them, so these methods

@@ -36,7 +36,7 @@ public class Controller {
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
 		inputReader = new InputReader();
 		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Checkout", "5. Employee Login",
-				"0. Exit" };
+				"9. Employee Portal", "0. Exit" };
 		subMenu = new String []{ "1. Add ticket to basket", "2. Return to previous screen" };
 		basket = new Basket();
 	}
@@ -144,15 +144,48 @@ public class Controller {
 		            
 		            break;
 					//basket.addToBasket();
-					case 2: break;
+					case 2: 
+						break;
+					case 3:
+						break;
 					default: System.out.println("Selection not recognised.");
 				}
 			//not yet implemented
 			case 2: 
-				//submenu - press 1 to add to basket, 2 to return to main menu
-				continue;
+				plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+				System.out.println("What is the name of the show you would you like to search for?");
+				String showName = inputReader.getInput();
+				plays = dbm.searchPlayByTitle(plays, showName);
+				dbm.printBasic(plays, callPlay());
+				System.out.println("Select a play number, or enter 0 to go to the previous screen");
+				int searchByNameSelection = getUserSelection(plays.size());
+				if (searchByNameSelection != 0) {
+					play = plays.get(searchByNameSelection-1);
+				}
+				else {
+					break;
+				}
+				break;
+				//ask user if they want to add to basket - need a function for it
 			//not yet implemented
-			case 3: //Employee register/login
+			case 3:
+				plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+				System.out.println("What is the date of the show you would you like to search for?");
+				String showDate = inputReader.getInput();
+				plays = dbm.searchPlayByDate(plays, showDate);
+				dbm.printBasic(plays, callPlay());
+				System.out.println("Select a play number, or enter 0 to go to the previous screen");
+				int searchByDateSelection = getUserSelection(plays.size());
+				if (searchByDateSelection != 0) {
+					play = plays.get(searchByDateSelection-1);
+				}
+				else {
+					break;
+				}
+				//ask user if they want to add to basket - need a function for it
+				break;
+			case 9:
+				//Employee register/login
 				        Scanner sc = new Scanner(System.in);
 				        String sp=" ";
 				        System.out.println("Enter the Username");
@@ -182,12 +215,9 @@ public class Controller {
 				        else{
 				            System.out.println("Username or password Mismatch");
 				        }
-				    }
-			continue;
+					}
+				}
 			}
-			//submenus
-			
-		}
 
 //	public void searchByName(String name) {
 //		System.out.println("What is the name of the play you want to look for?");

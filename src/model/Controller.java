@@ -233,7 +233,7 @@ public class Controller {
 	public int getSeatType() {
 		System.out.println("What type of seat would you like to reserve? Please enter your selection.");
 		System.out.println("1. Stalls" + '\n' + "2. Circle");
-		return inputReader.getNextInt();
+		return inputReader.getNextInt() -1;
 	}
 	
 	public int getNoOfSeats() {

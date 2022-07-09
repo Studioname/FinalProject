@@ -17,8 +17,7 @@ public class InputReader {
 	public int getNextInt(int maxRange) {
 		int input = 0;
 		while (input <= 0 || input >= maxRange){
-		  System.out.println("Please input a number between 0 and " + maxRange);
-		  input = getNextInt();
+		  input = scanner.nextInt();
 		}
 		scanner.nextLine();
 		return input;

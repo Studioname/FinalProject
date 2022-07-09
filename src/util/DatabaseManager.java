@@ -257,7 +257,7 @@ public class DatabaseManager {
 	public ArrayList<Play> searchPlayByTitle(ArrayList<Play> plays, String name) {
 		ArrayList<Play> result = new ArrayList<Play>();
 		for (int i = 0; i < plays.size(); i++) {
-			if (plays.get(i).getPlayTitle().equals(name)){
+			if (plays.get(i).getPlayTitle().equalsIgnoreCase(name)){
 				result.add(plays.get(i));
 			}
 		}

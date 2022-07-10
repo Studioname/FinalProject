@@ -20,7 +20,12 @@ public class Basket {
     
     public void printBasketContents() {
     	for (int i = 0; i < basket.size(); i++) {
-    		basket.get(i).printBasicBookingDetails(i);
+    		Booking booking = basket.get(i);
+    		booking.printBasicBookingDetails(i);
     	}
+    }
+    
+    public int getSize() {
+    	return basket.size();
     }
 }

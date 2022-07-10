@@ -21,7 +21,7 @@ public class Controller {
 	String[] basketMenu;
 	String[] previousMenu;
 	String[] currentMenu;
-	Basket basket;
+	private final Basket basket;
 	String validChars;
 	String validPasswordChars;
 	int maxStallsSeats;
@@ -50,72 +50,39 @@ public class Controller {
 	}
 
 	public void run() {
-		Scanner scan = new Scanner(System.in);
 		while (running) {
 			//welcome user, press a key to continue
 			printWelcome();
 			
 			//menu screen
 			printMenu(defaultMenu);
-			int defaultMenuSelection = scan.nextInt();// getUserSelection(defaultMenu.length);
+			int defaultMenuSelection = inputReader.getNextInt(0, defaultMenu.length-1);
 			switch (defaultMenuSelection) {
 			//get all plays
 			case 1: 
 				ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 				dbm.printBasic(plays, callPlay());
 				System.out.println("Please select a play number.");
-				int playSelection = inputReader.getNextInt();
+				int playSelection = inputReader.getNextInt(1, plays.size()-1);
 				Play play = plays.get(playSelection-1);
 				printMenu(subMenu);
-				//while user selection is out of range
-				
-				//we need to ask them if they want to book a seat
 				bookingPrompt(play);
 				break;
 			case 2: 
-				plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
-				System.out.println("What is the name of the show you would you like to search for?");
-				String showName = inputReader.getInput();
-				plays = dbm.searchPlayByTitle(plays, showName);
-				dbm.printBasic(plays, callPlay());
-				System.out.println("Select a play number, or enter 0 to go to the previous screen");
-				int searchByNameSelection = inputReader.getNextInt();
-				if (searchByNameSelection != 0) {
-					play = plays.get(searchByNameSelection-1);
-					bookingPrompt(play);
-				}
-				else {
-					break;
-				}
+				searchByProperty("name");
 				break;
-				//ask user if they want to add to basket - need a function for it
-			//not yet implemented
 			case 3:
-				plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
-				System.out.println("What is the date of the show you would you like to search for?" + '\n' + 
-						"Please use YYYY-MM-DD format.");
-				String showDate = inputReader.getInput();
-				plays = dbm.searchPlayByDate(plays, showDate);
-				dbm.printBasic(plays, callPlay());
-				System.out.println("Select a play number, or enter 0 to go to the previous screen");
-				int searchByDateSelection = inputReader.getNextInt();
-				if (searchByDateSelection != 0) {
-					play = plays.get(searchByDateSelection-1);
-					bookingPrompt(play);
-				}
-				else {
-					break;
-				}
-				//ask user if they want to add to basket - need a function for it
+				searchByProperty("date");
 				break;
 			//shopping basket
 			case 4:
 				printMenu(basketMenu);
-				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length);
+				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length-1);
 				switch (basketMenuSelection) {
 					//print basket
-					case 1: basket.printBasketContents();
-					break;
+					case 1: 
+						basket.printBasketContents();
+						break;
 					//checkout
 					case 2: break;
 					case 0: break;
@@ -211,8 +178,8 @@ public class Controller {
 	//booking prompt
 	
 	public void bookingPrompt(Play play){
-System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.");
-		int subMenuSelection = inputReader.getNextInt();
+		System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.");
+		int subMenuSelection = inputReader.getNextInt(1, 2);
 		switch(subMenuSelection) {
 			case 1:
 				//we get details so we can create a booking object
@@ -222,12 +189,13 @@ System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.
                 int [] seatNumbers = checkSeatAvailability(play, stallsOrCircle, seatNumber, noOfSeats);
 				int noOfConcessions = getNoOfConcessions(noOfSeats);
 				int isPostal = getIsPostal(play);
-				//if (addToBasketPrompt()) {
-					createConcessionaryBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
+				if (addToBasketPrompt()) {
 					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
-				//}
-				//else {
-					break;//}
+					createConcessionaryBookings(noOfConcessions);
+				}
+				else {
+					break;
+					}
 			case 2:
 				//takes us to main menu
 				break;
@@ -324,18 +292,40 @@ System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.
 	}
 	
 	//both of these need fixing
-	public void createConcessionaryBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
+	public void createConcessionaryBookings(int noOfConcessions) {
 		for (int i = 0; i < noOfConcessions; i++) {
-			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 1, isPostal);
-			b.printBasicBookingDetails(i);
-			basket.addToBasket(b);
+			basket.getItem(i).setConcession(1);
 		}
 	}
 	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
-		for (int i = noOfConcessions; i < noOfSeats - noOfConcessions; i++) {
+		for (int i = 0; i < noOfSeats; i++) {
 			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
-			b.printBasicBookingDetails(i);
 			basket.addToBasket(b);
+		}
+	}
+	public void searchByProperty(String nameOrDate) {
+		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+		System.out.println("What is the " + nameOrDate + " of the show you would you like to search for?");
+		
+		
+		String searchTerm = inputReader.getInput();
+		switch (nameOrDate) {
+		case "name":
+			plays = dbm.searchPlayByTitle(plays, searchTerm);
+			break;
+		case "date":
+			plays = dbm.searchPlayByDate(plays, searchTerm);
+			break;
+		}
+		dbm.printBasic(plays, callPlay());
+		System.out.println("Select a play number, or enter 0 to go to the previous screen");
+		int selection = inputReader.getNextInt(0, plays.size());
+		if (selection != 0) {
+			Play play = plays.get(selection-1);
+			bookingPrompt(play);
+		}
+		else {
+			return;
 		}
 	}
 	

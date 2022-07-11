@@ -26,6 +26,7 @@ public class Controller {
 	String validPasswordChars;
 	int maxStallsSeats;
 	int maxCircleSeats;
+	boolean isLoggedIn;
 	
 	public Controller() {
 		validChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
@@ -34,6 +35,7 @@ public class Controller {
 		maxStallsSeats = 120;
 		maxCircleSeats = 80;
 		running = true;
+		isLoggedIn = false;
 		
 		dbm = new DatabaseManager();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
@@ -41,12 +43,10 @@ public class Controller {
 		inputReader = new InputReader();
 		basket = new Basket();
 		
-		
 		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Shopping Basket", "5. Employee Login",
 				"0. Exit" };
 		subMenu = new String []{ "1. Add ticket to basket", "2. Return to previous screen" };
 		basketMenu = new String[] {"1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu"};
-		
 	}
 
 	public void run() {
@@ -56,14 +56,14 @@ public class Controller {
 			
 			//menu screen
 			printMenu(defaultMenu);
-			int defaultMenuSelection = inputReader.getNextInt(0, defaultMenu.length-1);
+			int defaultMenuSelection = inputReader.getNextInt(0, defaultMenu.length);
 			switch (defaultMenuSelection) {
 			//get all plays
 			case 1: 
 				ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 				dbm.printBasic(plays, callPlay());
 				System.out.println("Please select a play number.");
-				int playSelection = inputReader.getNextInt(1, plays.size()-1);
+				int playSelection = inputReader.getNextInt(1, plays.size());
 				Play play = plays.get(playSelection-1);
 				printMenu(subMenu);
 				bookingPrompt(play);
@@ -77,14 +77,31 @@ public class Controller {
 			//shopping basket
 			case 4:
 				printMenu(basketMenu);
-				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length-1);
+				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length);
 				switch (basketMenuSelection) {
 					//print basket
 					case 1: 
 						basket.printBasketContents();
 						break;
 					//checkout
-					case 2: break;
+					case 2:
+						ArrayList<Play> plays2 = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+						basket.setBookingPrices(plays2);
+						basket.printCheckoutDetails();
+						if (!isLoggedIn) {
+							loginPrompt();
+						}
+						System.out.println("Would you like to complete your purchase?" + 
+						'\n' + "1. Yes" + '\n' + "2. No");
+						int purchaseSelection = inputReader.getNextInt(1, 2);
+						switch(purchaseSelection) {
+						case 1:
+							System.out.println("Thank you for your purchase. " + basket.getFormattedPrice(basket.getTotal()) + " has been deducted from your account.");
+						case 2:
+							break;
+						}
+						
+					break;
 					case 0: break;
 				}
 				
@@ -327,6 +344,61 @@ public class Controller {
 		else {
 			return;
 		}
+	}
+	
+	public void loginPrompt() {
+		System.out.println("To proceed with the purchase, please login." + '\n' + "1. Login" + 
+		'\n' + "2. Register" + '\n' + "0. Return to Main Menu");
+		int loginMenuSelection = inputReader.getNextInt(0, 2);
+		switch (loginMenuSelection) {
+		case 1: 
+			login();
+			break;
+		case 2: 
+			register();
+			System.out.println("Thank you for registering. Please login to continue");
+			login();
+			break;
+		case 0:
+			break;
+		}
+	}
+	
+	public void login() {
+		while (!isLoggedIn) {
+			System.out.println("Please enter your username");
+			String username = inputReader.getInput();
+			System.out.println("Please enter your password");
+			String password = inputReader.getInput();
+			if (dbm.validateCredentials(username, password)){
+				isLoggedIn = true;
+			}
+			else {
+				loginPrompt();
+			}
+		}
+	}
+	
+	public void register() {
+		//we get customer details, create customer object and push to db
+		System.out.println("Please enter your first name");
+		String forename = inputReader.getInput();
+		System.out.println("Please enter your second name");
+		String surname = inputReader.getInput();
+		System.out.println("Please enter your address");
+		String address = inputReader.getInput();
+		System.out.println("Please enter your telephone number");
+		String telephone = inputReader.getInput();
+		System.out.println("Please enter your email address");
+		String email = inputReader.getInput();
+		System.out.println("Please enter a username");
+		String username = inputReader.getInput();
+		System.out.println("Please enter a password");
+		String password = inputReader.getInput();
+		System.out.println("Please enter your credit card number");
+		String paymentDetails = inputReader.getInput();
+		Customer c = new Customer(username, password, forename, surname, address, telephone, email, paymentDetails);
+		dbm.addCustomer(c);
 	}
 	
 	//these are helper methods used to call methods in the dbm class

@@ -55,11 +55,15 @@ public class Booking {
 		System.out.println("Seat Number: " + getSeatNumber());
 		System.out.println("Concession: " + getFormattedConcession());
 		System.out.println("Postal ticket: " + getFormattedIsPostal());
-		//System.out.println("Price: " + getFormattedPrice());
 	}
 	public void printBasicBookingDetails(int index) {
 		index += 1;
 		System.out.println("" + index + ". " + getPlayId() + ", " + getFormattedSeatType() + ", " + getSeatNumber() + ", " + getFormattedConcession());
+	}
+	
+	public void printCheckoutDetails(int index) {
+		index += 1;
+		System.out.println("" + index + ". " + play.getPlayTitle() + ", " + getFormattedSeatType() + ", Seat no. " + getSeatNumber() + ", Concession: " + getFormattedConcession() + ", Price: " + getFormattedPrice());
 	}
 	
 	//formatting
@@ -96,7 +100,7 @@ public class Booking {
 				return "Unknown";
 		}
 	}
-	
+
 	public String getFormattedPrice() {
 		String priceString = Integer.toString(this.price);
 		char [] chars = priceString.toCharArray();

@@ -364,7 +364,9 @@ public class DatabaseManager {
 		String str = "SELECT * FROM Customer WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "';";
 		ResultSet rs = runQuery(str);
 		try {
-		return rs.next();
+			if (rs.next()) {
+				return true;
+			}
 		}
 		catch (SQLException e){
 			e.printStackTrace();

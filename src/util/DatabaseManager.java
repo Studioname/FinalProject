@@ -361,7 +361,7 @@ public class DatabaseManager {
 	//validate login
 	
 	public boolean validateCredentials(String username, String password) {
-		String str = "SELECT * FROM Customer WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "';";
+		String str = "SELECT * FROM Customer WHERE CustomerUsername LIKE '" + username + "' AND CustomerPassword LIKE '" + password + "';";
 		ResultSet rs = runQuery(str);
 		try {
 			if (rs.next()) {

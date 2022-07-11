@@ -43,7 +43,7 @@ public class Controller {
 		inputReader = new InputReader();
 		basket = new Basket();
 		
-		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Shopping Basket", "5. Employee Login",
+		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date", "4. Shopping Basket", "5. Employee Login", "6. Logout",
 				"0. Exit" };
 		subMenu = new String []{ "1. Add ticket to basket", "2. Return to previous screen" };
 		basketMenu = new String[] {"1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu"};
@@ -137,6 +137,14 @@ public class Controller {
 				 else{
 				     System.out.println("Username or password Mismatch");
 				        }
+			case 6:
+				if (isLoggedIn) {
+					isLoggedIn = false;
+					System.out.println("User logged out successfully.");
+				}
+				else {
+					System.out.println("You are not logged in!");
+				}
 			case 0:
 				running = false;
 				break;

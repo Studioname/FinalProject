@@ -63,7 +63,7 @@ public class Booking {
 	
 	public void printCheckoutDetails(int index) {
 		index += 1;
-		System.out.println("" + index + ". " + play.getPlayTitle() + ", " + getFormattedSeatType() + ", Seat no. " + getSeatNumber() + ", Concession: " + getFormattedConcession() + ", Price: " + getFormattedPrice());
+		System.out.println("" + index + ". " + play.getPlayTitle() + ", " + getFormattedSeatType() + ", Seat no. " + getSeatNumber() + ", Concession: " + getFormattedConcession() + ", Price: " + getFormattedPrice() + ", Postal: " + getFormattedIsPostal());
 	}
 	
 	//formatting
@@ -114,6 +114,14 @@ public class Booking {
 		}
 		str += "." + chars[chars.length-2] + chars[chars.length-1];
 		return str;
+	}
+	
+	public void applyConcession() {
+		if (getConcession() == 1) {
+			Double price = getPrice() * 0.75;
+			int value = price.intValue();
+			setPrice(value);
+		}
 	}
 	
 	public boolean getPostageAvailable() {

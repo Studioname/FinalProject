@@ -145,8 +145,8 @@ public class DatabaseManager {
 	//generic methods
 //----------------------------------------------------------------------
 	
-	//generic methods allow different object types to be passed and returned to them. They can
-	//therefore be given different behaviour depending on which objects are passed.
+	//generic methods allow different object types to be passed to and returned from them. They can
+	//be given different behaviour depending on which objects are passed.
 	
 	//they are included for ease of use, and will allow people to call a single function 
 	//instead of many different ones
@@ -156,6 +156,15 @@ public class DatabaseManager {
 	
 	//i have included the callBooking, callPlay, callCustomer methods in the controller class
 	//because that is the class that will be invoking them
+	
+	//superclass - animal
+	//subclass - cat, dog, mouse
+	//public void petAnimal(Animal animal){... pets animal}
+	//petAnimal(dog);
+	//public void washVehicle(Vehicle);
+	//washVehicle(motorbike);
+	
+	
 	
 	public <E> ArrayList<E> constructArrayList(ResultSet rs, Object object) {
 		if (object instanceof Play) {

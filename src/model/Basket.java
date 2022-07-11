@@ -5,11 +5,14 @@ import java.util.ArrayList;
 public class Basket {
 
     private ArrayList<Booking> basket;
-    private int total;
+    private int basketTotal;
+    private int postage;
+
 
     public Basket() {
     	basket = new ArrayList<Booking>();
-    	total = 0;
+    	basketTotal = 0;
+    	postage = 0;
     }
 
     public Booking getItem(int i) {
@@ -54,20 +57,35 @@ public class Basket {
     	}
     }
     
-    public void getBasketTotal() {
-    	this.total = 0;
+    public int getBasketTotal() {
+    	return basketTotal;
+    }
+    public void setBasketTotal(int basketTotal) {
+    	this.basketTotal = basketTotal;
+    }
+    
+    public void applyConcessions() {
     	for (int i = 0; i < basket.size(); i++) {
-    		this.total += basket.get(i).getPrice();
+    		basket.get(i).applyConcession();
     	}
     }
     
+    public int getBookingsTotal() {
+		int total = 0;
+		for (int i = 0; i < basket.size(); i++) {
+			total += basket.get(i).getPrice();
+			}
+		return total;
+    }
+	
     public void printCheckoutDetails() {
     	System.out.println("You currently have " + basket.size() + " items in your basket. These are:");
     	for (int i = 0; i < basket.size(); i++) {
     		basket.get(i).printCheckoutDetails(i);
     	}
-    	getBasketTotal();
-    	System.out.println("Total: " + getFormattedPrice(this.total));
+    	System.out.println("Postage: " + getFormattedPrice(calculatePostage()));
+    	System.out.println("Bookings: " + getFormattedPrice(getBookingsTotal()));
+    	System.out.println("Total: " + getFormattedPrice(getBookingsTotal() + calculatePostage()));
     }
     
 	public String getFormattedPrice(int price) {
@@ -85,10 +103,23 @@ public class Basket {
 		return str;
 	}
 	
-	public int getTotal(){
-		return total;
-	}
-	public void setTotal(int total){
-		this.total = total;
+	//calculate postage
+	public int calculatePostage() {
+		int noOfConcessions = 0;
+		int noOfBookings = basket.size();
+		for (int i = 0; i < noOfBookings; i++) {
+			if (basket.get(i).getConcession() == 1) {
+				noOfConcessions++;
+			}
+		}
+		if (noOfConcessions == 0) {
+			return noOfBookings * 100;
+		}
+		else if (noOfConcessions == noOfBookings) {
+			return 0;
+		}
+		else {
+			return 100;
+		}
 	}
 }

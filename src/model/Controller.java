@@ -19,8 +19,7 @@ public class Controller {
 	String[] subMenu;
 	String[] searchBySubMenu;
 	String[] basketMenu;
-	String[] previousMenu;
-	String[] currentMenu;
+	String[] employeeMenu;
 	private final Basket basket;
 	String validChars;
 	String validPasswordChars;
@@ -50,15 +49,18 @@ public class Controller {
 				"0. Exit" };
 		subMenu = new String []{ "1. Add ticket to basket", "2. Return to previous screen" };
 		basketMenu = new String[] {"1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu"};
+		employeeMenu = new String[] {"1. Add show", "2. Remove show", "3. Logout"};
 	}
 
 	public void run() {
 		while (running) {
 			while (employeeLoggedIn) {
 				System.out.println("Welcome " + employee.getEmployeeUsername() + "! Please enter your selection");
-				
-			}
-			
+//				int employeeMenuSelection = inputReader.getNextInt(0, employeeMenu.length);
+//				switch(employeeMenuSelection) {
+//				case 1: break;
+//				}
+			}	
 			//welcome user, press a key to continue
 			printWelcome();
 			
@@ -86,6 +88,7 @@ public class Controller {
 			case 4:
 				printMenu(basketMenu);
 				basket.setBookingPrices(plays);
+				basket.applyConcessions();
 				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length);
 				switch (basketMenuSelection) {
 					//print basket
@@ -108,7 +111,7 @@ public class Controller {
 						int purchaseSelection = inputReader.getNextInt(1, 2);
 						switch(purchaseSelection) {
 						case 1:
-							System.out.println("Thank you for your purchase. " + basket.getFormattedPrice(basket.getTotal()) + " has been deducted from your account. " + 
+							System.out.println("Thank you for your purchase. " + basket.getFormattedPrice(basket.getBookingsTotal() + basket.calculatePostage()) + " has been deducted from your account. " + 
 						"Details of this purchase have been sent to " + customer.getCustomerEmail() + ".");
 						case 2:
 							break;
@@ -121,7 +124,6 @@ public class Controller {
 				break;
 			case 5:
 				employeeLogin();
-				System.out.println("" + employeeLoggedIn);
 				break;
 //				//Employee register/login
 //				 Scanner sc = new Scanner(System.in);
@@ -223,9 +225,9 @@ public class Controller {
 				int seatNumber = getSeatNumber(stallsOrCircle, noOfSeats);
                 int [] seatNumbers = checkSeatAvailability(play, stallsOrCircle, seatNumber, noOfSeats);
 				int noOfConcessions = getNoOfConcessions(noOfSeats);
-				//int isPostal = getIsPostal(play);
+				int isPostal = getIsPostal(play);
 				if (addToBasketPrompt()) {
-					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, 0);
+					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
 					createConcessionaryBookings(noOfConcessions);
 				}
 				else {
@@ -281,9 +283,6 @@ public class Controller {
 			seatNumber = getSeatNumber(stallsOrCircle, noOfSeats);
 			occupiedSeats = dbm.getOccupiedSeats(play.getPlayId(), stallsOrCircle, seatNumber, noOfSeats);
 		}
-		
-		//needs work
-		
 		//when they have chosen seats which aren't occupied, we make an array of seat numbers
 		int [] seatNumbers = new int[noOfSeats];
 		for (int i = 0; i < noOfSeats; i++) {
@@ -298,7 +297,7 @@ public class Controller {
 	}
 	
 	public int getIsPostal(Play play) {
-		System.out.println("Do you want the tickets posted?");
+		System.out.println("Do you want the tickets posted?" + '\n' + "1. Yes" + '\n' + "2. No");
 		int isPostal = inputReader.getNextInt(1, 2);
 		if (isPostal == 1) {
 			//check to see if the play falls within 7 days of the current date

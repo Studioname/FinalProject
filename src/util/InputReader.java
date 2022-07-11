@@ -12,13 +12,13 @@ public class InputReader {
 	}
 	public int getNextInt() {
 		int input = -2;
-		while (input == -1) {
+		while (input == -2) {
 			try {
 				input = scanner.nextInt();
 			}
 			catch (InputMismatchException e) {
 				scanner.nextLine();
-				input = -1;
+				input = -2;
 			}
 		}
 		return input;

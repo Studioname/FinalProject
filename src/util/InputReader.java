@@ -11,7 +11,7 @@ public class InputReader {
 		return scanner.nextLine();
 	}
 	public int getNextInt() {
-		int input = -1;
+		int input = -2;
 		while (input == -1) {
 			try {
 				input = scanner.nextInt();
@@ -24,7 +24,7 @@ public class InputReader {
 		return input;
 	}
 	public int getNextInt(int minRange, int maxRange) {
-		int input = -1;
+		int input = -2;
 		while (input < minRange || input > maxRange){
 			try {
 				input = scanner.nextInt();

@@ -29,6 +29,7 @@ public class Controller {
 	Customer customer;
 	boolean customerLoggedIn;
 	boolean employeeLoggedIn;
+	Employee employee;
 	
 	public Controller() {
 		validChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
@@ -59,10 +60,10 @@ public class Controller {
 			//menu screen
 			printMenu(defaultMenu);
 			int defaultMenuSelection = inputReader.getNextInt(0, defaultMenu.length);
+			ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 			switch (defaultMenuSelection) {
 			//get all plays
 			case 1: 
-				ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 				dbm.printBasic(plays, callPlay());
 				System.out.println("Please select a play number.");
 				int playSelection = inputReader.getNextInt(1, plays.size());
@@ -71,17 +72,15 @@ public class Controller {
 				bookingPrompt(play);
 				break;
 			case 2: 
-				searchByProperty("name");
+				searchByProperty("name", plays);
 				break;
 			case 3:
-				searchByProperty("date");
+				searchByProperty("date", plays);
 				break;
 			//shopping basket
 			case 4:
 				printMenu(basketMenu);
-				ArrayList<Play> plays2 = dbm.constructArrayList(dbm.searchPlay(), callPlay());
-				basket.setBookingPrices(plays2);
-				
+				basket.setBookingPrices(plays);
 				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length);
 				switch (basketMenuSelection) {
 					//print basket
@@ -331,8 +330,7 @@ public class Controller {
 			basket.addToBasket(b);
 		}
 	}
-	public void searchByProperty(String nameOrDate) {
-		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+	public ArrayList<Play> searchByNameOrDate(String nameOrDate, ArrayList<Play> plays) {
 		System.out.println("What is the " + nameOrDate + " of the show you would you like to search for?");
 		String searchTerm = inputReader.getInput();
 		switch (nameOrDate) {
@@ -344,14 +342,21 @@ public class Controller {
 			break;
 		}
 		dbm.printBasic(plays, callPlay());
-		System.out.println("Select a play number, or enter 0 to go to the previous screen");
-		int selection = inputReader.getNextInt(0, plays.size());
-		if (selection != 0) {
-			Play play = plays.get(selection-1);
-			bookingPrompt(play);
+		return plays;
+	}
+	public void searchByProperty(String nameOrDate, ArrayList<Play> allPlays) {
+		ArrayList<Play> results = searchByNameOrDate(nameOrDate, allPlays);
+		System.out.println("Select a play number, enter -1 to search again by " + nameOrDate + ", or enter 0 to go to the previous screen");
+		int selection = inputReader.getNextInt(-1, results.size());
+		if (selection == -1) {
+			searchByNameOrDate(nameOrDate, allPlays);
+		}
+		else if (selection == 0) {
+			return;
 		}
 		else {
-			return;
+			Play play = results.get(selection-1);
+			bookingPrompt(play);
 		}
 	}
 	

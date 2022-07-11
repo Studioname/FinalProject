@@ -429,6 +429,33 @@ public class Controller {
 		}
 	}
 	
+	//employee
+	public void employeeLogin() {
+        while (!employeeLoggedIn) {
+            System.out.println("Please enter your username");
+            String username = inputReader.getInput();
+            System.out.println("Please enter your password");
+            String password = inputReader.getInput();
+            if (dbm.validateEmployeeCredentials(username, password)){
+                employeeLoggedIn = true;
+                employee = dbm.fetchEmployeeObject(dbm.searchEmployeeByLoginDetails(username, password));
+            }
+            else {
+                loginPrompt();
+            }
+        }
+    }
+    public void employeeLogout() {
+        if (employeeLoggedIn) {
+            employeeLoggedIn = false;
+            employee = null;
+            System.out.println("User logged out successfully.");
+        }
+        else {
+            System.out.println("You are not logged in!");
+        }
+    }
+	
 	//these are helper methods used to call methods in the dbm class
 	//some of those methods behave according to the type of object passed to them, so these methods
 	//pass an empty object
@@ -444,4 +471,8 @@ public class Controller {
 		Customer customer = new Customer();
 		return customer;
 	}
+	public Employee callEmployee() {
+        Employee employee = new Employee();
+        return employee;
+    }
 }

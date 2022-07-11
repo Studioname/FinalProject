@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import model.Booking;
 import model.Customer;
+import model.Employee;
 import model.Play;
 
 public class DatabaseManager {
@@ -189,7 +190,19 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 			return (ArrayList<E>) r3;
-		} else {
+		} 
+		else if (object instanceof Employee) {
+            ArrayList<Employee> r4 = new ArrayList<Employee>();
+            try {
+                while (rs.next()) {
+                    r4.add(fetchEmployeeObject(rs));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return (ArrayList<E>) r4;
+		}
+		else {
 			return null;
 		}
 	}
@@ -210,6 +223,11 @@ public class DatabaseManager {
 				((Customer) arrayList.get(i)).printBasicCustomerDetails(i);
 			}
 		}
+		else if (object instanceof Employee) {
+            for (int i = 0; i < arrayList.size(); i++) {
+                ((Employee) arrayList.get(i)).printBasicEmployeeDetails(i);
+            }
+        }
 	}
 	
 	//input validation - prevent duplicates from being entered, or entries with null value
@@ -487,7 +505,80 @@ public class DatabaseManager {
 	//Employee
 //----------------------------------------------------------------------
 	
-	
+    /**
+     * Takes a ResultSet object and creates a Employee Object from it
+     * @param ResultSet rs - Gotten from searchEmployee();
+     * @return returns a Employee object
+     **/
+
+    public Employee fetchEmployeeObject(ResultSet rs) {
+        try {
+            int EmployeeId = rs.getInt("EmployeeId");
+            String EmployeeUsername = rs.getString("EmployeeUsername");
+            String EmployeePassword = rs.getString("EmployeePassword");
+            Employee c = new Employee(EmployeeId, EmployeeUsername, EmployeePassword);
+            return c;
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+        }
+    }
+    
+    public ResultSet searchEmployee() {
+        String str = "SELECT * FROM Employee;";
+        return runQuery(str);
+    }
+
+    public boolean addEmployee(Employee employee) {
+        String test = "SELECT * FROM Employee WHERE EmployeeUsername LIKE '" + employee.getEmployeeUsername() + "' AND EmployeePassword LIKE '" + employee.getEmployeePassword( )+ "');";
+        ResultSet rs = runQuery(test);
+        try {
+            if (!rs.next()) {
+                String str = "INSERT INTO Employee (EmployeeUsername, EmployeePassword,) VALUES ('" + employee.getEmployeeUsername() + "', '" + employee.getEmployeePassword() + "');";
+                runQuery(str);
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Duplicate Employee found. Item has not been added to the database");
+        return false;
+    }
+
+    public ResultSet getEmployeeById(int id) {
+        String str = "SELECT * FROM Employee WHERE EmployeeId = " + id + ";";
+        return runQuery(str);
+    }
+    
+    public boolean validateEmployeeCredentials(String username, String password) {
+        ResultSet rs = searchEmployeeByLoginDetails(username,password);
+        try {
+            if (rs == null || !rs.first()) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public ResultSet searchEmployeeByLoginDetails(String username, String password) {
+        String str = "SELECT FROM Employee WHERE EmployeeUsername LIKE '" + username + "' AND EmployeePassword LIKE '" + password + "');";
+        ResultSet rs = runQuery(str);
+        try {
+            rs.first();
+            }
+        catch (SQLException e) {
+            e.printStackTrace();
+        };
+        return rs;
+    }
 	
 //----------------------------------------------------------------------
 	//General

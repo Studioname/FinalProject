@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.Booking;
 import model.Controller;
 import model.Customer;
+import model.Employee;
 import util.DatabaseManager;
 
 public class main {
@@ -28,6 +29,7 @@ public class main {
 		dbm.addPlay(p5);
 		dbm.addPlay(p6);
 		dbm.addPlay(p7);
+		Employee employee = new Employee("employee", "password");
 		
 		Customer customer = new Customer("username", "password", "Conan", "Hollands", "16 Million Road", "01322495843", "conanhollands@aston.ac.uk", "0304984854");
 		Customer customer2 = new Customer("cool_girl", "pw", "Deborah", "Hollands", "075944856321", "01939393", "conanhollands@aston.ac.uk", "3019393");

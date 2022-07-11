@@ -531,11 +531,11 @@ public class DatabaseManager {
     }
 
     public boolean addEmployee(Employee employee) {
-        String test = "SELECT * FROM Employee WHERE EmployeeUsername LIKE '" + employee.getEmployeeUsername() + "' AND EmployeePassword LIKE '" + employee.getEmployeePassword( )+ "');";
+        String test = "SELECT * FROM Employee WHERE EmployeeUsername LIKE '" + employee.getEmployeeUsername() + "' AND EmployeePassword LIKE '" + employee.getEmployeePassword( )+ "';";
         ResultSet rs = runQuery(test);
         try {
             if (!rs.next()) {
-                String str = "INSERT INTO Employee (EmployeeUsername, EmployeePassword,) VALUES ('" + employee.getEmployeeUsername() + "', '" + employee.getEmployeePassword() + "');";
+                String str = "INSERT INTO Employee (EmployeeUsername, EmployeePassword) VALUES ('" + employee.getEmployeeUsername() + "', '" + employee.getEmployeePassword() + "');";
                 runQuery(str);
                 return true;
             }
@@ -569,7 +569,7 @@ public class DatabaseManager {
     }
     
     public ResultSet searchEmployeeByLoginDetails(String username, String password) {
-        String str = "SELECT FROM Employee WHERE EmployeeUsername LIKE '" + username + "' AND EmployeePassword LIKE '" + password + "');";
+        String str = "SELECT * FROM Employee WHERE EmployeeUsername LIKE '" + username + "' AND EmployeePassword LIKE '" + password + "';";
         ResultSet rs = runQuery(str);
         try {
             rs.first();

@@ -54,6 +54,11 @@ public class Controller {
 
 	public void run() {
 		while (running) {
+			
+			if (employeeLoggedIn) {
+				System.out.println("Welcome " + employee.getEmployeeUsername() + "! Please enter your selection");
+			}
+			
 			//welcome user, press a key to continue
 			printWelcome();
 			
@@ -115,36 +120,39 @@ public class Controller {
 				
 				break;
 			case 5:
-				//Employee register/login
-				 Scanner sc = new Scanner(System.in);
-				 String sp=" ";
-				 System.out.println("Enter the Username");
-				 String userName = sc.nextLine();
-				 if((userName.contains(sp)) || userName.length()<6){
-				     System.out.println("Invalid Username");
-				     break;
-				 }
-
-				 System.out.println("Enter the Password");
-				 String userPass = sc.nextLine();
-				 if((userPass.contains(sp)) || userPass.length()<8){
-				     System.out.println("Invalid Password");
-				     break;
-				 }
-
-				 System.out.println(userName + " you are Registered Successfully");
-
-				 System.out.println("Enter the Username");
-				 String loginName = sc.nextLine();
-				 System.out.println("Enter the Password");
-				 String loginPass = sc.nextLine();
-
-				 if(userName.equals(loginName) && userPass.equals(loginPass)){
-				     System.out.println("Welcome "+loginName+" you have Logged-in Successfully");
-				 }
-				 else{
-				     System.out.println("Username or password Mismatch");
-				        }
+				employeeLogin();
+				System.out.println("" + employeeLoggedIn);
+				break;
+//				//Employee register/login
+//				 Scanner sc = new Scanner(System.in);
+//				 String sp=" ";
+//				 System.out.println("Enter the Username");
+//				 String userName = sc.nextLine();
+//				 if((userName.contains(sp)) || userName.length()<6){
+//				     System.out.println("Invalid Username");
+//				     break;
+//				 }
+//
+//				 System.out.println("Enter the Password");
+//				 String userPass = sc.nextLine();
+//				 if((userPass.contains(sp)) || userPass.length()<8){
+//				     System.out.println("Invalid Password");
+//				     break;
+//				 }
+//
+//				 System.out.println(userName + " you are Registered Successfully");
+//
+//				 System.out.println("Enter the Username");
+//				 String loginName = sc.nextLine();
+//				 System.out.println("Enter the Password");
+//				 String loginPass = sc.nextLine();
+//
+//				 if(userName.equals(loginName) && userPass.equals(loginPass)){
+//				     System.out.println("Welcome "+loginName+" you have Logged-in Successfully");
+//				 }
+//				 else{
+//				     System.out.println("Username or password Mismatch");
+//				        }
 			case 6:
 				logout();
 			case 0:
@@ -419,9 +427,11 @@ public class Controller {
 	}
 	
 	public void logout() {
-		if (customerLoggedIn) {
+		if (customerLoggedIn || employeeLoggedIn) {
 			customerLoggedIn = false;
+			employeeLoggedIn = false;
 			customer = null;
+			employee = null;
 			System.out.println("User logged out successfully.");
 		}
 		else {
@@ -441,18 +451,8 @@ public class Controller {
                 employee = dbm.fetchEmployeeObject(dbm.searchEmployeeByLoginDetails(username, password));
             }
             else {
-                loginPrompt();
+                return;
             }
-        }
-    }
-    public void employeeLogout() {
-        if (employeeLoggedIn) {
-            employeeLoggedIn = false;
-            employee = null;
-            System.out.println("User logged out successfully.");
-        }
-        else {
-            System.out.println("You are not logged in!");
         }
     }
 	

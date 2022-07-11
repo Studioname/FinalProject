@@ -85,6 +85,11 @@ public class Controller {
 						break;
 					//checkout
 					case 2:
+						//sneaky short circuit
+						if (basket.getSize() == 0) {
+							System.out.println("Your basket is empty!");
+							break;
+						}
 						ArrayList<Play> plays2 = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 						basket.setBookingPrices(plays2);
 						basket.printCheckoutDetails();

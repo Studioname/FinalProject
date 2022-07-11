@@ -72,10 +72,10 @@ public class Controller {
 				bookingPrompt(play);
 				break;
 			case 2: 
-				searchByProperty("name", plays);
+				searchPrompt("name", plays);
 				break;
 			case 3:
-				searchByProperty("date", plays);
+				searchPrompt("date", plays);
 				break;
 			//shopping basket
 			case 4:
@@ -215,9 +215,9 @@ public class Controller {
 				int seatNumber = getSeatNumber(stallsOrCircle, noOfSeats);
                 int [] seatNumbers = checkSeatAvailability(play, stallsOrCircle, seatNumber, noOfSeats);
 				int noOfConcessions = getNoOfConcessions(noOfSeats);
-				int isPostal = getIsPostal(play);
+				//int isPostal = getIsPostal(play);
 				if (addToBasketPrompt()) {
-					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
+					createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, 0);
 					createConcessionaryBookings(noOfConcessions);
 				}
 				else {
@@ -291,7 +291,7 @@ public class Controller {
 	
 	public int getIsPostal(Play play) {
 		System.out.println("Do you want the tickets posted?");
-		int isPostal = inputReader.getNextInt();
+		int isPostal = inputReader.getNextInt(1, 2);
 		if (isPostal == 1) {
 			//check to see if the play falls within 7 days of the current date
 			if (postageAvailable(play)) {
@@ -330,6 +330,8 @@ public class Controller {
 			basket.addToBasket(b);
 		}
 	}
+	
+	//we split one function into two so that we can search from result screen
 	public ArrayList<Play> searchByNameOrDate(String nameOrDate, ArrayList<Play> plays) {
 		System.out.println("What is the " + nameOrDate + " of the show you would you like to search for?");
 		String searchTerm = inputReader.getInput();
@@ -344,7 +346,7 @@ public class Controller {
 		dbm.printBasic(plays, callPlay());
 		return plays;
 	}
-	public void searchByProperty(String nameOrDate, ArrayList<Play> allPlays) {
+	public void searchPrompt(String nameOrDate, ArrayList<Play> allPlays) {
 		ArrayList<Play> results = searchByNameOrDate(nameOrDate, allPlays);
 		System.out.println("Select a play number, enter -1 to search again by " + nameOrDate + ", or enter 0 to go to the previous screen");
 		int selection = inputReader.getNextInt(-1, results.size());
@@ -369,7 +371,7 @@ public class Controller {
 			customerLogin();
 			break;
 		case 2: 
-			register();
+			registerCustomer();
 			System.out.println("Thank you for registering. Please login to continue");
 			customerLogin();
 			break;
@@ -394,7 +396,7 @@ public class Controller {
 		}
 	}
 	
-	public void register() {
+	public void registerCustomer() {
 		//we get customer details, create customer object and push to db
 		System.out.println("Please enter your first name");
 		String forename = inputReader.getInput();

@@ -27,7 +27,8 @@ public class Controller {
 	int maxStallsSeats;
 	int maxCircleSeats;
 	Customer customer;
-	boolean isLoggedIn;
+	boolean customerLoggedIn;
+	boolean employeeLoggedIn;
 	
 	public Controller() {
 		validChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
@@ -36,7 +37,7 @@ public class Controller {
 		maxStallsSeats = 120;
 		maxCircleSeats = 80;
 		running = true;
-		isLoggedIn = false;
+		customerLoggedIn = false;
 		
 		dbm = new DatabaseManager();
 		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
@@ -95,7 +96,7 @@ public class Controller {
 							break;
 						}
 						basket.printCheckoutDetails();
-						if (!isLoggedIn) {
+						if (!customerLoggedIn) {
 							loginPrompt();
 						}
 						System.out.println("Would you like to complete your purchase?" + 
@@ -333,8 +334,6 @@ public class Controller {
 	public void searchByProperty(String nameOrDate) {
 		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 		System.out.println("What is the " + nameOrDate + " of the show you would you like to search for?");
-		
-		
 		String searchTerm = inputReader.getInput();
 		switch (nameOrDate) {
 		case "name":
@@ -362,26 +361,26 @@ public class Controller {
 		int loginMenuSelection = inputReader.getNextInt(0, 2);
 		switch (loginMenuSelection) {
 		case 1: 
-			login();
+			customerLogin();
 			break;
 		case 2: 
 			register();
 			System.out.println("Thank you for registering. Please login to continue");
-			login();
+			customerLogin();
 			break;
 		case 0:
 			break;
 		}
 	}
 	
-	public void login() {
-		while (!isLoggedIn) {
+	public void customerLogin() {
+		while (!customerLoggedIn) {
 			System.out.println("Please enter your username");
 			String username = inputReader.getInput();
 			System.out.println("Please enter your password");
 			String password = inputReader.getInput();
 			if (dbm.validateCredentials(username, password)){
-				isLoggedIn = true;
+				customerLoggedIn = true;
 				customer = dbm.fetchCustomerObject(dbm.searchCustomerByLoginDetails(username, password));
 			}
 			else {
@@ -413,8 +412,8 @@ public class Controller {
 	}
 	
 	public void logout() {
-		if (isLoggedIn) {
-			isLoggedIn = false;
+		if (customerLoggedIn) {
+			customerLoggedIn = false;
 			customer = null;
 			System.out.println("User logged out successfully.");
 		}

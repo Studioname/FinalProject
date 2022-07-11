@@ -55,8 +55,9 @@ public class Controller {
 	public void run() {
 		while (running) {
 			
-			if (employeeLoggedIn) {
+			while (employeeLoggedIn) {
 				System.out.println("Welcome " + employee.getEmployeeUsername() + "! Please enter your selection");
+				
 			}
 			
 			//welcome user, press a key to continue

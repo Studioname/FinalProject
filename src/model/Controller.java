@@ -54,7 +54,6 @@ public class Controller {
 
 	public void run() {
 		while (running) {
-			
 			while (employeeLoggedIn) {
 				System.out.println("Welcome " + employee.getEmployeeUsername() + "! Please enter your selection");
 				

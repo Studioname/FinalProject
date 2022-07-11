@@ -26,6 +26,7 @@ public class Controller {
 	String validPasswordChars;
 	int maxStallsSeats;
 	int maxCircleSeats;
+	Customer customer;
 	boolean isLoggedIn;
 	
 	public Controller() {
@@ -77,11 +78,14 @@ public class Controller {
 			//shopping basket
 			case 4:
 				printMenu(basketMenu);
+				ArrayList<Play> plays2 = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+				basket.setBookingPrices(plays2);
+				
 				int basketMenuSelection = inputReader.getNextInt(0, basketMenu.length);
 				switch (basketMenuSelection) {
 					//print basket
 					case 1: 
-						basket.printBasketContents();
+						basket.printCheckoutDetails();
 						break;
 					//checkout
 					case 2:
@@ -90,8 +94,6 @@ public class Controller {
 							System.out.println("Your basket is empty!");
 							break;
 						}
-						ArrayList<Play> plays2 = dbm.constructArrayList(dbm.searchPlay(), callPlay());
-						basket.setBookingPrices(plays2);
 						basket.printCheckoutDetails();
 						if (!isLoggedIn) {
 							loginPrompt();
@@ -101,7 +103,8 @@ public class Controller {
 						int purchaseSelection = inputReader.getNextInt(1, 2);
 						switch(purchaseSelection) {
 						case 1:
-							System.out.println("Thank you for your purchase. " + basket.getFormattedPrice(basket.getTotal()) + " has been deducted from your account.");
+							System.out.println("Thank you for your purchase. " + basket.getFormattedPrice(basket.getTotal()) + " has been deducted from your account. " + 
+						"Details of this purchase have been sent to " + customer.getCustomerEmail() + ".");
 						case 2:
 							break;
 						}
@@ -143,13 +146,7 @@ public class Controller {
 				     System.out.println("Username or password Mismatch");
 				        }
 			case 6:
-				if (isLoggedIn) {
-					isLoggedIn = false;
-					System.out.println("User logged out successfully.");
-				}
-				else {
-					System.out.println("You are not logged in!");
-				}
+				logout();
 			case 0:
 				running = false;
 				break;
@@ -385,6 +382,7 @@ public class Controller {
 			String password = inputReader.getInput();
 			if (dbm.validateCredentials(username, password)){
 				isLoggedIn = true;
+				customer = dbm.fetchCustomerObject(dbm.searchCustomerByLoginDetails(username, password));
 			}
 			else {
 				loginPrompt();
@@ -412,6 +410,17 @@ public class Controller {
 		String paymentDetails = inputReader.getInput();
 		Customer c = new Customer(username, password, forename, surname, address, telephone, email, paymentDetails);
 		dbm.addCustomer(c);
+	}
+	
+	public void logout() {
+		if (isLoggedIn) {
+			isLoggedIn = false;
+			customer = null;
+			System.out.println("User logged out successfully.");
+		}
+		else {
+			System.out.println("You are not logged in!");
+		}
 	}
 	
 	//these are helper methods used to call methods in the dbm class

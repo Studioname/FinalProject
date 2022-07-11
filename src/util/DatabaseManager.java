@@ -65,17 +65,17 @@ public class DatabaseManager {
 					ResultSet.CONCUR_UPDATABLE);
 			pst.execute();
 			ResultSet results = pst.getResultSet();
-			if (results != null) {
-				int rowcount = 0;
-				if (results.last()) {
-					rowcount = results.getRow();
-					results.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
-											// element
-				}
-				System.out.println(sql + "\n Success.  Result set has " + rowcount + " rows");
-			} else {
-				System.out.println(sql + "\n Success.  No results returned");
-			}
+//			if (results != null) {
+//				int rowcount = 0;
+//				if (results.last()) {
+//					rowcount = results.getRow();
+//					results.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
+//											// element
+//				}
+//				System.out.println(sql + "\n Success.  Result set has " + rowcount + " rows");
+//			} else {
+//				System.out.println(sql + "\n Success.  No results returned");
+//			}
 			return results;
 		} catch (SQLException e) {
 			System.out.println(sql + "\n failed to run.");
@@ -360,11 +360,25 @@ public class DatabaseManager {
 	
 	//validate login
 	
-	public boolean validateCredentials(String username, String password) {
+	public ResultSet searchCustomerByLoginDetails(String username, String password) {
 		String str = "SELECT * FROM Customer WHERE CustomerUsername LIKE '" + username + "' AND CustomerPassword LIKE '" + password + "';";
 		ResultSet rs = runQuery(str);
 		try {
-			if (rs.next()) {
+			rs.first();
+			}
+		catch (SQLException e) {
+			e.printStackTrace();
+		};
+		return rs;
+	}
+	
+	public boolean validateCredentials(String username, String password) {
+		ResultSet rs = searchCustomerByLoginDetails(username,password);
+		try {
+			if (rs == null || !rs.first()) {
+				return false;
+			}
+			else {
 				return true;
 			}
 		}
@@ -373,7 +387,7 @@ public class DatabaseManager {
 		}
 		return false;
 	}
-	
+
 //----------------------------------------------------------------------
 	//SQL queries
 //----------------------------------------------------------------------

@@ -38,6 +38,7 @@ public class Basket {
     		int seatType = basket.get(i).getSeatType();
     		for (int j = 0; j < plays.size(); j++) {
     			if (playId == plays.get(j).getPlayId()) {
+    				basket.get(i).setPlay(plays.get(j));
     				switch (seatType) {
     				case (0):
     					basket.get(i).setPrice(plays.get(j).getPlayStallsPrice());
@@ -65,6 +66,7 @@ public class Basket {
     	for (int i = 0; i < basket.size(); i++) {
     		basket.get(i).printCheckoutDetails(i);
     	}
+    	getBasketTotal();
     	System.out.println("Total: " + getFormattedPrice(this.total));
     }
     

@@ -49,7 +49,7 @@ public class Controller {
 				"4. Shopping Basket", "5. Employee Login", "6. Logout", "0. Exit" };
 		subMenu = new String[] { "1. Add ticket to basket", "2. Return to previous screen" };
 		basketMenu = new String[] { "1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu" };
-		employeeMenu = new String[] { "1. Add show", "2. Remove show", "3. Logout" };
+		employeeMenu = new String[] { "1. Add play", "2. Remove play", "3. Logout" };
 	}
 
 	public void run() {
@@ -58,33 +58,12 @@ public class Controller {
 				System.out.println("Welcome " + employee.getEmployeeUsername() + "! Please enter your selection");
 				printMenu(employeeMenu);
 				int employeeMenuSelection = inputReader.getNextInt(0, employeeMenu.length);
-
+//				ArrayList<Play> plays = dbm.constructArrayList(dbm.addPlay());
+				
 				switch (employeeMenuSelection) {
 				case 1:
-
-					System.out.println("Title: ");
-					String title = inputReader.getInput();
-					System.out.println("Type: ");
-					int type = inputReader.getInt();
-					System.out.println("Description: ");
-					String description = inputReader.getInput();
-					System.out.println("Time: ");
-					String time = inputReader.getInput();
-					System.out.println("Date: ");
-					String date = inputReader.getInput();
-					System.out.println("Duration: ");
-					String duration = inputReader.getInput();
-					System.out.println("Circle Seat Price: ");
-					int circleSeatPrice = inputReader.getInt();
-					System.out.println("Stalls Seat Price: ");
-					int stallsSeatPrice = inputReader.getInt();
-					System.out.println("Language: ");
-					String language = inputReader.getInput();
-					System.out.println("Musical Accompaniment: ");
-					int musicalAccompaniment = inputReader.getInt();
-					Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice,
-							language, musicalAccompaniment);
-					dbm.addPlay(p);
+					registerPlay();
+					System.out.println("New play has been added.");
 					break;
 					
 				case 2: 
@@ -495,6 +474,38 @@ public class Controller {
 			}
 		}
 	}
+	
+	//add a play
+	public void registerPlay() {
+		System.out.println("Title: ");
+		String title = inputReader.getInput();
+		System.out.println("Type: ");
+		int type = inputReader.getInt(0, 3);
+		System.out.println("Description: ");
+		String description = inputReader.getInput();
+		System.out.println("Time: ");
+		String time = inputReader.getInput();
+		System.out.println("Date: ");
+		String date = inputReader.getInput();
+		System.out.println("Duration: ");
+		String duration = inputReader.getInput();
+		System.out.println("Circle Seat Price: ");
+		int circleSeatPrice = inputReader.getInt();
+		System.out.println("Stalls Seat Price: ");
+		int stallsSeatPrice = inputReader.getInt();
+		System.out.println("Language: ");
+		String language = inputReader.getInput();
+		System.out.println("Musical Accompaniment: ");
+		int musicalAccompaniment = inputReader.getNextInt(0, 1);
+		Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice,
+				language, musicalAccompaniment);
+		dbm.addPlay(p);
+	}
+	
+	//remove play
+	
+	
+	
 
 	// these are helper methods used to call methods in the dbm class
 	// some of those methods behave according to the type of object passed to them,

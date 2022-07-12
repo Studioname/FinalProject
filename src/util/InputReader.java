@@ -11,8 +11,35 @@ public class InputReader {
 		return scanner.nextLine();
 	}
 	public int getInt() {
-		return scanner.nextInt();
+		int input = -1;
+		while (input == -1) {
+			try {
+				input = scanner.nextInt();
+			}
+			catch (InputMismatchException e) {
+				scanner.nextLine();
+				input = -1;
+			}
+		}
+		scanner.nextLine();
+		return input;
 	}
+	
+	public int getInt(int minRange, int maxRange) {
+        int input = -1;
+        while (input < minRange || input > maxRange){
+            try {
+                input = scanner.nextInt();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please enter a number between " + minRange + " and " + maxRange);
+                scanner.nextLine();
+            }
+        }
+        scanner.nextLine();
+        return input;
+    } 
+	
 	public int getNextInt() {
 		int input = -2;
 		while (input == -2) {

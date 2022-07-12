@@ -67,7 +67,7 @@ public class Controller {
 					break;
 
 				case 2:
-//					dbm.removePlay();
+					removePlay();
 					break;
 				case 3:
 					logout();
@@ -477,26 +477,26 @@ public class Controller {
 
 	// add a play
 	public void registerPlay() {
-		System.out.println("Title: ");
+		System.out.println("Please enter a title:");
 		String title = inputReader.getInput();
-		System.out.println("Type: ");
-		int type = inputReader.getInt(0, 3);
-		System.out.println("Description: ");
+		System.out.println("Please enter a type:" + '\n' + "1. Theatre" + '\n' + "2. Musical" + '\n' + "3. Opera" + '\n' + "4. Concert");
+		int type = inputReader.getInt(1, 4) - 1;
+		System.out.println("Please enter a description:");
 		String description = inputReader.getInput();
-		System.out.println("Time: ");
+		System.out.println("Please enter a time, using the 24hr format HH:MM:SS");
 		String time = inputReader.getInput();
-		System.out.println("Date: ");
+		System.out.println("Please enter a date, using the format YYYY-MM-DD");
 		String date = inputReader.getInput();
-		System.out.println("Duration: ");
+		System.out.println("Please enter a duration, using the 24hr format HH:MM:SS");
 		String duration = inputReader.getInput();
-		System.out.println("Circle Seat Price: ");
-		int circleSeatPrice = inputReader.getInt();
-		System.out.println("Stalls Seat Price: ");
+		System.out.println("Please enter a price for Stalls Seats as a whole number, in pence:");
 		int stallsSeatPrice = inputReader.getInt();
-		System.out.println("Language: ");
+		System.out.println("Please enter a price for Circle Seats as a whole number, in pence:");
+		int circleSeatPrice = inputReader.getInt();
+		System.out.println("Please enter a language:");
 		String language = inputReader.getInput();
-		System.out.println("Musical Accompaniment: ");
-		int musicalAccompaniment = inputReader.getNextInt(0, 1);
+		System.out.println("Will the play have Musical Accompaniment?" + '\n' + "1. Yes" + '\n' + "2. No");
+		int musicalAccompaniment = inputReader.getNextInt(1, 2)-1;
 		Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice, language,
 				musicalAccompaniment);
 		dbm.addPlay(p);
@@ -504,28 +504,45 @@ public class Controller {
 
 	// remove play
 	public void removePlay() {
-		ArrayList<Play> searchPlay = dbm.constructArrayList(dbm.searchPlay(), callPlay());
-		System.out.println("Please enter the title of play you wish to remove ");
+		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+		dbm.printBasic(plays, callPlay());
+		System.out.println("What is the name of the play you would like to remove?");
 		String searchTitle = inputReader.nextLine();
 		ArrayList<Play> results = new ArrayList<>();
-		for (int i = 0; i < searchPlay.size(); i++) {
-			if (searchPlay.get(i).getPlayTitle().contains(searchTitle)) {
-				results.add(searchPlay.get(i));
+		for (int i = 0; i < plays.size(); i++) {
+			if (plays.get(i).getPlayTitle().equalsIgnoreCase(searchTitle) || plays.get(i).getPlayTitle().toLowerCase().contains(searchTitle.toLowerCase())) {
+				results.add(plays.get(i));
 			}
-			System.out.println("Select a number, enter 0 to exit");
-			dbm.printBasic(results, callPlay());
-			int input = inputReader.getNextInt(1, 2);
-			Play play = results.get(i - 1);
-			play.printPlayDetails();
-			System.out.println(
-					"Please select an option:" + '\n' + "1.To delete this play" + '\n' + "2.To return to main menu");
-			switch (input) {
+		}
+		//if we don't find any plays with that name the function exits
+		if (results.size() == 0) {
+			System.out.println("No plays with that name found");
+			return;
+		}
+		System.out.println("Select a play from the following list, or enter 0 to exit:");
+		dbm.printBasic(results, callPlay());
+		int playSelection = inputReader.getNextInt(0, results.size());
+		
+		Play play = results.get(playSelection - 1);
+		play.printPlayDetails();
+		System.out.println("" + '\n' + "Please select an option:" + '\n' + "1. Delete play" + '\n' + "2. Return to Employee Menu");
+		int deleteSelectionChoice = inputReader.getNextInt(1, 2);
+		switch (playSelection) {
+		case 1:
+			System.out.println("Are you sure you would like to delete this play?" + '\n' + "1. Yes" + '\n' + "2.No");
+			int confirmSelection = inputReader.getNextInt(1, 2);
+			switch (confirmSelection) {
 			case 1:
-				break;
+				dbm.removeBookingsByPlayId(play);
+				dbm.removePlay(play);
+				System.out.println("Play deleted.");
 			case 2:
 				break;
-
+			default: 
+				break;
 			}
+		case 2:
+			break;
 		}
 	}
 

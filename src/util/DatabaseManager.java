@@ -20,12 +20,20 @@ public class DatabaseManager {
 	private Connection conn;
 	
 //----------------------------------------------------------------------
-	//jdbc methods
+	//dbm methods
 //----------------------------------------------------------------------
+	/**
+	 * Constructor for the DatabaseManager class
+	 */
 	public DatabaseManager() {
 		conn = null;
 	}
 	
+	/**
+	 * Connects class to given dbName at given url. Login credentials are located in credentials.txt
+	 * @param dbName
+	 * @param url
+	 */
 	public void connect(String dbName, String url) {
 
 		try {
@@ -50,8 +58,8 @@ public class DatabaseManager {
 		}
 	}
 
-	/*
-	 * 4. Prepare a query statement to run - DONE :) 5. Execute query - DONE
+	/**
+	 * Returns a ResultSet from executing a prepared statement
 	 */
 
 	public ResultSet runQuery(String sql) {
@@ -86,27 +94,11 @@ public class DatabaseManager {
 
 	}
 	
-	public void printQueryResult(ResultSet rs) {
-		try {
-			if (rs != null) {
-				int rowcount = 0;
-				if (rs.last()) {
-					rowcount = rs.getRow();
-					rs.beforeFirst(); // not rs.first() because the rs.next() below will move on, missing the first
-											// element
-				}
-				System.out.println("\n Success.  Result set has " + rowcount + " rows");
-			} else {
-				System.out.println("\n Success.  No results returned");
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 5. Process Results
-	
+	/**
+	 * Returns an ArrayList of Strings containing the column names from given ResultSet
+	 * @param rs
+	 * @return
+	 */
 	public ArrayList<String> getColumnNames(ResultSet rs) {
 		try {
 			ResultSetMetaData rsMetaData = rs.getMetaData();
@@ -124,13 +116,21 @@ public class DatabaseManager {
 		}
 	}
 	
+	//not sure if this is needed
+	/**
+	 * Iterates through the given ArrayList and prints the contents
+	 * @param names
+	 */
 	public void printColumnNames(ArrayList<String> names) {
 			for (int i = 0; i > names.size(); i++) {
 				//we can edit the column names to make them look nicer
 				System.out.println(names.get(i));
 		} 
 	}	      
-
+	
+	/**
+	 * Closes connection
+	 */
 	public void close() {
 		try {
 			conn.close();
@@ -157,15 +157,15 @@ public class DatabaseManager {
 	//i have included the callBooking, callPlay, callCustomer methods in the controller class
 	//because that is the class that will be invoking them
 	
-	//superclass - animal
-	//subclass - cat, dog, mouse
-	//public void petAnimal(Animal animal){... pets animal}
-	//petAnimal(dog);
-	//public void washVehicle(Vehicle);
-	//washVehicle(motorbike);
-	
-	
-	
+	/**
+	 * Takes a member of Object class, returns generic ArrayList
+	 * The type of ArrayList is returns is determined by the type of the object passed to it, 
+	 * namely callPlay(), callCustomer() etc. 
+	 * @param <E>
+	 * @param rs
+	 * @param object
+	 * @return
+	 */
 	public <E> ArrayList<E> constructArrayList(ResultSet rs, Object object) {
 		if (object instanceof Play) {
 			ArrayList<Play> r = new ArrayList<Play>();
@@ -216,6 +216,10 @@ public class DatabaseManager {
 		}
 	}
 	
+	/**
+	 * Takes a generic ArrayList and an Object, and prints ArrayList content depending on the type
+	 * of object passed to it
+	 */
 	public < E > void printBasic(ArrayList< E > arrayList, Object object) {
 		if (object instanceof Play) {
 			for (int i = 0; i < arrayList.size(); i++) {
@@ -238,13 +242,16 @@ public class DatabaseManager {
             }
         }
 	}
-	
-	//input validation - prevent duplicates from being entered, or entries with null value
 
 //----------------------------------------------------------------------
 	//play methods
 //----------------------------------------------------------------------
 	
+	/**
+	 * Creates a Play object from a ResultSet object [database query result]
+	 * @param rs
+	 * @return
+	 */
 	public Play fetchPlayObject(ResultSet rs) {
 		try {
 			int playId = rs.getInt("PlayId");
@@ -270,6 +277,13 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	//play java queries
 	
+	/**
+	 * Takes an ArrayList of Plays and a date string. Iterates through the passed ArrayList
+	 * and adds any Play objects with a matching date to a new ArrayList, which is then returned
+	 * @param plays
+	 * @param date
+	 * @return
+	 */
 	public ArrayList<Play> searchPlayByDate(ArrayList<Play> plays, String date) {
 		ArrayList<Play> result = new ArrayList<Play>();
 		for (int i = 0; i < plays.size(); i++) {
@@ -280,6 +294,13 @@ public class DatabaseManager {
 		return result;
 	}
 	
+	/**
+	 * Takes an ArrayList of Plays and a string. Iterates through the passed ArrayList
+	 * and adds any Play objects with a matching name to a new ArrayList, which is then returned
+	 * @param plays
+	 * @param name
+	 * @return
+	 */
 	public ArrayList<Play> searchPlayByTitle(ArrayList<Play> plays, String name) {
 		ArrayList<Play> result = new ArrayList<Play>();
 		for (int i = 0; i < plays.size(); i++) {
@@ -290,8 +311,14 @@ public class DatabaseManager {
 		return result;
 	}
 	
+	/**
+	 * 	 * Takes an ArrayList of Plays and a play Id. Iterates through the passed ArrayList
+	 * and returns the first Play objects with a matching playId
+	 * @param plays
+	 * @param id
+	 * @return
+	 */
 	public Play searchPlayById(ArrayList<Play> plays, int id) {
-		ArrayList<Play> result = new ArrayList<Play>();
 		for (int i = 0; i < plays.size(); i++) {
 			if (plays.get(i).getPlayId() == id){
 				return plays.get(i);
@@ -304,7 +331,7 @@ public class DatabaseManager {
 	//booking methods
 //----------------------------------------------------------------------
 	/**
-	 * Takes a ResultSet object and creates a Booking Object from it
+	 * Takes a ResultSet object and creates a Booking object from it
 	 * @param ResultSet rs - Gotten from searchBooking();
 	 * @return returns a booking object
 	 */
@@ -331,10 +358,16 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	//booking java queries
 
-	public Booking searchBookingById(ArrayList<Booking> bookings, int id) {
-		ArrayList<Booking> result = new ArrayList<Booking>();
+	/**
+	 * Takes an ArrayList of booking objects and an integer, and iterates through the ArrayList,
+	 * returning the first Booking object with a matching bookingId
+	 * @param bookings
+	 * @param id
+	 * @return
+	 */
+	public Booking searchBookingById(ArrayList<Booking> bookings, int bookingId) {
 		for (int i = 0; i < bookings.size(); i++) {
-			if (bookings.get(i).getBookingId() == id){
+			if (bookings.get(i).getBookingId() == bookingId){
 				return bookings.get(i);
 			}
 		}
@@ -374,8 +407,14 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	//customer java queries
 
+	/**
+	 * Takes an ArrayList of Customer objects and an integer, iterates through the ArrayList and returns
+	 * the first Customer object with a matching customerId
+	 * @param customers
+	 * @param id
+	 * @return
+	 */
 	public Customer searchCustomerById(ArrayList<Customer> customers, int id) {
-		ArrayList<Customer> result = new ArrayList<Customer>();
 		for (int i = 0; i < customers.size(); i++) {
 			if (customers.get(i).getCustomerId() == id){
 				return customers.get(i);
@@ -384,8 +423,12 @@ public class DatabaseManager {
 		return null;
 	}
 	
-	//validate login
-	
+	/**
+	 * Returns a ResultSet object from a database query looking for Customer entries with matching credentials
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public ResultSet searchCustomerByLoginDetails(String username, String password) {
 		String str = "SELECT * FROM Customer WHERE CustomerUsername LIKE '" + username + "' AND CustomerPassword LIKE '" + password + "';";
 		ResultSet rs = runQuery(str);
@@ -398,6 +441,13 @@ public class DatabaseManager {
 		return rs;
 	}
 	
+	/**
+	 * Returns true or false depending on whether there is an entry in the Customer table with a matching
+	 * username and password string
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public boolean validateCredentials(String username, String password) {
 		ResultSet rs = searchCustomerByLoginDetails(username,password);
 		try {
@@ -419,8 +469,12 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	//Play
 //----------------------------------------------------------------------
+	/**
+	 * Adds a play object to the Play table in the database 
+	 * @param play
+	 * @return
+	 */
 	public boolean addPlay(Play play) {
-
 		//validation
 		String test = "SELECT * FROM Play WHERE PlayType = " + play.getPlayType() + " AND PlayTitle LIKE '" + play.getPlayTitle() + "' AND PlayTime = '" + play.getPlayTime() + "' AND PlayDate = '" + play.getPlayDate() + "' AND PlayDuration = '" + play.getPlayDuration() + "' AND PlayLanguage LIKE '" + play.getPlayLanguage() + "' AND PlayMusicalAccompaniment = " + play.getPlayMusicalAccompaniment() + ";";
 		ResultSet rs = runQuery(test);
@@ -440,21 +494,40 @@ public class DatabaseManager {
 		}
 	}
 	
+	/**
+	 * Removes entry from the Play table with matching playId
+	 * @param play
+	 * @return
+	 */
 	public ResultSet removePlay(Play play) {
 		String str = "DELETE FROM Play WHERE PlayId = " + play.getPlayId()+";";
 		return runQuery(str);
 	}
 	
+	/**
+	 * Removes all bookings from the Booking table which have the same playId as given play object
+	 * @param play
+	 * @return
+	 */
 	public ResultSet removeBookingsByPlayId(Play play) {
 		String str = "DELETE FROM Booking WHERE PlayId =" + play.getPlayId() + ";";
 		return runQuery(str);
 	}
 	
+	/**
+	 * Returns a ResultSet object containing all plays from the Play table which have not yet been performed,
+	 * ie, which start at a date later or equal to the current date
+	 * @return
+	 */
 	public ResultSet searchPlay() {
 		String str = "SELECT * FROM Play WHERE PlayDate >= CURRENT_DATE;";
 		return runQuery(str);
 	}
 	
+	/**
+	 * Returns a ResultSet object containing all plays from the Play table
+	 * @return
+	 */
 	public ResultSet searchAllPlay() {
 		String str = "SELECT * FROM Play;";
 		return runQuery(str);
@@ -463,19 +536,31 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	//Booking
 //----------------------------------------------------------------------
+	
+	/**
+	 * Returns a ResultSet object containing all Bookings
+	 * @return
+	 */
 	public ResultSet searchBooking() {
 		String str = "SELECT * FROM Booking;";
 		return runQuery(str);
 	}
 	
+	/**
+	 * Returns a ResultSet object from the Booking table which shares the same BookingId as the given parameter
+	 * @param id
+	 * @return
+	 */
 	public ResultSet getBookingById(int id) {
 		String str = "SELECT * FROM Booking WHERE BookingId = " + id + ";";
 		return runQuery(str);
 	}
 	
-	/*
-	 * Invokes seatIsFree() to check whether the seat is free [also precludes identical booking.] 
+	/**
+	 * Invokes seatIsFree() to check whether the seat is free [also precludes double booking.] 
 	 * If seatIsFree returns true, adds booking to the database and returns true. Else returns false.
+	 * @param booking
+	 * @return
 	 */
 	public boolean addBooking(Booking booking) {
 		
@@ -492,11 +577,20 @@ public class DatabaseManager {
 	//Customer
 //----------------------------------------------------------------------
 	
+	/**
+	 * Returns a ResultSet object containing all entries from the Customer table
+	 * @return
+	 */
 	public ResultSet searchCustomer() {
 		String str = "SELECT * FROM Customer;";
 		return runQuery(str);
 	}
 	
+	/**
+	 * Takes a Customer object and pushes it to the Customer table in the database. Returns true if successful, false if not
+	 * @param customer
+	 * @return
+	 */
 	public boolean addCustomer(Customer customer) {
 		String test = "SELECT * FROM Customer WHERE CustomerForename LIKE '" + customer.getCustomerForename()+ "' AND CustomerSurname LIKE '" + customer.getCustomerSurname() + "' AND CustomerAddress LIKE '" + customer.getCustomerAddress() + "' AND CustomerTelephone LIKE '" + customer.getCustomerTelephone() + "';";
 		ResultSet rs = runQuery(test);
@@ -514,6 +608,11 @@ public class DatabaseManager {
 		return false;
 	}
 	
+	/**
+	 * Returns a ResultSet object from the Customer table for the customer entry with a customerId matching the given parameter
+	 * @param id
+	 * @return
+	 */
 	public ResultSet getCustomerById(int id) {
 		String str = "SELECT * FROM Customer WHERE CustomerId = " + id + ";";
 		return runQuery(str);
@@ -543,11 +642,20 @@ public class DatabaseManager {
         }
     }
     
+    /**
+     * Returns a ResultSet containing all entries from the Employee table
+     * @return
+     */
     public ResultSet searchEmployee() {
         String str = "SELECT * FROM Employee;";
         return runQuery(str);
     }
 
+    /**
+     * Takes an Employee object and adds it to the Employee table
+     * @param employee
+     * @return
+     */
     public boolean addEmployee(Employee employee) {
         String test = "SELECT * FROM Employee WHERE EmployeeUsername LIKE '" + employee.getEmployeeUsername() + "' AND EmployeePassword LIKE '" + employee.getEmployeePassword( )+ "';";
         ResultSet rs = runQuery(test);
@@ -565,11 +673,22 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Returns the ResultSet object from the Employee table with a matching employeeId 
+     * @param id
+     * @return
+     */
     public ResultSet getEmployeeById(int id) {
         String str = "SELECT * FROM Employee WHERE EmployeeId = " + id + ";";
         return runQuery(str);
     }
     
+    /**
+     * Returns true if there is an entry in the Employee table with matching username and password, false if not
+     * @param username
+     * @param password
+     * @return
+     */
     public boolean validateEmployeeCredentials(String username, String password) {
         ResultSet rs = searchEmployeeByLoginDetails(username,password);
         try {
@@ -586,6 +705,12 @@ public class DatabaseManager {
         return false;
     }
     
+    /**
+     * Returns a ResultSet object containing the entry in Employee table with matching username and password
+     * @param username
+     * @param password
+     * @return
+     */
     public ResultSet searchEmployeeByLoginDetails(String username, String password) {
         String str = "SELECT * FROM Employee WHERE EmployeeUsername LIKE '" + username + "' AND EmployeePassword LIKE '" + password + "';";
         ResultSet rs = runQuery(str);
@@ -621,6 +746,15 @@ public class DatabaseManager {
 		return false;
 	}
 	
+	/**
+	 * Returns an ArrayList of wrapped integers containing the numbers of any occupied seats of a given seat type
+	 * for a given play, counting upwards from seatNumber to seatNumber + noOfSeats
+	 * @param playId
+	 * @param seatType
+	 * @param seatNumber
+	 * @param noOfSeats
+	 * @return
+	 */
 	public ArrayList<Integer> getOccupiedSeats(int playId, int seatType, int seatNumber, int noOfSeats) {
 		ArrayList<Integer> occupiedSeats = new ArrayList<>();
 		
@@ -658,20 +792,9 @@ public class DatabaseManager {
 		return constructArrayList(rs2, play);
 		}
 	}
-//date time filtering
-
-//SELECT * 
-//FROM MyTable 
-//WHERE playDate >= 'CURRENT_DATE';
-
-
-//contact details
 
 //looking to collect a range of data regarding ticket buying habits and perhaps with a view to introducing more theatregoers
 //change ticket
 //group booking discount possible
 //change shows
 //users can delete data
-
-//Runnable r = () -> setNum(1);
-//r.run();

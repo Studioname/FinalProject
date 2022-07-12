@@ -178,7 +178,7 @@ public class Controller {
 	}
 
 	/**
-	 * Returns an String containing the contents of a formatted ArrayList making them sentence friendly.
+	 * Returns an String containing the contents of a formatted ArrayList making it mid sentence friendly.
 	 * @param occupiedSeats
 	 * @return
 	 */

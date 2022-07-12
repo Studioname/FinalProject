@@ -442,7 +442,7 @@ public class DatabaseManager {
 	}
 	
 	public ResultSet removePlay(Play play) {
-		String str = "DELETE FROM Play WHERE PlayId = " + play.getPlayId();
+		String str = "DELETE FROM Play WHERE PlayTitle LIKE '" + play.getPlayTitle()+"';";
 		return runQuery(str);
 	}
 	

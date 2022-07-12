@@ -59,17 +59,17 @@ public class Controller {
 				printMenu(employeeMenu);
 				int employeeMenuSelection = inputReader.getNextInt(0, employeeMenu.length);
 //				ArrayList<Play> plays = dbm.constructArrayList(dbm.addPlay());
-				
+
 				switch (employeeMenuSelection) {
 				case 1:
 					registerPlay();
 					System.out.println("New play has been added.");
 					break;
-					
-				case 2: 
+
+				case 2:
 //					dbm.removePlay();
 					break;
-				case 3: 
+				case 3:
 					logout();
 					break;
 				default:
@@ -474,8 +474,8 @@ public class Controller {
 			}
 		}
 	}
-	
-	//add a play
+
+	// add a play
 	public void registerPlay() {
 		System.out.println("Title: ");
 		String title = inputReader.getInput();
@@ -497,15 +497,37 @@ public class Controller {
 		String language = inputReader.getInput();
 		System.out.println("Musical Accompaniment: ");
 		int musicalAccompaniment = inputReader.getNextInt(0, 1);
-		Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice,
-				language, musicalAccompaniment);
+		Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice, language,
+				musicalAccompaniment);
 		dbm.addPlay(p);
 	}
-	
-	//remove play
-	
-	
-	
+
+	// remove play
+	public void removePlay() {
+		ArrayList<Play> searchPlay = dbm.constructArrayList(dbm.searchPlay(), callPlay());
+		System.out.println("Please enter the title of play you wish to remove ");
+		String searchTitle = inputReader.nextLine();
+		ArrayList<Play> results = new ArrayList<>();
+		for (int i = 0; i < searchPlay.size(); i++) {
+			if (searchPlay.get(i).getPlayTitle().contains(searchTitle)) {
+				results.add(searchPlay.get(i));
+			}
+			System.out.println("Select a number, enter 0 to exit");
+			dbm.printBasic(results, callPlay());
+			int input = inputReader.getNextInt(1, 2);
+			Play play = results.get(i - 1);
+			play.printPlayDetails();
+			System.out.println(
+					"Please select an option:" + '\n' + "1.To delete this play" + '\n' + "2.To return to main menu");
+			switch (input) {
+			case 1:
+				break;
+			case 2:
+				break;
+
+			}
+		}
+	}
 
 	// these are helper methods used to call methods in the dbm class
 	// some of those methods behave according to the type of object passed to them,

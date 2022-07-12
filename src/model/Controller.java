@@ -28,7 +28,10 @@ public class Controller {
 	boolean customerLoggedIn;
 	boolean employeeLoggedIn;
 	Employee employee;
-
+	
+	/**
+	 * Constructor for Controller class
+	 */
 	public Controller() {
 		validUsernameChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
 		validPasswordChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.!£$%^&*()+-=[]{}'#@~,/<>?|\"";
@@ -50,7 +53,10 @@ public class Controller {
 		basketMenu = new String[] { "1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu" };
 		employeeMenu = new String[] { "1. Add play", "2. Remove play", "3. Logout" };
 	}
-
+	
+	/**
+	 * Runs the Theatre Booking program
+	 */
 	public void run() {
 		while (running) {
 			while (employeeLoggedIn) {
@@ -61,7 +67,7 @@ public class Controller {
 
 				switch (employeeMenuSelection) {
 				case 1:
-					registerPlay();
+					createPlay();
 					break;
 				case 2:
 					removePlay();
@@ -140,36 +146,6 @@ public class Controller {
 			case 5:
 				employeeLogin();
 				break;
-//				//Employee register/login
-//				 Scanner sc = new Scanner(System.in);
-//				 String sp=" ";
-//				 System.out.println("Enter the Username");
-//				 String userName = sc.nextLine();
-//				 if((userName.contains(sp)) || userName.length()<6){
-//				     System.out.println("Invalid Username");
-//				     break;
-//				 }
-//
-//				 System.out.println("Enter the Password");
-//				 String userPass = sc.nextLine();
-//				 if((userPass.contains(sp)) || userPass.length()<8){
-//				     System.out.println("Invalid Password");
-//				     break;
-//				 }
-//
-//				 System.out.println(userName + " you are Registered Successfully");
-//
-//				 System.out.println("Enter the Username");
-//				 String loginName = sc.nextLine();
-//				 System.out.println("Enter the Password");
-//				 String loginPass = sc.nextLine();
-//
-//				 if(userName.equals(loginName) && userPass.equals(loginPass)){
-//				     System.out.println("Welcome "+loginName+" you have Logged-in Successfully");
-//				 }
-//				 else{
-//				     System.out.println("Username or password Mismatch");
-//				        }
 			case 6:
 				logout();
 			case 0:
@@ -181,26 +157,31 @@ public class Controller {
 		}
 
 	}
-//ladder of functions allowing users to go back and forth between menus
-//	public void searchByName(String name) {
-//		System.out.println("What is the name of the play you want to look for?");
-//		String input = inputReader.nextLine();
-//		ArrayList<Play> plays = dbm.constructPlayArrayList();
-//		dbm.printPlayArrayListDetails(plays);
-//	}
 
+	/**
+	 * Prints the contents of a String array
+	 * @param play
+	 * @return
+	 */
 	public void printMenu(String[] subMenu) {
 		for (int i = 0; i < subMenu.length; i++) {
 			System.out.println(subMenu[i]);
 		}
 	}
-
+	
+	/**
+	 * Welcomes the user
+	 */
 	public void printWelcome() {
 		System.out.println();
 		System.out.println("Welcome to the Theatre Royal!");
-		System.out.println();
 	}
 
+	/**
+	 * Returns an String containing the contents of a formatted ArrayList making them sentence friendly.
+	 * @param occupiedSeats
+	 * @return
+	 */
 	public String getOccupiedSeatNumbers(ArrayList<Integer> occupiedSeats) {
 		String str = "";
 		for (int i = 0; i < occupiedSeats.size(); i++) {
@@ -225,8 +206,10 @@ public class Controller {
 		return oneWeekFromNow.isBefore(playDate) || oneWeekFromNow.isEqual(playDate);
 	}
 
-	// booking prompt
-
+	/**
+	 * Takes a play argument, and collects information from the user to make a booking for it
+	 * @param play
+	 */
 	public void bookingPrompt(Play play) {
 		System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.");
 		int subMenuSelection = inputReader.getNextInt(1, 2);
@@ -240,8 +223,8 @@ public class Controller {
 			int noOfConcessions = getNoOfConcessions(noOfSeats);
 			int isPostal = getIsPostal(play);
 			if (addToBasketPrompt()) {
-				createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
-				createConcessionaryBookings(noOfConcessions);
+				basket.createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
+				basket.createConcessionaryBookings(noOfConcessions);
 			} else {
 				break;
 			}
@@ -253,17 +236,31 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Returns information collected from the user regarding what type of seats they want to book
+	 * @return
+	 */
 	public int getSeatType() {
 		System.out.println("What type of seat would you like to reserve? Please enter your selection.");
 		System.out.println("1. Stalls" + '\n' + "2. Circle");
 		return inputReader.getNextInt(1, 2) - 1;
 	}
 
+	/**
+	 * Returns information collected from the user regarding how many seats they want to book
+	 * @return
+	 */
 	public int getNoOfSeats() {
 		System.out.println("How many seats would you like to reserve?");
 		return inputReader.getNextInt();
 	}
 
+	/**
+	 * Returns information collected from the user regarding what seat number they want to reserve from
+	 * @param stallsOrCircle
+	 * @param noOfSeats
+	 * @return
+	 */
 	public int getSeatNumber(int stallsOrCircle, int noOfSeats) {
 		System.out.println("What number seat would you like to reserve from?");
 		// depending on whether they want a stalls or circle seat, we set the max
@@ -280,6 +277,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Prints to the console what seat numbers [if any] are occupied from the given list
+	 * @param occupiedSeats
+	 */
 	public void areSeatsOccupied(ArrayList<Integer> occupiedSeats) {
 		if (occupiedSeats.size() > 0) {
 			if (occupiedSeats.size() == 1) {
@@ -290,6 +291,16 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Returns an array of integers containing non-occupied seat numbers. The range starts at the user
+	 * selected seat number, and ends at seatNumber + noOfSeats
+	 * are 
+	 * @param play
+	 * @param stallsOrCircle
+	 * @param seatNumber
+	 * @param noOfSeats
+	 * @return
+	 */
 	public int[] checkSeatAvailability(Play play, int stallsOrCircle, int seatNumber, int noOfSeats) {
 		ArrayList<Integer> occupiedSeats = dbm.getOccupiedSeats(play.getPlayId(), stallsOrCircle, seatNumber,
 				noOfSeats);
@@ -307,11 +318,22 @@ public class Controller {
 		return seatNumbers;
 	}
 
+	/**
+	 * Returns information collected from the user regarding the number of tickets that are concessionary
+	 * @param noOfSeats
+	 * @return
+	 */
 	public int getNoOfConcessions(int noOfSeats) {
 		System.out.println("Enter the number of concessions. OAP, Student, etc");
 		return inputReader.getNextInt(0, noOfSeats);
 	}
 
+	/**
+	 * Returns information collected from the user regarding whether they want the tickets to be posted,
+	 * and whether they can be posted.
+	 * @param play
+	 * @return
+	 */
 	public int getIsPostal(Play play) {
 		System.out.println("Do you want the tickets posted?" + '\n' + "1. Yes" + '\n' + "2. No");
 		int isPostal = inputReader.getNextInt(1, 2);
@@ -329,6 +351,10 @@ public class Controller {
 		return isPostal;
 	}
 
+	/**
+	 * Returns information collected from the user regarding whether they want to add selected tickets to the basket
+	 * @return
+	 */
 	public boolean addToBasketPrompt() {
 		System.out.println("Add tickets to basket?" + '\n' + "1. Yes" + '\n' + "2. No");
 		int choice = inputReader.getNextInt(1, 2);
@@ -343,22 +369,14 @@ public class Controller {
 		}
 	}
 
-	// both of these need fixing
-	public void createConcessionaryBookings(int noOfConcessions) {
-		for (int i = 0; i < noOfConcessions; i++) {
-			basket.getItem(i).setConcession(1);
-		}
-	}
 
-	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions,
-			int isPostal) {
-		for (int i = 0; i < noOfSeats; i++) {
-			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
-			basket.addToBasket(b);
-		}
-	}
 
-	// we split one function into two so that we can search from result screen
+	/**
+	 * Prints and returns an array list of Play objects with a property (name or date) matching an input string
+	 * @param nameOrDate
+	 * @param plays
+	 * @return
+	 */
 	public ArrayList<Play> searchByNameOrDate(String nameOrDate, ArrayList<Play> plays) {
 		System.out.println("What is the " + nameOrDate + " of the show you would you like to search for?");
 		String searchTerm = inputReader.getInput();
@@ -374,6 +392,12 @@ public class Controller {
 		return plays;
 	}
 
+	/**
+	 * Presents the post name/date search menu screen to the user, allowing them to search again
+	 * if so desired
+	 * @param nameOrDate
+	 * @param allPlays
+	 */
 	public void searchPrompt(String nameOrDate, ArrayList<Play> allPlays) {
 		ArrayList<Play> results = searchByNameOrDate(nameOrDate, allPlays);
 		System.out.println("Select a play number, enter -1 to search again by " + nameOrDate
@@ -388,7 +412,10 @@ public class Controller {
 			bookingPrompt(play);
 		}
 	}
-
+	
+	/*
+	 * Prompts the user to login or register, guiding them through the process
+	 */
 	public void loginPrompt() {
 		System.out.println("To proceed with the purchase, please login." + '\n' + "1. Login" + '\n' + "2. Register"
 				+ '\n' + "0. Return to Main Menu");
@@ -407,6 +434,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Searches the Customer table for a row with given username and password, logs them in if the
+	 * search returns a positive result, else returns them to the login screen
+	 */
 	public void customerLogin() {
 		while (!customerLoggedIn) {
 			System.out.println("Please enter your username");
@@ -422,8 +453,10 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Collects information from the user to build a Customer object and pushes it to the database
+	 */
 	public void registerCustomer() {
-		// we get customer details, create customer object and push to db
 		System.out.println("Please enter your first name");
 		String forename = inputReader.getInput();
 		System.out.println("Please enter your second name");
@@ -454,6 +487,9 @@ public class Controller {
 		dbm.addCustomer(c);
 	}
 
+	/**
+	 * Logs out all employees and customers at the current terminal
+	 */
 	public void logout() {
 		if (customerLoggedIn || employeeLoggedIn) {
 			customerLoggedIn = false;
@@ -466,7 +502,10 @@ public class Controller {
 		}
 	}
 
-	// employee
+	/**
+	 * Takes employee username and password, querying the Employee table for a matching row.
+	 * If there is a positive result logs the employee in, else returns them to the employee menu
+	 */
 	public void employeeLogin() {
 		while (!employeeLoggedIn) {
 			System.out.println("Please enter your username");
@@ -482,8 +521,11 @@ public class Controller {
 		}
 	}
 
-	// add a play
-	public void registerPlay() {
+	/**
+	 * Collects information from the user [employee] and uses it to make a Play object, which is then
+	 * pushed to the database [Play table] 
+	 */
+	public void createPlay() {
 		System.out.println("Please enter a title:");
 		String title = inputReader.getInput();
 		System.out.println("Please enter a type:" + '\n' + "1. Theatre" + '\n' + "2. Musical" + '\n' + "3. Opera" + '\n' + "4. Concert");
@@ -510,7 +552,9 @@ public class Controller {
 		System.out.println("" + p.getPlayTitle() + " has been added to the database");
 	}
 
-	// remove play
+	/**
+	 * Guides the user [employee] through the process of removing a play from the database [Play table]
+	 */
 	public void removePlay() {
 		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 		dbm.printBasic(plays, callPlay());
@@ -554,6 +598,12 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Takes the passed string, turns it to char array, iterates through it to see whether it contains any
+	 * characters NOT found in the validUsernameChars string
+	 * @param string
+	 * @return
+	 */
 	public boolean validateCustomerUsername(String string) {
 		char[] chars = string.toCharArray();
 		for (int i = 0; i < chars.length; i++) {
@@ -564,6 +614,12 @@ public class Controller {
 		return true;
 	}
 	
+	/**
+	 * Takes the passed string, turns it to char array, iterates through it to see whether it contains any
+	 * characters NOT found in the validPasswordChars string
+	 * @param string
+	 * @return
+	 */
 	public boolean validateCustomerPassword(String string) {
 		char[] chars = string.toCharArray();
 		for (int i = 0; i < chars.length; i++) {
@@ -574,29 +630,46 @@ public class Controller {
 		return true;
 	}
 	
+	/**
+	 * Takes a string and returns whether it contains an "@" and a ".", which is primitive email validation.
+	 * @param string
+	 * @return
+	 */
 	public boolean validateCustomerEmail(String string) {
 		return string.contains("@") && string.contains(".");
 	}
 
-	// these are helper methods used to call methods in the dbm class
-	// some of those methods behave according to the type of object passed to them,
-	// so these methods
-	// pass an empty object
+	/**
+	 * Helper method to use with Generic methods in the dbm class, returns an empty Play object
+	 * @return
+	 */
 	public Play callPlay() {
 		Play play = new Play();
 		return play;
 	}
-
+	
+	/**
+	 * Helper method to use with Generic methods in the dbm class, returns an empty Booking object
+	 * @return
+	 */
 	public Booking callBooking() {
 		Booking booking = new Booking();
 		return booking;
 	}
-
+	
+	/**
+	 * Helper method to use with Generic methods in the dbm class, returns an empty Customer object
+	 * @return
+	 */
 	public Customer callCustomer() {
 		Customer customer = new Customer();
 		return customer;
 	}
-
+	
+	/**
+	 * Helper method to use with Generic methods in the dbm class, returns an empty Employee object
+	 * @return
+	 */
 	public Employee callEmployee() {
 		Employee employee = new Employee();
 		return employee;

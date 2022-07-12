@@ -57,6 +57,33 @@ public class Basket {
     	}
     }
     
+	/**
+	 * Loops through the basket and sets a given number of tickets to concessionary
+	 * @param noOfConcessions
+	 */
+	public void createConcessionaryBookings(int noOfConcessions) {
+		for (int i = 0; i < noOfConcessions; i++) {
+			basket.get(i).setConcession(1);
+		}
+	}
+	
+	/**
+	 * Creates booking objects with the given parameters and adds them to the basket
+	 * @param play
+	 * @param stallsOrCircle
+	 * @param noOfSeats
+	 * @param seatNumbers
+	 * @param noOfConcessions
+	 * @param isPostal
+	 */
+	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions,
+			int isPostal) {
+		for (int i = 0; i < noOfSeats; i++) {
+			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
+			basket.add(b);
+		}
+	}
+    
     public int getBasketTotal() {
     	return basketTotal;
     }

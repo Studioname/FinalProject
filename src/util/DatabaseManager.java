@@ -25,7 +25,7 @@ public class DatabaseManager {
 	public DatabaseManager() {
 		conn = null;
 	}
-
+	
 	public void connect(String dbName, String url) {
 
 		try {
@@ -240,7 +240,6 @@ public class DatabaseManager {
 	}
 	
 	//input validation - prevent duplicates from being entered, or entries with null value
-
 
 //----------------------------------------------------------------------
 	//play methods

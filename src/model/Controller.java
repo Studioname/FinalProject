@@ -17,11 +17,10 @@ public class Controller {
 	boolean running;
 	String[] defaultMenu;
 	String[] subMenu;
-	String[] searchBySubMenu;
 	String[] basketMenu;
 	String[] employeeMenu;
 	private final Basket basket;
-	String validChars;
+	String validUsernameChars;
 	String validPasswordChars;
 	int maxStallsSeats;
 	int maxCircleSeats;
@@ -31,7 +30,7 @@ public class Controller {
 	Employee employee;
 
 	public Controller() {
-		validChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
+		validUsernameChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
 		validPasswordChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.!£$%^&*()+-=[]{}'#@~,/<>?|\"";
 
 		maxStallsSeats = 120;
@@ -63,9 +62,7 @@ public class Controller {
 				switch (employeeMenuSelection) {
 				case 1:
 					registerPlay();
-					System.out.println("New play has been added.");
 					break;
-
 				case 2:
 					removePlay();
 					break;
@@ -437,10 +434,17 @@ public class Controller {
 		String telephone = inputReader.getInput();
 		System.out.println("Please enter your email address");
 		String email = inputReader.getInput();
-		System.out.println("Please enter a username");
-		String username = inputReader.getInput();
-		System.out.println("Please enter a password");
-		String password = inputReader.getInput();
+		//validation
+		System.out.println("Please enter a username, using a combination of letters, numbers, and -, . or _");
+		String username = " ";
+		while (!validateCustomerUsername(username)) {
+			username = inputReader.getInput();
+		}
+		System.out.println("Please enter a password, using a combination of letters, numbers and symbols");
+		String password = " ";
+		while (!validateCustomerPassword(password)) {
+			password = inputReader.getInput();
+		}
 		System.out.println("Please enter your credit card number");
 		String paymentDetails = inputReader.getInput();
 		Customer c = new Customer(username, password, forename, surname, address, telephone, email, paymentDetails);
@@ -500,6 +504,7 @@ public class Controller {
 		Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice, language,
 				musicalAccompaniment);
 		dbm.addPlay(p);
+		System.out.println("" + p.getPlayTitle() + " has been added to the database");
 	}
 
 	// remove play
@@ -544,6 +549,26 @@ public class Controller {
 		case 2:
 			break;
 		}
+	}
+	
+	public boolean validateCustomerUsername(String string) {
+		char[] chars = string.toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			if (!validUsernameChars.contains("" + chars[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean validateCustomerPassword(String string) {
+		char[] chars = string.toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			if (!validPasswordChars.contains("" + chars[i])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	// these are helper methods used to call methods in the dbm class

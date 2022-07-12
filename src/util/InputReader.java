@@ -10,6 +10,9 @@ public class InputReader {
 	public String getInput() {
 		return scanner.nextLine();
 	}
+	public int getInt() {
+		return scanner.nextInt();
+	}
 	public int getNextInt() {
 		int input = -2;
 		while (input == -2) {
@@ -39,5 +42,8 @@ public class InputReader {
 	}
 	public String nextLine() {
 		return scanner.nextLine();
+	}
+	public int nextInt() {
+		return scanner.nextInt();
 	}
 }

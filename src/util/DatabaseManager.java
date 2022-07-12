@@ -441,6 +441,11 @@ public class DatabaseManager {
 		}
 	}
 	
+	public ResultSet removePlay(Play play) {
+		String str = "DELETE FROM Play WHERE PlayId = " + play.getPlayId();
+		return runQuery(str);
+	}
+	
 	public ResultSet searchPlay() {
 		String str = "SELECT * FROM Play WHERE PlayDate >= CURRENT_DATE;";
 		return runQuery(str);

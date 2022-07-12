@@ -432,8 +432,11 @@ public class Controller {
 		String address = inputReader.getInput();
 		System.out.println("Please enter your telephone number");
 		String telephone = inputReader.getInput();
-		System.out.println("Please enter your email address");
-		String email = inputReader.getInput();
+		System.out.println("Please enter a valid email address");
+		String email = "";
+		while (!validateCustomerEmail(email)) {
+			email = inputReader.getInput();
+		}
 		//validation
 		System.out.println("Please enter a username, using a combination of letters, numbers, and -, . or _");
 		String username = " ";
@@ -569,6 +572,10 @@ public class Controller {
 			}
 		}
 		return true;
+	}
+	
+	public boolean validateCustomerEmail(String string) {
+		return string.contains("@") && string.contains(".");
 	}
 
 	// these are helper methods used to call methods in the dbm class

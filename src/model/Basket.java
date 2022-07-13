@@ -2,6 +2,12 @@ package model;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a shopping basket which the user can add Booking objects to
+ * @author Conan
+ *
+ */
+
 public class Basket {
 
     private ArrayList<Booking> basket;

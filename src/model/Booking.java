@@ -2,6 +2,13 @@ package model;
 
 import model.Customer;
 
+/**
+ * Represents Booking objects for shows. The user can create bookings for performances at the theatre. Some of
+ * the properties are user defined.
+ * @author Conan
+ *
+ */
+
 public class Booking {
 	private int bookingId;
 	private int playId;

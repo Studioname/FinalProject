@@ -1,5 +1,12 @@
 package model;
 
+/**
+ * Represents the Customer class. Customer objects can be created by users and pulled from the Customer
+ * table in database
+ * @author Conan
+ *
+ */
+
 public class Customer {
 	private int customerId;
 	private String customerUsername;

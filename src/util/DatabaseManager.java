@@ -16,6 +16,12 @@ import model.Customer;
 import model.Employee;
 import model.Play;
 
+/**
+ * Represents the Database Manager class, managing interactions between the program and the SQL database
+ * @author Conan
+ *
+ */
+
 public class DatabaseManager {
 	private Connection conn;
 	

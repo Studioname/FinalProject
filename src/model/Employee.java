@@ -1,5 +1,12 @@
 package model;
 
+/**
+ * Represents the Employee class. Can be created by the user and stored in the Employee table in the
+ * database, or be created from data pulled from the database
+ * @author Conan
+ *
+ */
+
 public class Employee {
 	private int employeeId;
 	private String employeeUsername;

@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 
+/**
+ * Represents the Controller class. This class takes the other classes in model and turns them into a program
+ * @author Conan
+ *
+ */
+
 public class Controller {
 	DatabaseManager dbm;
 	InputReader inputReader;

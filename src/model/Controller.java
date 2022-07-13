@@ -529,7 +529,7 @@ public class Controller {
 		System.out.println("Please enter a title:");
 		String title = inputReader.getInput();
 		System.out.println("Please enter a type:" + '\n' + "1. Theatre" + '\n' + "2. Musical" + '\n' + "3. Opera" + '\n' + "4. Concert");
-		int type = inputReader.getInt(1, 4) - 1;
+		int type = inputReader.getNextInt(1, 4) - 1;
 		System.out.println("Please enter a description:");
 		String description = inputReader.getInput();
 		System.out.println("Please enter a time, using the 24hr format HH:MM:SS");
@@ -539,9 +539,9 @@ public class Controller {
 		System.out.println("Please enter a duration, using the 24hr format HH:MM:SS");
 		String duration = inputReader.getInput();
 		System.out.println("Please enter a price for Stalls Seats as a whole number, in pence:");
-		int stallsSeatPrice = inputReader.getInt();
+		int stallsSeatPrice = inputReader.getNextInt();
 		System.out.println("Please enter a price for Circle Seats as a whole number, in pence:");
-		int circleSeatPrice = inputReader.getInt();
+		int circleSeatPrice = inputReader.getNextInt();
 		System.out.println("Please enter a language:");
 		String language = inputReader.getInput();
 		System.out.println("Will the play have Musical Accompaniment?" + '\n' + "1. Yes" + '\n' + "2. No");
@@ -559,7 +559,7 @@ public class Controller {
 		ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 		dbm.printBasic(plays, callPlay());
 		System.out.println("What is the name of the play you would like to remove?");
-		String searchTitle = inputReader.nextLine();
+		String searchTitle = inputReader.getInput();
 		ArrayList<Play> results = new ArrayList<>();
 		for (int i = 0; i < plays.size(); i++) {
 			if (plays.get(i).getPlayTitle().equalsIgnoreCase(searchTitle) || plays.get(i).getPlayTitle().toLowerCase().contains(searchTitle.toLowerCase())) {

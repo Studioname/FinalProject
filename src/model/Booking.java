@@ -14,39 +14,53 @@ public class Booking {
 	private Play play;
 	private Customer customer;
 	
-	//blank booking
+	/**
+	 * Empty constructor for Booking class
+	 */
 	public Booking() {
 		
 	}
 	
-	//user facing constructor for adding to basket
+	/**
+	 * User facing constructor for Booking class, takes user data which can be used to create Booking
+	 * objects which can be used in the basket class
+	 * @param playId
+	 * @param seatType
+	 * @param seatNumber
+	 * @param concession
+	 * @param isPostal
+	 */
 	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal) {
-		this.setPlayId(playId);
+		this.playId = playId;
 		this.setSeatType(seatType);
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
 	}
-	//user facing constructor for checking out
-	public Booking(int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
-		this.setPlayId(playId);
+
+	/**
+	 * Database facing constructor which creates a Booking object from the Booking table in the database
+	 * @param bookingId
+	 * @param playId
+	 * @param customerId
+	 * @param seatType
+	 * @param seatNumber
+	 * @param concession
+	 * @param isPostal
+	 */
+	public Booking(int bookingId, int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
+		this.bookingId = bookingId;
+		this.playId = playId;
 		this.customerId = customerId;
 		this.setSeatType(seatType);
 		this.setSeatNumber(seatNumber);
 		this.setConcession(concession);
 		this.setIsPostal(isPostal);
 	}
-	//database facing class
-	public Booking(int bookingId, int playId, int customerId, int seatType, int seatNumber, int concession, int isPostal) {
-		this.setBookingId(bookingId);
-		this.setPlayId(playId);
-		this.setCustomerId(customerId);
-		this.setSeatType(seatType);
-		this.setSeatNumber(seatNumber);
-		this.setConcession(concession);
-		this.setIsPostal(isPostal);
-	}
 	
+	/**
+	 * Prints the details of a booking to the console
+	 */
 	public void printBookingDetails() {
 		System.out.println("Booking Id: " + getBookingId());
 		System.out.println("Play Id: " + getPlayId());
@@ -56,18 +70,30 @@ public class Booking {
 		System.out.println("Concession: " + getFormattedConcession());
 		System.out.println("Postal ticket: " + getFormattedIsPostal());
 	}
+	
+	/**
+	 * Prints basic booking details to the console
+	 * @param index
+	 */
 	public void printBasicBookingDetails(int index) {
 		index += 1;
 		System.out.println("" + index + ". " + getPlayId() + ", " + getFormattedSeatType() + ", " + getSeatNumber() + ", " + getFormattedConcession());
 	}
 	
+	/**
+	 * Prints the details of a Booking to the console, used to review purchase
+	 * @param index
+	 */
 	public void printCheckoutDetails(int index) {
 		index += 1;
 		System.out.println("" + index + ". " + play.getPlayTitle() + ", " + getFormattedSeatType() + ", Seat no. " + getSeatNumber() + ", Concession: " + getFormattedConcession() + ", Price: " + getFormattedPrice() + ", Postal: " + getFormattedIsPostal());
 	}
 	
-	//formatting
-	
+	/**
+	 * SeatType is stored as an integer in the database, this function converts each value to its relevant
+	 * String
+	 * @return
+	 */
 	public String getFormattedSeatType() {
 		switch(seatType) {
 		case 0:
@@ -79,6 +105,11 @@ public class Booking {
 		}
 	}
 	
+	/**
+	 * Concession is stored as an integer in the database, this function converts it to the String value
+	 * it represents
+	 * @return
+	 */
 	public String getFormattedConcession() {
 		switch (concession) {
 			case 0:
@@ -90,6 +121,11 @@ public class Booking {
 		}
 	}
 	
+	/**
+	 * IsPostal is stored as an integer in the database, this function converts it to the String value
+	 * it represents
+	 * @return
+	 */
 	public String getFormattedIsPostal() {
 		switch (concession) {
 			case 0:
@@ -101,6 +137,11 @@ public class Booking {
 		}
 	}
 
+	/**
+	 * Returns a formatted version of a Booking's price variable with the price represented as a currency
+	 * string e.g converts 5000 to £50.00
+	 * @return
+	 */
 	public String getFormattedPrice() {
 		String priceString = Integer.toString(this.price);
 		char [] chars = priceString.toCharArray();
@@ -116,6 +157,9 @@ public class Booking {
 		return str;
 	}
 	
+	/**
+	 * Applies concessionary discount to price if the booking is concessionary. This represents a 25% discount
+	 */
 	public void applyConcession() {
 		if (getConcession() == 1) {
 			Double price = getPrice() * 0.75;
@@ -124,87 +168,138 @@ public class Booking {
 		}
 	}
 	
-	public boolean getPostageAvailable() {
-		return false;
-	}
-
+	/**
+	 * Returns bookingId
+	 * @return
+	 */
 	public int getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
-		this.bookingId = bookingId;
-	}
-
+	/**
+	 * Returns playId
+	 * @return
+	 */
 	public int getPlayId() {
 		return playId;
 	}
-
-	public void setPlayId(int playId) {
-		this.playId = playId;
-	}
 	
+	/**
+	 * Returns customerId
+	 * @return
+	 */
 	public int getCustomerId() {
 		return customerId;
 	}
 
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
+	/**
+	 * Returns seatType
+	 * @return
+	 */
 	public int getSeatType() {
 		return seatType;
 	}
 
+	/**
+	 * Sets seatType [0 = stalls, 1 = circle]
+	 * @param seatType
+	 */
 	public void setSeatType(int seatType) {
 		this.seatType = seatType;
 	}
-
+	
+	/**
+	 * Returns seatNumber
+	 * @return
+	 */
 	public int getSeatNumber() {
 		return seatNumber;
 	}
-
+	
+	/**
+	 * Sets seatNumber
+	 * @param seatNumber
+	 */
 	public void setSeatNumber(int seatNumber) {
 		this.seatNumber = seatNumber;
 	}
-
+	
+	/**
+	 * Returns concession [0 = no, 1 = yes]
+	 * @return
+	 */
 	public int getConcession() {
 		return concession;
 	}
 
+	/**
+	 * Sets concession
+	 * @param concession
+	 */
 	public void setConcession(int concession) {
 		this.concession = concession;
 	}
 
+	/**
+	 * Returns isPostal [0 = no, 1 = yes]
+	 * @return
+	 */
 	public int getIsPostal() {
 		return isPostal;
 	}
 
+	/**
+	 * Sets isPostal
+	 * @param isPostal
+	 */
 	public void setIsPostal(int isPostal) {
 		this.isPostal = isPostal;
 	}
 
+	/**
+	 * Returns price of Booking in pence
+	 * @return
+	 */
 	public int getPrice() {
 		return price;
 	}
 
+	/**
+	 * Sets price
+	 * @param price
+	 */
 	public void setPrice(int price) {
 		this.price = price;
 	}
 
+	/**
+	 * Gets the Play object for this booking
+	 * @return
+	 */
 	public Play getPlay() {
 		return play;
 	}
 
+	/**
+	 * Sets the play object for this booking
+	 * @param play
+	 */
 	public void setPlay(Play play) {
 		this.play = play;
 	}
 	
+	/**
+	 * Returns customer objecr for this booking
+	 * @return
+	 */
 	public Customer getCustomer() {
 		return customer;
 	}
 	
+	/**
+	 * Sets customer object
+	 * @param customer
+	 */
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}

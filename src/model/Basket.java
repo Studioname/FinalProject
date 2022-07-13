@@ -5,24 +5,34 @@ import java.util.ArrayList;
 public class Basket {
 
     private ArrayList<Booking> basket;
-    private int basketTotal;
-    private int postage;
 
-
+    /**
+     * Constructor for the Basket class
+     */
     public Basket() {
     	basket = new ArrayList<Booking>();
-    	basketTotal = 0;
-    	postage = 0;
     }
 
+    /**
+     * Returns booking at index i
+     * @param i
+     * @return
+     */
     public Booking getItem(int i) {
         return basket.get(i);
     }
 
+    /**
+     * Adds a booking to basket
+     * @param booking
+     */
     public void addToBasket(Booking booking) {
     	basket.add(booking);
     }
     
+    /**
+     * Calls the printBasicBookingDetails for each booking in the basket
+     */
     public void printBasketContents() {
     	for (int i = 0; i < basket.size(); i++) {
     		Booking booking = basket.get(i);
@@ -30,11 +40,19 @@ public class Basket {
     	}
     }
     
+    /**
+     * Returns the size of the basket
+     * @return
+     */
     public int getSize() {
     	return basket.size();
     }
     
-    //we nested loop through the basket because there might be different plays in there
+    /**
+     * Iterates through the basket, gets the playId for each booking, and fetches the play with that Id
+     * from the database. Gets the price from said play and applies it to the relevant booking
+     * @param plays
+     */
     public void setBookingPrices(ArrayList<Play> plays){
     	for (int i = 0; i < basket.size(); i++) {
     		int playId = basket.get(i).getPlayId();
@@ -84,19 +102,22 @@ public class Basket {
 		}
 	}
     
-    public int getBasketTotal() {
-    	return basketTotal;
-    }
-    public void setBasketTotal(int basketTotal) {
-    	this.basketTotal = basketTotal;
-    }
-    
+	/**
+	 * Iterates through the basket and uses the applyConcession method, which checks to see if a booking
+	 * is concessionary and if so modifies the price
+	 * @return
+	 */
+
     public void applyConcessions() {
     	for (int i = 0; i < basket.size(); i++) {
     		basket.get(i).applyConcession();
     	}
     }
     
+    /**
+     * Returns the total price of bookings in the basket
+     * @return
+     */
     public int getBookingsTotal() {
 		int total = 0;
 		for (int i = 0; i < basket.size(); i++) {
@@ -105,6 +126,9 @@ public class Basket {
 		return total;
     }
 	
+    /**
+     * Prints the relevant basket information with relevant pricing details
+     */
     public void printCheckoutDetails() {
     	System.out.println("You currently have " + basket.size() + " items in your basket. These are:");
     	for (int i = 0; i < basket.size(); i++) {
@@ -115,7 +139,15 @@ public class Basket {
     	System.out.println("Total: " + getFormattedPrice(getBookingsTotal() + calculatePostage()));
     }
     
+    /**
+     * Takes a number, returns a string converting it to currency (£)
+     * @param price
+     * @return
+     */
 	public String getFormattedPrice(int price) {
+		if (price == 0) {
+			return "£0.00";
+		}
 		String priceString = Integer.toString(price);
 		char [] chars = priceString.toCharArray();
 		String str = "£";
@@ -130,15 +162,13 @@ public class Basket {
 		return str;
 	}
 	
-	//calculate postage
+	/**
+	 * Calculates the cost of postage based upon the number of concessions vs tickets
+	 * @return
+	 */
 	public int calculatePostage() {
-		int noOfConcessions = 0;
 		int noOfBookings = basket.size();
-		for (int i = 0; i < noOfBookings; i++) {
-			if (basket.get(i).getConcession() == 1) {
-				noOfConcessions++;
-			}
-		}
+		int noOfConcessions = getNoOfConcessions();
 		if (noOfConcessions == 0) {
 			return noOfBookings * 100;
 		}
@@ -148,5 +178,19 @@ public class Basket {
 		else {
 			return 100;
 		}
+	}
+	
+	/**
+	 * Returns the number of concessionary tickets in the basket
+	 * @return
+	 */
+	public int getNoOfConcessions() {
+		int noOfConcessions = 0;
+		for (int i = 0; i < basket.size(); i++) {
+			if (basket.get(i).getConcession() == 1) {
+				noOfConcessions++;
+			}
+		}
+		return noOfConcessions;
 	}
 }

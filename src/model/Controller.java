@@ -443,6 +443,10 @@ public class Controller {
 	 */
 	public void searchPrompt(String nameOrDate, ArrayList<Play> allPlays) {
 		ArrayList<Play> results = searchByNameOrDate(nameOrDate, allPlays);
+		if (results.size() == 0) {
+			System.out.println("No performances found with that " + nameOrDate + ". Returning to Main Menu");
+			return;
+		}
 		System.out.println("Select a play number, enter -1 to search again by " + nameOrDate
 				+ ", or enter 0 to go to the previous screen");
 		int selection = inputReader.getNextInt(-1, results.size());

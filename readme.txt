@@ -20,3 +20,15 @@ Follow the appropriate link and install the appropriate development kit to conti
 9. You have now opened the TheatreRoyal application. Congratulations!
 
 On a non windows device, you will want to do the same thing - Open a command shell, navigate to the folder containing TheatreRoyal.jar, and type java -jar TheatreRoyal.jar
+
+After opening the program in the command shell, you will be presented with a Menu. You can do anything you want!
+
+If you wish to use employee functionality, use the following credentials:
+
+Username: employee
+Password: password
+
+If you want to log in to a previously created account, use the following credentials:
+
+Username: customer
+Password: password

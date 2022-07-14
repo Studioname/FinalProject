@@ -147,7 +147,7 @@ public class Basket {
     }
     
     /**
-     * Returns a strign with relevant basket information
+     * Returns a string with relevant basket information
      */
     public String getPurchaseDetails() {
     	String string = "";
@@ -162,7 +162,7 @@ public class Basket {
     	string += "Postage: " + getFormattedPrice(calculatePostage()) + '\n';
     	string += "Bookings: " + getFormattedPrice(getBookingsTotal()) + '\n';
     	string += "Total: " + getFormattedPrice(getBookingsTotal() + calculatePostage()) + '\n' + '\n';
-    	string += "Thank you for purchasing from the Theatre Royal";
+    	string += "Thank you for shopping at the Theatre Royal";
     	return string;
     }
     

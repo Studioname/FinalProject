@@ -1,0 +1,28 @@
+https://yougov.co.uk/opi/browse/Going_to_the_theatre
+https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/
+https://www.thecreativeindustries.co.uk/facts-figures/industries-arts-culture-arts-culture-facts-and-figures-arts-infographics
+http://www.artscouncil.org.uk/sites/default/files/download-file/Analysis%20of%20Theatre%20in%20England%20-%20Final%20Report.pdf
+
+Theatre-goers with disabilities:
+
+"...only 6% of customers identified as having a disability... The proportion was virtually the same outside London (with
+7% in the subsidised and 8% in the commercial sector)... General population data for 2014 shows that 16% of
+working age adults and 45% of adults over State Pension age are disabled... disabled people remain significantly less likely
+to participate in cultural, leisure and sporting activities than non-disabled people” Consultees reported that, in addressing these
+challenges... existing mechanisms ... and use of new technology – are still not frequently used..."
+
+Source: https://www.artscouncil.org.uk/sites/default/files/download-file/Analysis%20of%20Theatre%20in%20England%20-%20Final%20Report.pdf#%5B%7B%22num%22%3A147%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C45%2C247%2C0%5D
+
+Assertion: Disabled people are under-represented among theatre-goers
+Proposed solution: Digital presence increases accessibility, allowing disabled people to more easily engage with the theatre
+
+Social media allows theatre-goers to engage with the theatre outside of performances:
+
+"... In 2010, Gardner spoke of the need for theatres to “[use] social
+media properly – not just for free advertising”... [she pointed] to a survey by SOLT which showed that 65%
+of people felt that social media helped them decide whether to go to the theatre,
+but suggested that “on the whole, theatre seems to be waking up rather slowly” to this opportunity..."
+
+Based on this assertion, we believe expanding the application into a web application and pairing it with a social media presence will increase interest in theatre
+
+https://www.artscouncil.org.uk/sites/default/files/download-file/Analysis%20of%20Theatre%20in%20England%20-%20Final%20Report.pdf#%5B%7B%22num%22%3A240%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C435%2C465%2C0%5D

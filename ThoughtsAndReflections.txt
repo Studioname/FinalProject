@@ -1,0 +1,13 @@
+Thoughts and reflections by Conan Hollands
+
+I overdelivered on the specification, creating an object relations mapping framework which allowed for two way data transfers between the program and the database. 
+
+I am a stickler for good code so went over any proposed changes to the program. 
+
+I wanted to create Java objects from database table data. Methods are not first class objects in java, so this would require
+a design pattern that I did not think I had time to implement.
+
+I did manage to implement generics for methods which returned ArrayLists of objects, and methods which print object data.
+
+I feel that while the code works, and has input validation for practically everything [so no bugs as far as I am aware], it could nonetheless have been
+accomplished in half the lines of code.

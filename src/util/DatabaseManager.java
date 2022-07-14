@@ -566,7 +566,7 @@ public class DatabaseManager {
 			return true;
 			
 		}
-		System.out.println("Duplicate Play found. Item has not been added to the database");
+		//System.out.println("Duplicate Play found. Item has not been added to the database");
 		return false;
 		}
 		catch (SQLException e) {
@@ -650,7 +650,7 @@ public class DatabaseManager {
 			runQuery(str);
 			return true;
 		}
-		System.out.println("Duplicate booking found. Item has not been added to the database");
+		//System.out.println("Duplicate booking found. Item has not been added to the database");
 		return false;
 	}
 	
@@ -685,7 +685,7 @@ public class DatabaseManager {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Duplicate Customer found. Item has not been added to the database");
+		//System.out.println("Duplicate Customer found. Item has not been added to the database");
 		return false;
 	}
 	
@@ -730,7 +730,7 @@ public class DatabaseManager {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Duplicate Employee found. Item has not been added to the database");
+        //System.out.println("Duplicate Employee found. Item has not been added to the database");
         return false;
     }
 
@@ -792,7 +792,7 @@ public class DatabaseManager {
         	e.printStackTrace();
         	return false;
         }
-        System.out.println("Duplicate Main Performer found. Item has not been added to the database");
+        //System.out.println("Duplicate Main Performer found. Item has not been added to the database");
         return false;
     }
     

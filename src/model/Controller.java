@@ -19,7 +19,6 @@ import java.time.LocalDate;
  */
 
 public class Controller {
-	DatabaseManager dbm;
 	InputReader inputReader;
 	boolean running;
 	String[] defaultMenu;
@@ -36,11 +35,12 @@ public class Controller {
 	boolean customerLoggedIn;
 	boolean employeeLoggedIn;
 	Employee employee;
+	DatabaseManager dbm;
 	
 	/**
 	 * Constructor for Controller class
 	 */
-	public Controller() {
+	public Controller(DatabaseManager dbm) {
 		validUsernameChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.";
 		validPasswordChars = "abcdefghijklmnopqrstuvwxyz1234567890_-.!£$%^&*()+-=[]{}'#@~,/<>?|\"";
 
@@ -49,11 +49,9 @@ public class Controller {
 		running = true;
 		customerLoggedIn = false;
 
-		dbm = new DatabaseManager();
-		dbm.connect("FinalProject", "jdbc:mysql://127.0.0.1:3306/");
-
 		inputReader = new InputReader();
 		basket = new Basket();
+		this.dbm = dbm;
 
 		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date",
 				"4. Shopping Basket", "5. Employee Login", "6. Logout", "0. Exit" };

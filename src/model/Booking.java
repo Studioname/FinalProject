@@ -19,7 +19,7 @@ public class Booking {
 	private int isPostal;
 	private int price;
 	private Play play;
-	private Customer customer;
+	//private Customer customer;
 	
 	/**
 	 * Empty constructor for Booking class
@@ -89,6 +89,16 @@ public class Booking {
 	
 	/**
 	 * Prints the details of a Booking to the console, used to review purchase
+	 * @param index
+	 */
+	public String getPurchaseDetails(int index) {
+		index += 1;
+		String string = "" + index + ". " + play.getPlayTitle() + ", " + getFormattedSeatType() + ", Seat no. " + getSeatNumber() + ", Concession: " + getFormattedConcession() + ", Price: " + getFormattedPrice() + ", Postal: " + getFormattedIsPostal();
+		return string;
+	}
+	
+	/**
+	 * Returns a string with Booking details for writing to file
 	 * @param index
 	 */
 	public void printCheckoutDetails(int index) {
@@ -295,19 +305,4 @@ public class Booking {
 		this.play = play;
 	}
 	
-	/**
-	 * Returns customer objecr for this booking
-	 * @return
-	 */
-	public Customer getCustomer() {
-		return customer;
-	}
-	
-	/**
-	 * Sets customer object
-	 * @param customer
-	 */
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
 }

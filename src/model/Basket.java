@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Basket {
 
     private ArrayList<Booking> basket;
+    Customer customer;
 
     /**
      * Constructor for the Basket class
@@ -136,13 +137,33 @@ public class Basket {
      * Prints the relevant basket information with relevant pricing details
      */
     public void printCheckoutDetails() {
-    	System.out.println("You currently have " + basket.size() + " items in your basket. These are:");
+    	System.out.println("You currently have " + basket.size() + " item(s) in your basket. These are:");
     	for (int i = 0; i < basket.size(); i++) {
     		basket.get(i).printCheckoutDetails(i);
     	}
     	System.out.println("Postage: " + getFormattedPrice(calculatePostage()));
     	System.out.println("Bookings: " + getFormattedPrice(getBookingsTotal()));
     	System.out.println("Total: " + getFormattedPrice(getBookingsTotal() + calculatePostage()));
+    }
+    
+    /**
+     * Returns a strign with relevant basket information
+     */
+    public String getPurchaseDetails() {
+    	String string = "";
+    	string += "" + customer.getCustomerForename() + " " + customer.getCustomerSurname() + '\n';
+    	string += "" + customer.getCustomerAddress() + '\n';
+    	string += "" + customer.getCustomerEmail() + '\n'; 
+    	string += "" + customer.getCustomerTelephone() + '\n' + '\n';
+    	string += "Purchase receipt for " + basket.size() + " item(s):" + '\n' + '\n';
+    	for (int i = 0; i < basket.size(); i++) {
+    		string += basket.get(i).getPurchaseDetails(i) + '\n';
+    	}
+    	string += "Postage: " + getFormattedPrice(calculatePostage()) + '\n';
+    	string += "Bookings: " + getFormattedPrice(getBookingsTotal()) + '\n';
+    	string += "Total: " + getFormattedPrice(getBookingsTotal() + calculatePostage()) + '\n' + '\n';
+    	string += "Thank you for purchasing from the Theatre Royal";
+    	return string;
     }
     
     /**
@@ -198,5 +219,28 @@ public class Basket {
 			}
 		}
 		return noOfConcessions;
+	}
+	
+	/**
+	 * Empties the basket after purchase complete
+	 */
+	public void clearBasket() {
+		basket.clear();
+	}
+	
+	/**
+	 * Returns Customer object for basket
+	 * @return
+	 */
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	/**
+	 * Sets Customer object
+	 * @param customer
+	 */
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 }

@@ -1,11 +1,12 @@
 package model;
 
 import model.Employee;
-import model.MainPerformer;
+import model.MainPerformers;
 import model.Booking;
 import model.Play;
 import model.Basket;
 import util.DatabaseManager;
+import util.FileManager;
 import util.InputReader;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -25,6 +26,7 @@ public class Controller {
 	String[] subMenu;
 	String[] basketMenu;
 	String[] employeeMenu;
+	String[] addPerformersMenu;
 	private final Basket basket;
 	String validUsernameChars;
 	String validPasswordChars;
@@ -55,9 +57,9 @@ public class Controller {
 
 		defaultMenu = new String[] { "1. Search all shows", "2. Search by Name", "3. Search by Date",
 				"4. Shopping Basket", "5. Employee Login", "6. Logout", "0. Exit" };
-		subMenu = new String[] { "1. Add ticket to basket", "2. Return to previous screen" };
 		basketMenu = new String[] { "1. Show Basket Contents", "2. Proceed to Checkout", "0. Return to Main Menu" };
-		employeeMenu = new String[] { "1. Add play", "2. Remove play", "3. Logout" };
+		employeeMenu = new String[] { "1. Add play", "2. Remove play", "3. Add Main Performer", "4. Logout" };
+		addPerformersMenu = new String[] {"1. Browse a list of plays to add Main Performers to", "2. Add Main Performers by Play Id", "0. Return to Employee Menu"};
 	}
 	
 	/**
@@ -69,8 +71,7 @@ public class Controller {
 				System.out.println("Welcome " + employee.getEmployeeUsername() + "! Please enter your selection");
 				printMenu(employeeMenu);
 				int employeeMenuSelection = inputReader.getNextInt(0, employeeMenu.length);
-//				ArrayList<Play> plays = dbm.constructArrayList(dbm.addPlay());
-
+				ArrayList<Play> plays = dbm.constructArrayList(dbm.searchPlay(), callPlay());
 				switch (employeeMenuSelection) {
 				case 1:
 					createPlay();
@@ -78,7 +79,30 @@ public class Controller {
 				case 2:
 					removePlay();
 					break;
-				case 3:
+				case 3: 
+					printMenu(addPerformersMenu);
+					int addPerformersMenuSelection = inputReader.getNextInt(0, addPerformersMenu.length);
+					switch (addPerformersMenuSelection) {
+					case 0: break;
+					case 1: 
+						Play play = selectPlay(plays);
+						System.out.println("What is the name of the Main Performer you would like to add?");
+						String name = inputReader.getInput();
+						dbm.addPerformer(play.getPlayId(), name);
+						break;
+					case 2:
+						System.out.println("What is the Id of the play you would like to add a Main Performer to?");
+						int playSelection = inputReader.getNextInt(1, plays.size());
+						System.out.println("What is the name of the Main Performer you would like to add?");
+						String name2 = inputReader.getInput();
+						dbm.addPerformer(playSelection, name2);
+						break;
+					}
+					break;
+					//add by play select
+					//add by play id
+					//dbm.addMainPerformer(, validPasswordChars)
+				case 4:
 					logout();
 					break;
 				default:
@@ -96,12 +120,7 @@ public class Controller {
 			switch (defaultMenuSelection) {
 			// get all plays
 			case 1:
-				dbm.printBasic(plays, callPlay());
-				System.out.println("Please select a play number.");
-				int playSelection = inputReader.getNextInt(1, plays.size());
-				Play play = plays.get(playSelection - 1);
-				printMenu(subMenu);
-				bookingPrompt(play);
+				bookingPrompt(selectPlay(plays));
 				break;
 			case 2:
 				searchPrompt("name", plays);
@@ -139,6 +158,11 @@ public class Controller {
 								+ basket.getFormattedPrice(basket.getBookingsTotal() + basket.calculatePostage())
 								+ " has been deducted from your account. "
 								+ "Details of this purchase have been sent to " + customer.getCustomerEmail() + ".");
+						basket.setCustomer(customer);
+						FileManager f = new FileManager();
+						f.createFile();
+						f.writeToFile(basket.getPurchaseDetails());
+						basket.clearBasket();
 					case 2:
 						break;
 					}
@@ -173,6 +197,19 @@ public class Controller {
 		for (int i = 0; i < subMenu.length; i++) {
 			System.out.println(subMenu[i]);
 		}
+	}
+	
+	/**
+	 * Returns a play selected from a list by the user
+	 */
+	public Play selectPlay(ArrayList<Play> plays) {
+		dbm.printBasic(plays, callPlay());
+		System.out.println("Please select a play number.");
+		int playSelection = inputReader.getNextInt(1, plays.size());
+		Play play = plays.get(playSelection - 1);
+		play.printPlayDetails();
+		fetchAndPrintMainPerformers(play);
+		return play;
 	}
 	
 	/**
@@ -415,6 +452,7 @@ public class Controller {
 			return;
 		} else {
 			Play play = results.get(selection - 1);
+			play.printPlayDetails();
 			bookingPrompt(play);
 		}
 	}
@@ -643,6 +681,16 @@ public class Controller {
 	 */
 	public boolean validateCustomerEmail(String string) {
 		return string.contains("@") && string.contains(".");
+	}
+	
+	/**
+	 * Fetches a MainPerformers object using a playId and prints the contents
+	 */
+	public void fetchAndPrintMainPerformers(Play play) {
+		MainPerformers mainPerformers = dbm.fetchMainPerformers(dbm.searchMainPerformersByPlayId(play.getPlayId()));
+		if (mainPerformers != null) {
+			mainPerformers.printMainPerformers();
+		}
 	}
 
 	/**

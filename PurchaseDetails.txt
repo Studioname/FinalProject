@@ -1,0 +1,16 @@
+con hol
+45566 fdsdsfd
+sfsd@weer.com
+32344232
+
+Purchase receipt for 4 item(s):
+
+1. One Kiss, Stalls, Seat no. 2, Concession: Yes, Price: £15.00, Postal: Yes
+2. One Kiss, Stalls, Seat no. 3, Concession: Yes, Price: £15.00, Postal: Yes
+3. One Kiss, Stalls, Seat no. 4, Concession: No, Price: £20.00, Postal: No
+4. One Kiss, Stalls, Seat no. 5, Concession: No, Price: £20.00, Postal: No
+Postage: £1.00
+Bookings: £70.00
+Total: £71.00
+
+Thank you for purchasing from the Theatre Royal

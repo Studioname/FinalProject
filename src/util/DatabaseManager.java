@@ -14,6 +14,7 @@ import java.util.Scanner;
 import model.Booking;
 import model.Customer;
 import model.Employee;
+import model.MainPerformers;
 import model.Play;
 
 /**
@@ -279,9 +280,6 @@ public class DatabaseManager {
 				return null;
 		}
 	}
-
-//----------------------------------------------------------------------
-	//play java queries
 	
 	/**
 	 * Takes an ArrayList of Plays and a date string. Iterates through the passed ArrayList
@@ -471,6 +469,83 @@ public class DatabaseManager {
 	}
 
 //----------------------------------------------------------------------
+	//Employee
+//----------------------------------------------------------------------
+	
+	
+    /**
+     * Takes a ResultSet object and creates a Employee Object from it
+     * @param ResultSet rs - Gotten from searchEmployee();
+     * @return returns a Employee object
+     **/
+
+    public Employee fetchEmployeeObject(ResultSet rs) {
+        try {
+            int EmployeeId = rs.getInt("EmployeeId");
+            String EmployeeUsername = rs.getString("EmployeeUsername");
+            String EmployeePassword = rs.getString("EmployeePassword");
+            Employee c = new Employee(EmployeeId, EmployeeUsername, EmployeePassword);
+            return c;
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+        }
+    }
+    
+    /**
+     * Returns true if there is an entry in the Employee table with matching username and password, false if not
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean validateEmployeeCredentials(String username, String password) {
+        ResultSet rs = searchEmployeeByLoginDetails(username,password);
+        try {
+            if (rs == null || !rs.first()) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+	
+//----------------------------------------------------------------------
+	//Main performers
+//----------------------------------------------------------------------
+    /**
+     * Returns a MainPerformers object from a ResultSet
+     * @param rs
+     * @return
+     */
+    public MainPerformers fetchMainPerformers(ResultSet rs) {
+    	
+        MainPerformers mainPerformers = new MainPerformers();
+    	try {
+    		if (rs == null || !rs.first()) {
+				return null;
+			}
+            int playId = rs.getInt("PlayId");
+            mainPerformers.setPlayId(playId);
+            rs.beforeFirst();
+        	while (rs.next()) {
+	            String mainPerformer = rs.getString("MainPerformer"); 
+	            mainPerformers.addMainPerformer(mainPerformer);
+        	}
+        	return mainPerformers;
+    	}
+	            catch (SQLException e) {
+	                e.printStackTrace();
+	                return null;
+            }
+        }
+	
+//----------------------------------------------------------------------
 	//SQL queries
 //----------------------------------------------------------------------
 	//Play
@@ -627,26 +702,6 @@ public class DatabaseManager {
 //----------------------------------------------------------------------
 	//Employee
 //----------------------------------------------------------------------
-	
-    /**
-     * Takes a ResultSet object and creates a Employee Object from it
-     * @param ResultSet rs - Gotten from searchEmployee();
-     * @return returns a Employee object
-     **/
-
-    public Employee fetchEmployeeObject(ResultSet rs) {
-        try {
-            int EmployeeId = rs.getInt("EmployeeId");
-            String EmployeeUsername = rs.getString("EmployeeUsername");
-            String EmployeePassword = rs.getString("EmployeePassword");
-            Employee c = new Employee(EmployeeId, EmployeeUsername, EmployeePassword);
-            return c;
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-                return null;
-        }
-    }
     
     /**
      * Returns a ResultSet containing all entries from the Employee table
@@ -690,28 +745,6 @@ public class DatabaseManager {
     }
     
     /**
-     * Returns true if there is an entry in the Employee table with matching username and password, false if not
-     * @param username
-     * @param password
-     * @return
-     */
-    public boolean validateEmployeeCredentials(String username, String password) {
-        ResultSet rs = searchEmployeeByLoginDetails(username,password);
-        try {
-            if (rs == null || !rs.first()) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    /**
      * Returns a ResultSet object containing the entry in Employee table with matching username and password
      * @param username
      * @param password
@@ -728,7 +761,41 @@ public class DatabaseManager {
         };
         return rs;
     }
-	
+    
+//----------------------------------------------------------------------
+    //MainPerformers
+//----------------------------------------------------------------------
+    
+    public ResultSet searchMainPerformersByPlayId(int playId) {
+    	String str = "SELECT * FROM MainPerformer WHERE PlayId = " + playId + ";";
+    	ResultSet rs = runQuery(str);
+        try {
+            rs.first();
+            }
+        catch (SQLException e) {
+            e.printStackTrace();
+        };
+        return rs;
+    }
+    
+    public boolean addPerformer(int playId, String mainPerformer) {
+        String test = "SELECT * FROM MainPerformer WHERE PlayId = " + playId + " AND MainPerformer LIKE '" + mainPerformer + "';";
+        ResultSet rs = runQuery(test);
+        try {
+            if (!rs.next()) {
+	    	String str = "INSERT INTO MainPerformer (PlayId, MainPerformer) VALUES (" + playId + ", '" +  mainPerformer + "');";
+	    	runQuery(str);
+	    	return true;
+            }
+        }
+        catch (SQLException e) {
+        	e.printStackTrace();
+        	return false;
+        }
+        System.out.println("Duplicate Main Performer found. Item has not been added to the database");
+        return false;
+    }
+    
 //----------------------------------------------------------------------
 	//General
 //----------------------------------------------------------------------

@@ -166,7 +166,7 @@ public class Play {
 		System.out.println("Circle Seat Price: " + getFormattedPrice(playCirclePrice));
 		System.out.println("Stalls Seat Price: " + getFormattedPrice(playStallsPrice));
 		System.out.println("Language: " + getFormattedPlayLanguage());
-		System.out.println("Musical Accompaniment: " + getMusicalAccompanimentString());
+		System.out.println("Musical Accompaniment: " + getMusicalAccompanimentString() + '\n');
 	}
 	
 	/**

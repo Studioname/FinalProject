@@ -33,8 +33,19 @@ public class Basket {
      * Adds a booking to basket
      * @param booking
      */
-    public void addToBasket(Booking booking) {
+    public void addBooking(Booking booking) {
     	basket.add(booking);
+    }
+    
+    /**
+     * Adds multiple bookings to basket
+     * @param booking
+     */
+    public void addBookings(ArrayList<Booking> bookings) {
+    	for (int i = 0; i < bookings.size(); i++) {
+    		basket.add(bookings.get(i));
+    	}
+    	
     }
     
     /**
@@ -81,33 +92,7 @@ public class Basket {
     		}
     	}
     }
-    
-	/**
-	 * Loops through the basket and sets a given number of tickets to concessionary
-	 * @param noOfConcessions
-	 */
-	public void createConcessionaryBookings(int noOfConcessions) {
-		for (int i = 0; i < noOfConcessions; i++) {
-			basket.get(i).setConcession(1);
-		}
-	}
 	
-	/**
-	 * Creates booking objects with the given parameters and adds them to the basket
-	 * @param play
-	 * @param stallsOrCircle
-	 * @param noOfSeats
-	 * @param seatNumbers
-	 * @param noOfConcessions
-	 * @param isPostal
-	 */
-	public void createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions,
-			int isPostal) {
-		for (int i = 0; i < noOfSeats; i++) {
-			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
-			basket.add(b);
-		}
-	}
     
 	/**
 	 * Iterates through the basket and uses the applyConcession method, which checks to see if a booking

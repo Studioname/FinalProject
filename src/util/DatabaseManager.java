@@ -350,7 +350,6 @@ public class DatabaseManager {
 			int isPostal = rs.getInt("isPostal");
 			
 			Booking b = new Booking(bookingId, playId, customerId, seatType, seatNumber, concession, isPostal);
-			//b.setCustomer(fetchCustomerObject(getCustomerById(customerId)));
 			return b;
 		}
 		catch (SQLException e) {
@@ -398,7 +397,6 @@ public class DatabaseManager {
 			String customerTelephone = rs.getString("CustomerTelephone");
 			String customerEmail = rs.getString("CustomerEmail");
 			String customerPaymentDetails = rs.getString("CustomerPaymentDetails");
-			
 			Customer c = new Customer(customerId, customerUsername, customerPassword, customerForename, customerSurname, customerAddress, customerTelephone, customerEmail, customerPaymentDetails);
 			return c;
 			}
@@ -777,6 +775,13 @@ public class DatabaseManager {
         };
         return rs;
     }
+    
+    /**
+     * Adds a Main Performer to the MainPerformer table
+     * @param playId
+     * @param mainPerformer
+     * @return
+     */
     
     public boolean addPerformer(int playId, String mainPerformer) {
         String test = "SELECT * FROM MainPerformer WHERE PlayId = " + playId + " AND MainPerformer LIKE '" + mainPerformer + "';";

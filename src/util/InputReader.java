@@ -39,6 +39,7 @@ public class InputReader {
 				input = -2;
 			}
 		}
+		scanner.nextLine();
 		return input;
 	}
 	
@@ -50,7 +51,7 @@ public class InputReader {
 	 * @return
 	 */
 	public int getNextInt(int minRange, int maxRange) {
-		int input = -2;
+		int input = minRange -1;
 		while (input < minRange || input > maxRange){
 			try {
 				input = scanner.nextInt();
@@ -63,6 +64,7 @@ public class InputReader {
 		scanner.nextLine();
 		return input;
 	}
+	
 	/**
 	 * Returns user input as string
 	 * @return

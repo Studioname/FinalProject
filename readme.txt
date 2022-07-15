@@ -1,5 +1,15 @@
 Instructions
 
+1. Install MySQL workbench
+2. Set your username to root and your password to Pa$$word123
+
+If you already have MySQL Workbench installed, change the credentials.txt file to reflect your login details
+
+3. Create a new connection called 'FinalProject'
+4. Copy and paste the code from the FinalProject SQL file into the FinalProject connection. Save it then run it with the lightning icon.
+
+Then we have to sort out the Java side of things.
+
 In order to run a JAR file, you must first install the Java Development Kit. 
 Linux: https://www.oracle.com/java/technologies/downloads/#jdk18-linux
 Mac: https://www.oracle.com/java/technologies/downloads/#jdk18-mac

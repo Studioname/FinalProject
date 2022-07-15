@@ -252,7 +252,7 @@ public class Controller {
 	 * @param play
 	 */
 	public void bookingPrompt(Play play) {
-		System.out.println("Would you like to make a booking? Press 1 for yes, 2 for no.");
+		System.out.println("Would you like to make a booking? Enter 1 for yes, 2 for no.");
 		int subMenuSelection = inputReader.getNextInt(1, 2);
 		switch (subMenuSelection) {
 		case 1:
@@ -264,17 +264,38 @@ public class Controller {
 			int noOfConcessions = getNoOfConcessions(noOfSeats);
 			int isPostal = getIsPostal(play);
 			if (addToBasketPrompt()) {
-				basket.createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
-				basket.createConcessionaryBookings(noOfConcessions);
+				ArrayList<Booking> bookings = createBookings(play, stallsOrCircle, noOfSeats, seatNumbers, noOfConcessions, isPostal);
+				basket.addBookings(bookings);
 			} else {
 				break;
 			}
 		case 2:
 			// takes us to main menu
 			break;
-		default:
-			System.out.println("Selection not recognised.");
 		}
+	}
+	
+	/**
+	 * Creates booking objects with the given parameters and adds them to the basket
+	 * @param play
+	 * @param stallsOrCircle
+	 * @param noOfSeats
+	 * @param seatNumbers
+	 * @param noOfConcessions
+	 * @param isPostal
+	 */
+	public ArrayList<Booking> createBookings(Play play, int stallsOrCircle, int noOfSeats, int[] seatNumbers, int noOfConcessions, int isPostal) {
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		//create bookings
+		for (int i = 0; i < noOfSeats; i++) {
+			Booking b = new Booking(play.getPlayId(), stallsOrCircle, seatNumbers[i], 0, isPostal);
+			bookings.add(b);
+		}
+		//set concessions
+		for (int i = 0; i < noOfConcessions; i++) {
+			bookings.get(i).setConcession(1);
+		}
+		return bookings;
 	}
 
 	/**
@@ -381,15 +402,15 @@ public class Controller {
 		if (isPostal == 1) {
 			// check to see if the play falls within 7 days of the current date
 			if (postageAvailable(play)) {
-				isPostal = 1;
 				System.out.println("Postage available. Tickets will arrive within seven days of booking.");
-			} else {
+				return 1;
+			}
+			else if (!postageAvailable(play)) {
 				isPostal = 0;
-				System.out.println(
-						"Sorry, postage is only available for plays being performed seven days or more after the booking date");
+				System.out.println("Sorry, postage is only available for plays being performed seven days or more after the booking date");
 			}
 		}
-		return isPostal;
+		return 0;
 	}
 
 	/**
@@ -585,9 +606,9 @@ public class Controller {
 		System.out.println("Please enter a duration, using the 24hr format HH:MM:SS");
 		String duration = inputReader.getInput();
 		System.out.println("Please enter a price for Stalls Seats as a whole number, in pence:");
-		int stallsSeatPrice = inputReader.getNextInt();
+		int stallsSeatPrice = inputReader.getNextInt(0, Integer.MAX_VALUE);
 		System.out.println("Please enter a price for Circle Seats as a whole number, in pence:");
-		int circleSeatPrice = inputReader.getNextInt();
+		int circleSeatPrice = inputReader.getNextInt(0, Integer.MAX_VALUE);
 		System.out.println("Please enter a language:");
 		String language = inputReader.getInput();
 		System.out.println("Will the play have Musical Accompaniment?" + '\n' + "1. Yes" + '\n' + "2. No");
@@ -595,7 +616,7 @@ public class Controller {
 		Play p = new Play(title, type, description, time, date, duration, circleSeatPrice, stallsSeatPrice, language,
 				musicalAccompaniment);
 		dbm.addPlay(p);
-		System.out.println("" + p.getPlayTitle() + " has been added to the database");
+		System.out.println("" + p.getPlayTitle() + " has been added to the database" + '\n');
 	}
 
 	/**
@@ -650,8 +671,8 @@ public class Controller {
 	 * @param string
 	 * @return
 	 */
-	public boolean validateCustomerUsername(String string) {
-		char[] chars = string.toCharArray();
+	public boolean validateCustomerUsername(String username) {
+		char[] chars = username.toCharArray();
 		for (int i = 0; i < chars.length; i++) {
 			if (!validUsernameChars.contains("" + chars[i])) {
 				return false;
@@ -666,8 +687,8 @@ public class Controller {
 	 * @param string
 	 * @return
 	 */
-	public boolean validateCustomerPassword(String string) {
-		char[] chars = string.toCharArray();
+	public boolean validateCustomerPassword(String password) {
+		char[] chars = password.toCharArray();
 		for (int i = 0; i < chars.length; i++) {
 			if (!validPasswordChars.contains("" + chars[i])) {
 				return false;

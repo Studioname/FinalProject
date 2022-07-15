@@ -39,10 +39,10 @@ public class Booking {
 	 */
 	public Booking(int playId, int seatType, int seatNumber, int concession, int isPostal) {
 		this.playId = playId;
-		this.setSeatType(seatType);
-		this.setSeatNumber(seatNumber);
-		this.setConcession(concession);
-		this.setIsPostal(isPostal);
+		this.seatType = seatType;
+		this.seatNumber =seatNumber;
+		this.concession = concession;
+		this.isPostal = isPostal;
 	}
 
 	/**
@@ -59,10 +59,10 @@ public class Booking {
 		this.bookingId = bookingId;
 		this.playId = playId;
 		this.customerId = customerId;
-		this.setSeatType(seatType);
-		this.setSeatNumber(seatNumber);
-		this.setConcession(concession);
-		this.setIsPostal(isPostal);
+		this.seatType = seatType;
+		this.seatNumber = seatNumber;
+		this.concession = concession;
+		this.isPostal = isPostal;
 	}
 	
 	/**
@@ -144,7 +144,7 @@ public class Booking {
 	 * @return
 	 */
 	public String getFormattedIsPostal() {
-		switch (concession) {
+		switch (isPostal) {
 			case 0:
 				return "No";
 			case 1:

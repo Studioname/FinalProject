@@ -3,11 +3,14 @@ Da Hollands
 conanhollands@aston.ac.uk
 01322495843
 
-Purchase receipt for 1 item(s):
+Purchase receipt for 4 item(s):
 
 1. Cats, Stalls, Seat no. 1, Concession: Yes, Price: £37.50, Postal: Yes
-Postage: £0.00
-Bookings: £37.50
-Total: £37.50
+2. Cats, Stalls, Seat no. 2, Concession: No, Price: £50.00, Postal: Yes
+3. Cats, Stalls, Seat no. 3, Concession: No, Price: £50.00, Postal: Yes
+4. Cats, Stalls, Seat no. 4, Concession: No, Price: £50.00, Postal: Yes
+Postage: £1.00
+Bookings: £187.50
+Total: £188.50
 
 Thank you for shopping at the Theatre Royal
